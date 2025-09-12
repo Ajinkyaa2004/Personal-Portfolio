@@ -324,15 +324,18 @@ function App() {
               style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
             >
               {/* ---- Card 1 ---- */}
-              <div
+              <motion.div
                 className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2"
                 style={{ height: "auto" }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
               >
-                {/* Blob Animation */}
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
 
-                {/* Content */}
                 <div className="relative z-10 text-center flex flex-col justify-between h-full">
                   <h1 className="text-5xl font-bold text-left text-gray-900 mb-4">NexPrep</h1>
                   <p className="text-base text-gray-700 rounded-md p-3 -mt-2 text-left">
@@ -348,7 +351,7 @@ function App() {
                   </div>
                   <div className="flex flex-wrap justify-start gap-6 mt-6">
                     <a
-                      href="https://github.com/yourusername/ecommerce"
+                      href="https://github.com/Ajinkyaa2004/NexPrep"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-2"
@@ -356,7 +359,7 @@ function App() {
                       <FaGithub className="text-xl" /> GitHub
                     </a>
                     <a
-                      href="https://ecommerce-demo.vercel.app"
+                      href="https://nexprep-ai.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-2"
@@ -365,13 +368,21 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
+
 
               {/* ---- Card 2 ---- */}
-              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+              <motion.div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
                 <div className="relative z-10 text-center flex flex-col justify-between h-full">
                   <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Fab Wear</h1>
                   <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
@@ -401,10 +412,19 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
+
 
               {/* ---- Card 3 ---- */}
-              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+              <motion.div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
 
@@ -429,7 +449,7 @@ function App() {
                       <FaGithub className="text-lg" /> GitHub
                     </a>
                     <a
-                      href="https://fab-wear.vercel.app/"
+                      href="https://itsajinkya.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -438,10 +458,19 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
+
 
               {/* ---- Card 4 ---- */}
-              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+              <motion.div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
 
@@ -465,7 +494,7 @@ function App() {
                       <FaGithub className="text-lg" /> GitHub
                     </a>
                     <a
-                      href="https://ecommerce-demo.vercel.app"
+                      href=""
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -474,10 +503,18 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
 
               {/* ---- Card 5 ---- */}
-              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+              <motion.div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
 
@@ -493,7 +530,7 @@ function App() {
                   </div>
                   <div className="flex flex-wrap justify-start gap-4 mt-1">
                     <a
-                      href="https://github.com/yourusername/ecommerce"
+                      href="https://github.com/Ajinkyaa2004/Web-Chat"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -501,7 +538,7 @@ function App() {
                       <FaGithub className="text-lg" /> GitHub
                     </a>
                     <a
-                      href="https://ecommerce-demo.vercel.app"
+                      href=""
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -510,10 +547,18 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
 
               {/* ---- Card 6 ---- */}
-              <div className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd]">
+              <motion.div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd]"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
 
@@ -529,7 +574,7 @@ function App() {
                   </div>
                   <div className="flex gap-4 mt-4">
                     <a
-                      href="https://github.com/yourusername/portfolio"
+                      href="https://github.com/Ajinkyaa2004/ZenID-JUJUTSU-CODERS"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -546,10 +591,19 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
+
 
               {/* ---- Card 7 ---- */}
-              <div className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2">
+              <motion.div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
                 <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
 
@@ -557,8 +611,6 @@ function App() {
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">MediaMind ML-360</h1>
                   <p className="text-sm text-gray-700 rounded-md p-2">
                     AI-powered 360-degree feedback software that monitors and analyzes Government of India news stories across multiple regional languages using web crawling, OCR, and sentiment analysis to provide real-time alerts and insights.
-
-
                   </p>
                   <div className="flex gap-4 mt-3 text-2xl text-gray-700">
                     <SiNextdotjs title="Next.js" className="text-black" />
@@ -570,7 +622,7 @@ function App() {
                   </div>
                   <div className="flex gap-4 mt-4">
                     <a
-                      href="https://github.com/yourusername/portfolio"
+                      href="https://github.com/Ajinkyaa2004/MediaMind-ML-360"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -578,7 +630,7 @@ function App() {
                       <FaGithub className="text-xl" /> GitHub
                     </a>
                     <a
-                      href="https://your-portfolio.vercel.app"
+                      href="https://mediamindml-360.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-1"
@@ -587,23 +639,27 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
+
             </div>
 
 
             {/* Blob Animation Keyframes */}
             <style>
               {`
-      .animate-blob {
-        animation: blob 8s infinite;
-      }
-      @keyframes blob {
-        0% { transform: translate(0px, 0px) scale(1); }
-        33% { transform: translate(30px, -50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0px, 0px) scale(1); }
-      }
-    `}
+    .animate-blob {
+      animation: blob 20s infinite; /* slower, more subtle */
+      opacity: 0.25; /* lighter effect */
+      filter: blur(18px); /* softer blur */
+    }
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(15px, -25px) scale(1.05); }
+      66% { transform: translate(-10px, 10px) scale(0.95); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+  `}
             </style>
           </section>
 
