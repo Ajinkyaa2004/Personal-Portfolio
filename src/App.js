@@ -7,7 +7,18 @@ import Lottie from "lottie-react";
 import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json"; // path matches your structure
 import robotAnim from "./lottie/Robotsayshello.json"; // path matches your structure
 import BookLoading from "./lottie/Bookloading.json";
-import Masonry from "react-masonry-css";
+import { FaGithub, FaJs, FaDatabase } from "react-icons/fa";
+import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact } from "react-icons/si";
+import { FaNodeJs, FaExternalLinkAlt } from 'react-icons/fa';
+import { SiMongodb } from 'react-icons/si';
+import { SiHtml5, SiCss3, SiJavascript } from 'react-icons/si';
+import { SiFramer, } from 'react-icons/si';
+import { SiSpringboot } from "react-icons/si";
+import { DiJava, DiMysql } from 'react-icons/di';
+import { FaDesktop } from 'react-icons/fa';
+import { SiMetamask } from "react-icons/si";
+
+
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -94,16 +105,6 @@ function App() {
                   </svg>
                 </a>
 
-                {/* Twitter */}
-                {/* <a href="https://twitter.com/YourTwitter" target="_blank" rel="noopener noreferrer">
-                  <svg
-                    className="w-6 h-6 text-gray-800 hover:text-[#6C63FF]"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 4.557a9.83 9.83 0 0 1-2.828.775 4.932 4.932 0 0 0 2.165-2.724 9.864 9.864 0 0 1-3.127 1.195 4.916 4.916 0 0 0-8.38 4.482A13.939 13.939 0 0 1 1.671 3.149a4.916 4.916 0 0 0 1.523 6.573 4.903 4.903 0 0 1-2.228-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.935 4.935 0 0 1-2.224.084 4.919 4.919 0 0 0 4.59 3.417A9.867 9.867 0 0 1 0 21.539 13.94 13.94 0 0 0 7.548 24c9.142 0 14.307-7.721 13.995-14.646A10.025 10.025 0 0 0 24 4.557z" />
-                  </svg>
-                </a> */}
               </div>
             </div>
 
@@ -131,7 +132,7 @@ function App() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              About Me
+              A Glimpse of Me
             </motion.h2>
             {/* Content */}
             <div className="max-w-3xl text-center text-lg space-y-6 text-gray-600 leading-relaxed">
@@ -193,7 +194,8 @@ function App() {
           {/* Education Section */}
           <section
             id="education"
-            className="min-h-screen flex flex-col items-center justify-start mt-12 px-6 md:px-20 bg-transparent relative z-10"
+            className="flex flex-col items-center justify-start mt-12 px-6 md:px-20 py-12 bg-transparent relative z-10"
+
           >
             {/* Left Content - Timeline */}
             <div className="flex-1">
@@ -206,7 +208,7 @@ function App() {
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                Education
+                Academic Journey
               </motion.h2>
 
 
@@ -302,75 +304,316 @@ function App() {
           </section>
 
           {/* Project Section*/}
-          <section id="projects" className="min-h-screen px-6 md:px-20 py-12">
+          <section
+            id="projects"
+            className="min-h-screen flex flex-col items-center justify-start mt-12 px-6 md:px-20 bg-transparent relative z-10 top-20 mb-52"
+          >
             {/* Heading */}
-            {/* <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent w-fit mx-auto"
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#595ec0] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent w-fit mx-auto"
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              My Projects
-            </motion.h2> */}
-            {/* Masonry Grid */}
-<section className="min-h-screen p-6">
-  <h2
-    className="text-4xl md:text-5xl font-bold mb-12 text-center 
-      bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] 
-      bg-clip-text text-transparent"
-  >
-    My Projects
-  </h2>
+              What I’ve Built & Led
+            </motion.h2>
 
-  <div
-    className="masonry"
-    style={{
-      columnCount: 3, // number of columns for desktop
-      columnGap: "1.5rem",
-    }}
-  >
-    {[
-      { width: 320, height: 200 },
-      { width: 320, height: 300 },
-      { width: 320, height: 180 },
-      { width: 320, height: 250 },
-      { width: 320, height: 220 },
-      { width: 320, height: 280 },
-    ].map((card, index) => (
-      <div
-        key={index}
-        style={{
-          breakInside: "avoid",
-          marginBottom: "1.5rem",
-          borderRadius: "24px",
-          padding: "24px",
-          color: "white",
-          position: "relative",
-          overflow: "hidden",
-          boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
-          background: "linear-gradient(270deg, #3A41C6, #6C63FF, #00D4FF)",
-          backgroundSize: "600% 600%",
-          animation: "gradientMove 8s ease infinite",
-          width: `${card.width}px`,
-          height: `${card.height}px`,
-        }}
-      >
-        <style>
-          {`
-            @keyframes gradientMove {
-              0% { background-position: 0% 50%; }
-              50% { background-position: 100% 50%; }
-              100% { background-position: 0% 50%; }
-            }
-          `}
-        </style>
-      </div>
-    ))}
-  </div>
-</section>
+            {/* Cards Grid */}
+            <div className="grid gap-6 w-full justify-center"
+              style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
+            >
+              {/* ---- Card 1 ---- */}
+              <div
+                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2"
+                style={{ height: "auto" }}
+              >
+                {/* Blob Animation */}
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                {/* Content */}
+                <div className="relative z-10 text-center flex flex-col justify-between h-full">
+                  <h1 className="text-5xl font-bold text-left text-gray-900 mb-4">NexPrep</h1>
+                  <p className="text-base text-gray-700 rounded-md p-3 -mt-2 text-left">
+                    An AI-powered mock interview platform that simulates real-time, voice-based interviews using Vapi voice agents or React Speech Recognition.
+                    It provides instant feedback and scoring, helping candidates practice and improve their interview skills.
+                  </p>
+                  <div className="flex flex-wrap justify-start gap-6 mt-6 text-2xl text-gray-700">
+                    <SiNextdotjs title="Next.js" />
+                    <SiFirebase title="Firebase" className="text-yellow-500" />
+                    <SiTailwindcss title="Tailwind CSS" className="text-sky-500" />
+                    <SiDrizzle title="Drizzle ORM" className="text-green-500" />
+                    <FaJs title="JavaScript" className="text-yellow-400" />
+                  </div>
+                  <div className="flex flex-wrap justify-start gap-6 mt-6">
+                    <a
+                      href="https://github.com/yourusername/ecommerce"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+                    >
+                      <FaGithub className="text-xl" /> GitHub
+                    </a>
+                    <a
+                      href="https://ecommerce-demo.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+                    >
+                      <SiVercel className="text-xl" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---- Card 2 ---- */}
+              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                <div className="relative z-10 text-center flex flex-col justify-between h-full">
+                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Fab Wear</h1>
+                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
+                    A full-stack e-commerce web app with product listing, cart, and payment gateway integration.
+                  </p>
+                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
+                    <SiHtml5 title="React" className="text-orange-500" />
+                    <SiCss3 title="Node.js" className="text-blue-500" />
+                    <FaJs title="JavaScript" className="text-yellow-400" />
+                  </div>
+                  <div className="flex flex-wrap justify-start gap-4 mt-1">
+                    <a
+                      href="https://github.com/Ajinkyaa2004/FabWear-E-Commerce-Webapp"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <FaGithub className="text-lg" /> GitHub
+                    </a>
+                    <a
+                      href="https://fab-wear.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <SiVercel className="text-lg" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---- Card 3 ---- */}
+              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                <div className="relative z-10 text-center flex flex-col justify-between h-full">
+                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Portfolio</h1>
+                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
+                    A personal portfolio showcasing my projects, skills, and resume with modern, responsive design.
+                  </p>
+                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
+                    <SiReact title="React" className="text-sky-500" />
+                    <SiTailwindcss title="TailwindCSS" className="text-teal-400" />
+                    <SiFramer title="Framer Motion" className="text-purple-600" />
+                    <FaJs title="JavaScript" className="text-yellow-400" />
+                  </div>
+                  <div className="flex flex-wrap justify-start gap-4 mt-1">
+                    <a
+                      href="https://github.com/Ajinkyaa2004/Personal-Portfolio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <FaGithub className="text-lg" /> GitHub
+                    </a>
+                    <a
+                      href="https://fab-wear.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <SiVercel className="text-lg" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---- Card 4 ---- */}
+              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                <div className="relative z-10 text-center flex flex-col justify-between h-full">
+                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Hotel MS</h1>
+                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
+                    Hotel management software using Java and MySQL for bookings, customer data, and billing.
+                  </p>
+                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
+                    <DiJava color="#f89820" />
+                    <DiMysql color="#00758F" />
+                    <FaDesktop title="Java Swing UI" className="text-gray-700" />
+                  </div>
+                  <div className="flex flex-wrap justify-start gap-4 mt-1">
+                    <a
+                      href="https://github.com/Ajinkyaa2004/Hotel-Management-System"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <FaGithub className="text-lg" /> GitHub
+                    </a>
+                    <a
+                      href="https://ecommerce-demo.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <SiVercel className="text-lg" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---- Card 5 ---- */}
+              <div className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]">
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                <div className="relative z-10 text-center flex flex-col justify-between h-full">
+                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Web Chat</h1>
+                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
+                    Instantly connect and communicate on a modern, fast, real-time web chat platform.
+                  </p>
+                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
+                    <SiSpringboot color="#6DB33F" />
+                    <DiJava color="#f89820" />
+                    <FaJs title="JavaScript" className="text-yellow-400" />
+                  </div>
+                  <div className="flex flex-wrap justify-start gap-4 mt-1">
+                    <a
+                      href="https://github.com/yourusername/ecommerce"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <FaGithub className="text-lg" /> GitHub
+                    </a>
+                    <a
+                      href="https://ecommerce-demo.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <SiVercel className="text-lg" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---- Card 6 ---- */}
+              <div className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd]">
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                <div className="relative z-10 text-left">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2 -mt-3">Zen-Identity</h1>
+                  <p className="text-sm text-gray-700 rounded-md p-2">
+                    A decentralized id management system that provides secure, private, and digital credentials with user-controlled access.
+                  </p>
+                  <div className="flex gap-4 mt-3 text-2xl text-gray-700">
+                    <SiNextdotjs title="Next.js" className="text-black" />
+                    <SiTailwindcss title="TailwindCSS" className="text-teal-400" />
+                    <SiFirebase title="Firebase" className="text-yellow-500" />
+                  </div>
+                  <div className="flex gap-4 mt-4">
+                    <a
+                      href="https://github.com/yourusername/portfolio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <FaGithub className="text-lg" /> GitHub
+                    </a>
+                    <a
+                      href="https://your-portfolio.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <SiVercel className="text-lg" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---- Card 7 ---- */}
+              <div className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2">
+                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
+
+                <div className="relative z-10 text-left">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">MediaMind ML-360</h1>
+                  <p className="text-sm text-gray-700 rounded-md p-2">
+                    AI-powered 360-degree feedback software that monitors and analyzes Government of India news stories across multiple regional languages using web crawling, OCR, and sentiment analysis to provide real-time alerts and insights.
+
+
+                  </p>
+                  <div className="flex gap-4 mt-3 text-2xl text-gray-700">
+                    <SiNextdotjs title="Next.js" className="text-black" />
+                    <SiTailwindcss title="Tailwind CSS" className="text-sky-500" />
+                    <SiFramer title="Framer Motion" className="text-purple-600" />
+                    <SiMongodb title="MongoDB" className="text-green-600" />
+                    <SiDrizzle title="Drizzle ORM" className="text-green-500" />
+                    <SiFirebase title="Firebase (Auth & Firestore)" className="text-yellow-500" />
+                  </div>
+                  <div className="flex gap-4 mt-4">
+                    <a
+                      href="https://github.com/yourusername/portfolio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <FaGithub className="text-xl" /> GitHub
+                    </a>
+                    <a
+                      href="https://your-portfolio.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-1"
+                    >
+                      <SiVercel className="text-xl" /> Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            {/* Blob Animation Keyframes */}
+            <style>
+              {`
+      .animate-blob {
+        animation: blob 8s infinite;
+      }
+      @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+      }
+    `}
+            </style>
+          </section>
+
+
+          <section>
 
           </section>
+
+
+
         </>
       )}
     </div>
