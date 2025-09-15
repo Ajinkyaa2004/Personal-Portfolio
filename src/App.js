@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
 import Lottie from "lottie-react";
-import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json"; // path matches your structure
-import robotAnim from "./lottie/Robotsayshello.json"; // path matches your structure
+import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json"; 
+import robotAnim from "./lottie/Robotsayshello.json"; 
 import BookLoading from "./lottie/Bookloading.json";
 import { FaGithub, FaJs, FaDatabase } from "react-icons/fa";
 import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact } from "react-icons/si";
