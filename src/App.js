@@ -1,25 +1,27 @@
 "use client";
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
 import Lottie from "lottie-react";
-import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json"; 
-import robotAnim from "./lottie/Robotsayshello.json"; 
+import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
+import robotAnim from "./lottie/Robotsayshello.json";
 import BookLoading from "./lottie/Bookloading.json";
 import { FaGithub, FaJs, FaDatabase } from "react-icons/fa";
 import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact } from "react-icons/si";
-import { FaNodeJs, FaExternalLinkAlt } from 'react-icons/fa';
 import { SiMongodb } from 'react-icons/si';
 import { SiHtml5, SiCss3, SiJavascript } from 'react-icons/si';
 import { SiFramer, } from 'react-icons/si';
 import { SiSpringboot } from "react-icons/si";
 import { DiJava, DiMysql } from 'react-icons/di';
 import { FaDesktop } from 'react-icons/fa';
-import { FaCertificate, FaTrophy, FaJava, FaReact } from "react-icons/fa";
+import { FaCertificate, FaTrophy, FaJava } from "react-icons/fa";
 import { SiCoursera, SiAdobe, SiGoogleanalytics } from "react-icons/si";
 import GearAnim from "./lottie/GearsLottieAnimation.json";
-
+import { SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion } from "react-icons/si";
+import { DiScrum } from "react-icons/di";
+import { FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools } from "react-icons/fa";
 
 
 const certifications = [
@@ -94,18 +96,79 @@ const achievements = [
   },
 ];
 
+const categories = [
+  {
+    title: "Frontend",
+    icon: <FaCode />,
+    skills: [
+      { name: "HTML", icon: <SiHtml5 className="text-orange-500" />, level: 100, learning: false, note: "Used across projects & portfolios" },
+      { name: "CSS", icon: <SiCss3 className="text-blue-500" />, level: 108, learning: false },
+      { name: "JavaScript", icon: <SiJavascript className="text-yellow-400" />, level: 90, learning: true },
+      { name: "React", icon: <SiReact className="text-cyan-400" />, level: 88, learning: false },
+      { name: "Next.js", icon: <SiNextdotjs />, level: 75, learning: false },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-sky-400" />, level: 85, learning: false },
+    ],
+  },
+  {
+    title: "Backend",
+    icon: <FaServer />,
+    skills: [
+      { name: "Spring Boot", icon: <SiSpringboot className="text-green-500" />, level: 70, learning: true },
+      { name: "APIs", icon: <SiReact className="text-indigo-400" />, level: 80, learning: false },
+    ],
+  },
+  {
+    title: "Databases",
+    icon: <FaTools />,
+    skills: [
+      { name: "MySQL", icon: <SiMysql className="text-blue-600" />, level: 78, learning: false },
+      { name: "MongoDB", icon: <SiMongodb className="text-green-600" />, level: 85, learning: false },
+      { name: "Drizzle ORM", icon: <SiDrizzle className="text-emerald-400" />, level: 90, learning: true },
+      { name: "Firebase", icon: <SiFirebase className="text-yellow-500" />, level: 90, learning: false },
+    ],
+  },
+  {
+    title: "Tools & Collaboration",
+    icon: <FaPaintBrush />,
+    skills: [
+      { name: "GitHub", icon: <SiGithub />, level: 85, learning: false },
+      { name: "Jira", icon: <SiJirasoftware className="text-blue-500" />, level: 80, learning: false },
+      { name: "Notion", icon: <SiNotion />, level: 75, learning: true },
+    ],
+  },
+  {
+    title: "Design",
+    icon: <FaPaintBrush />,
+    skills: [
+      { name: "Figma", icon: <SiFigma className="text-pink-500" />, level: 80, learning: false },
+      { name: "Canva", icon: <SiCanva className="text-teal-500" />, level: 82, learning: false },
+      { name: "Illustrator", icon: <SiAdobeillustrator className="text-orange-600" />, level: 60, learning: true },
+      { name: "Photoshop", icon: <SiAdobephotoshop className="text-blue-400" />, level: 65, learning: false },
+    ],
+  },
+  {
+    title: "Product & PM",
+    icon: <FaProjectDiagram />,
+    skills: [
+      { name: "Agile (Scrum/Kanban)", icon: <DiScrum className="text-orange-400" />, level: 85, learning: false },
+      { name: "Product Roadmapping", icon: <SiFigma className="text-cyan-500" />, level: 78, learning: false },
+      { name: "User Research", icon: <SiFigma className="text-pink-500" />, level: 75, learning: false },
+      { name: "Market & Competetive Analysis", icon: <SiFigma className="text-purple-500" />, level: 80, learning: false },
+      { name: "Prototyping (Figma)", icon: <SiFigma className="text-yellow-400" />, level: 80, learning: true },
+      { name: "Stakeholder Management", icon: <SiFigma className="text-blue-500" />, level: 80, learning: false },
+      { name: "Google Analytics", icon: <SiGoogleanalytics className="text-orange-500" />, level: 80, learning: true }
+    ],
+  },
+];
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   return (
     <div className="font-sans min-h-screen relative overflow-hidden">
-      {showSplash ? (
-        <SplashScreen onFinish={() => setShowSplash(false)} />
-      ) : (
-        <>
-          <Navbar />
+      {showSplash ? (<SplashScreen onFinish={() => setShowSplash(false)} />) :
+        (<> <Navbar />
 
-          {/* 🔥 Animated Gradient Background */}
+          {/* Animated Gradient Background */}
           <div className="absolute inset-0 -z-10 animate-gradient bg-gradient-to-br from-[#d0d3ff] via-[#ffffff] via-[#ffffff] to-[#9ef2ff]" />
           <style jsx>{`
         .animate-gradient {
@@ -739,7 +802,7 @@ function App() {
                   >
                     {/* Background Gear Animation */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none 
-  left-10 sm:left-20 md:left-40 lg:left-60 xl:left-80">
+                                    left-10 sm:left-20 md:left-40 lg:left-60 xl:left-80">
                       <Lottie
                         animationData={GearAnim}
                         loop={true}
@@ -833,10 +896,98 @@ function App() {
                 ))}
               </div>
             </motion.div>
-          </section>=
+          </section>
+
+          {/* Skills Section */}
+          <section
+            id="skills"
+            className="min-h-screen top-20 flex flex-col items-center justify-center px-6 md:px-20 relative z-10 bg-transparent py-16 mb-32"
+          >
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              Technical & Product Skills
+            </motion.h2>
+
+            <div className="space-y-12 w-full max-w-6xl">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={category.title}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
+                  viewport={{ once: true }}
+                ><span className="text-2xl text-indigo-500">{category.icon}</span>
+                  <h3 className="text-xl font-semibold mb-6">{category.title}</h3>
+
+                  {/* grid of skill cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {category.skills.map((skill) => (
+                      <motion.div
+                        key={skill.name}
+                        whileHover={{ scale: 1.03 }}
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35 }}
+                        className="relative group p-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg flex flex-col items-start gap-3"
+                        style={{ minHeight: 120 }}
+                      >
+                        {/* icon + name + learning badge */}
+                        <div className="w-full flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="text-3xl">{skill.icon}</div>
+                            <div>
+                              <p className="text-sm font-semibold">{skill.name}</p>
+                              {skill.note && (
+                                <p className="text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-200">
+                                  {skill.note}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          {skill.learning && (
+                            <div className="ml-3">
+                              <span className="inline-flex items-center gap-1 text-xs font-semibold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black px-2 py-1 rounded-full shadow-sm">
+                                <span>🔥</span>
+                                <span>Learning</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* proficiency bar */}
+                        <div className="w-full mt-auto">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs text-gray-700">Proficiency</span>
+                            <span className="text-xs font-medium">{skill.level}%</span>
+                          </div>
+
+                          <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                            <div
+                              className="h-2 rounded-full transition-all duration-700"
+                              style={{
+                                width: `${skill.level}%`,
+                                background:
+                                  "linear-gradient(90deg, rgba(58,65,198,1) 0%, rgba(108,99,255,1) 50%, rgba(0,212,255,1) 100%)",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
 
         </>
-      )}
+        )}
     </div>
   );
 }
