@@ -9,6 +9,10 @@ import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
 import robotAnim from "./lottie/Robotsayshello.json";
 import BookLoading from "./lottie/Bookloading.json";
 import { FaGithub, FaJs, FaDatabase } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
+import { AiFillInstagram } from "react-icons/ai";
 import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact } from "react-icons/si";
 import { SiMongodb } from 'react-icons/si';
 import { SiHtml5, SiCss3, SiJavascript } from 'react-icons/si';
@@ -16,12 +20,17 @@ import { SiFramer, } from 'react-icons/si';
 import { SiSpringboot } from "react-icons/si";
 import { DiJava, DiMysql } from 'react-icons/di';
 import { FaDesktop } from 'react-icons/fa';
-import { FaCertificate, FaTrophy, FaJava } from "react-icons/fa";
+import { FaCertificate, FaTrophy, FaJava, FaEnvelope } from "react-icons/fa";
 import { SiCoursera, SiAdobe, SiGoogleanalytics } from "react-icons/si";
 import GearAnim from "./lottie/GearsLottieAnimation.json";
 import { SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion } from "react-icons/si";
 import { DiScrum } from "react-icons/di";
 import { FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools } from "react-icons/fa";
+import { useInView } from "react-intersection-observer";
+
+import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
+
+
 
 
 const certifications = [
@@ -98,11 +107,24 @@ const achievements = [
 
 const categories = [
   {
+    title: "Product & PM",
+    icon: <FaProjectDiagram />,
+    skills: [
+      { name: "Agile (Scrum/Kanban)", icon: <DiScrum className="text-orange-400" />, level: 85, learning: false },
+      { name: "Product Roadmapping", icon: <SiFigma className="text-cyan-500" />, level: 78, learning: false },
+      { name: "User Research", icon: <SiFigma className="text-pink-500" />, level: 75, learning: false },
+      { name: "Market & Competetive Analysis", icon: <SiFigma className="text-purple-500" />, level: 80, learning: false },
+      { name: "Prototyping (Figma)", icon: <SiFigma className="text-yellow-400" />, level: 80, learning: true },
+      { name: "Stakeholder Management", icon: <SiFigma className="text-blue-500" />, level: 80, learning: false },
+      { name: "Google Analytics", icon: <SiGoogleanalytics className="text-orange-500" />, level: 80, learning: true }
+    ],
+  },
+  {
     title: "Frontend",
     icon: <FaCode />,
     skills: [
-      { name: "HTML", icon: <SiHtml5 className="text-orange-500" />, level: 100, learning: false, note: "Used across projects & portfolios" },
-      { name: "CSS", icon: <SiCss3 className="text-blue-500" />, level: 108, learning: false },
+      { name: "HTML", icon: <SiHtml5 className="text-orange-500" />, level: 90, learning: false, note: "Used across projects & portfolios" },
+      { name: "CSS", icon: <SiCss3 className="text-blue-500" />, level: 90, learning: false },
       { name: "JavaScript", icon: <SiJavascript className="text-yellow-400" />, level: 90, learning: true },
       { name: "React", icon: <SiReact className="text-cyan-400" />, level: 88, learning: false },
       { name: "Next.js", icon: <SiNextdotjs />, level: 75, learning: false },
@@ -119,7 +141,7 @@ const categories = [
   },
   {
     title: "Databases",
-    icon: <FaTools />,
+    icon: <FaDatabase />,
     skills: [
       { name: "MySQL", icon: <SiMysql className="text-blue-600" />, level: 78, learning: false },
       { name: "MongoDB", icon: <SiMongodb className="text-green-600" />, level: 85, learning: false },
@@ -129,7 +151,7 @@ const categories = [
   },
   {
     title: "Tools & Collaboration",
-    icon: <FaPaintBrush />,
+    icon: <FaTools />,
     skills: [
       { name: "GitHub", icon: <SiGithub />, level: 85, learning: false },
       { name: "Jira", icon: <SiJirasoftware className="text-blue-500" />, level: 80, learning: false },
@@ -146,25 +168,56 @@ const categories = [
       { name: "Photoshop", icon: <SiAdobephotoshop className="text-blue-400" />, level: 65, learning: false },
     ],
   },
-  {
-    title: "Product & PM",
-    icon: <FaProjectDiagram />,
-    skills: [
-      { name: "Agile (Scrum/Kanban)", icon: <DiScrum className="text-orange-400" />, level: 85, learning: false },
-      { name: "Product Roadmapping", icon: <SiFigma className="text-cyan-500" />, level: 78, learning: false },
-      { name: "User Research", icon: <SiFigma className="text-pink-500" />, level: 75, learning: false },
-      { name: "Market & Competetive Analysis", icon: <SiFigma className="text-purple-500" />, level: 80, learning: false },
-      { name: "Prototyping (Figma)", icon: <SiFigma className="text-yellow-400" />, level: 80, learning: true },
-      { name: "Stakeholder Management", icon: <SiFigma className="text-blue-500" />, level: 80, learning: false },
-      { name: "Google Analytics", icon: <SiGoogleanalytics className="text-orange-500" />, level: 80, learning: true }
-    ],
-  },
+
 ];
 
+const AnimatedProgress = ({ level }) => {
+  const { ref, inView } = useInView({ triggerOnce: true });
+  const [value, setValue] = useState(0);
+
+  React.useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const interval = setInterval(() => {
+        start += 1;
+        if (start > level) {
+          clearInterval(interval);
+        } else {
+          setValue(start);
+        }
+      }, 15); // speed of count-up
+    }
+  }, [inView, level]);
+
+  return (
+    <div ref={ref} className="w-full mt-auto">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs text-gray-700">Proficiency</span>
+        <span className="text-xs font-medium">{value}%</span>
+      </div>
+
+      <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+        <motion.div
+          className="h-2 rounded-full"
+          initial={{ width: 0 }}
+          animate={{ width: inView ? `${level}%` : 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(58,65,198,1) 0%, rgba(108,99,255,1) 50%, rgba(0,212,255,1) 100%)",
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
 function App() {
+
   const [showSplash, setShowSplash] = useState(true);
   return (
     <div className="font-sans min-h-screen relative overflow-hidden">
+
       {showSplash ? (<SplashScreen onFinish={() => setShowSplash(false)} />) :
         (<> <Navbar />
 
@@ -819,7 +872,7 @@ function App() {
                     <p className="relative z-10 text-sm text-gray-500">{cert.provider}</p>
 
                     {/* Hover Detail */}
-                    <div className="absolute inset-0 bg-indigo-50/95 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center text-sm text-gray-700 z-20">
+                    <div className="absolute inset-0 bg-indigo-100 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center text-sm text-gray-700 z-20">
                       <p>{cert.detail}</p>
                       <a
                         href={cert.link}
@@ -910,7 +963,7 @@ function App() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              Technical & Product Skills
+              Product & Technical Skills
             </motion.h2>
 
             <div className="space-y-12 w-full max-w-6xl">
@@ -921,7 +974,8 @@ function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.08 }}
                   viewport={{ once: true }}
-                ><span className="text-2xl text-indigo-500">{category.icon}</span>
+                >
+                  <span className="text-2xl text-indigo-500">{category.icon}</span>
                   <h3 className="text-xl font-semibold mb-6">{category.title}</h3>
 
                   {/* grid of skill cards */}
@@ -960,24 +1014,8 @@ function App() {
                           )}
                         </div>
 
-                        {/* proficiency bar */}
-                        <div className="w-full mt-auto">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs text-gray-700">Proficiency</span>
-                            <span className="text-xs font-medium">{skill.level}%</span>
-                          </div>
-
-                          <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
-                            <div
-                              className="h-2 rounded-full transition-all duration-700"
-                              style={{
-                                width: `${skill.level}%`,
-                                background:
-                                  "linear-gradient(90deg, rgba(58,65,198,1) 0%, rgba(108,99,255,1) 50%, rgba(0,212,255,1) 100%)",
-                              }}
-                            />
-                          </div>
-                        </div>
+                        {/* proficiency bar with animation */}
+                        <AnimatedProgress level={skill.level} />
                       </motion.div>
                     ))}
                   </div>
@@ -986,6 +1024,327 @@ function App() {
             </div>
           </section>
 
+          {/* Contact Section */}
+          <section
+            id="contact"
+            className="min-h-screen top-20 flex flex-col items-center justify-center px-6 md:px-20 relative z-10 bg-transparent py-16 mb-32"
+          >
+            {/* Heading */}
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent drop-shadow-md"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              We'd love to hear from you
+            </motion.h2>
+
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+
+              {/* Left Section */}
+              <div className="flex flex-col space-y-6">
+                {/* Contact Info Cards */}
+                <div className="flex flex-col justify-center space-y-4">
+                  {/* Email */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col items-center md:items-start text-center md:text-left p-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
+                  >
+                    <span className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white text-lg mb-3">
+                      <MdEmail className="w-6 h-6" />
+                    </span>
+                    <h3 className="font-semibold text-gray-600 text-sm">Email</h3>
+                    <p className="text-gray-600 text-xs">Reach out anytime, we respond fast.</p>
+                    <a
+                      href="mailto:dhumalajinkya2004@gmail.com"
+                      className="text-[#00D4FF] font-medium text-sm mt-1"
+                    >
+                      dhumalajinkya2004@gmail.com
+                    </a>
+                  </motion.div>
+
+                  {/* Office */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col items-center md:items-start text-center md:text-left p-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
+                  >
+                    <span className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white text-lg mb-3">
+                      <MdLocationOn className="w-6 h-6" />
+                    </span>
+                    <h3 className="font-semibold text-gray-600 text-sm">Work Location</h3>
+                    <p className="text-gray-600 text-xs">Always available at these locations.</p>
+                    <a href="#" className="text-[#00D4FF] font-medium text-sm mt-1">
+                      Bangalore, Mumbai - India
+                    </a>
+                  </motion.div>
+
+                  {/* Phone */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col items-center md:items-start text-center md:text-left p-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
+                  >
+                    <span className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white text-lg mb-3">
+                      <MdPhone className="w-6 h-6" />
+                    </span>
+                    <h3 className="font-semibold text-gray-600 text-sm">Phone</h3>
+                    <p className="text-gray-600 text-xs">Reachable throughout the day.</p>
+                    <a
+                      href="tel:+919004933771"
+                      className="text-[#00D4FF] font-medium text-sm mt-1"
+                    >
+                      +91 90049 33771
+                    </a>
+                  </motion.div>
+                </div>
+
+
+
+                {/* Maps Section */}
+                <div className="mt-6 space-y-4">
+                  <div className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241255.88464005722!2d72.71354129026804!3d19.124179277428187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c81fb6b1611f%3A0x7c0b3edb6bdfa0f3!2sMumbai%20Suburban%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1758099618859!5m2!1sen!2sin"
+                      width="100%"
+                      height="155"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+
+                  <div className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d497715.74353709223!2d77.25172935932821!3d12.945964683328347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae16440acd0efd%3A0x58f093efec8f6c9f!2sBengaluru%20Urban%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1758099671246!5m2!1sen!2sin"
+                      width="100%"
+                      height="155"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Form - Right */}
+              <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl shadow-xl p-10 border border-white/20 h-auto">
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-sm font-medium text-[#6C63FF] text-left"
+                >
+                  Contact us
+                </motion.p>
+
+                <motion.h3
+                  initial={{ opacity: 0, y: -10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                  className="text-4xl font-bold text-gray-700 text-left mt-1"
+                >
+                  Get in touch
+                </motion.h3>
+
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="text-gray-600 text-left mt-3 mb-10"
+                >
+                  Have a question, idea, or opportunity? I’d love to hear from you. Drop a message below or reach out via email, and I’ll get back to you promptly. Let’s connect and explore possibilities together.
+                </motion.p>
+
+                <form
+                  action="https://formspree.io/f/{your-form-id}" // Replace with Formspree endpoint
+                  method="POST"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                >
+                  {/* Inputs */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="first_name"
+                      required
+                      placeholder=" "
+                      className="peer w-full bg-white/5 text-gray-800 rounded-xl px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
+                    />
+                    <label className="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
+                      First name
+                    </label>
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="last_name"
+                      required
+                      placeholder=" "
+                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
+                    />
+                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
+                      Last name
+                    </label>
+                  </div>
+
+                  <div className="relative md:col-span-2">
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      placeholder=" "
+                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
+                    />
+                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
+                      Email
+                    </label>
+                  </div>
+
+                  <div className="relative md:col-span-2">
+                    <input
+                      type="text"
+                      name="phone"
+                      placeholder=" "
+                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
+                    />
+                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
+                      Phone number
+                    </label>
+                  </div>
+
+                  <div className="relative md:col-span-2">
+                    <textarea
+                      name="message"
+                      rows="5"
+                      required
+                      placeholder=" "
+                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
+                    ></textarea>
+                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
+                      Message
+                    </label>
+                  </div>
+
+                  {/* Social Icons */}
+                  <div className="flex space-x-4 mt-4 md:col-span-2">
+                    <a
+                      href="https://github.com/Ajinkyaa2004"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-transform duration-300 hover:scale-110"
+                    >
+                      <FaGithub className="w-6 h-6 text-gray-800" />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/ajinkya842004/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-transform duration-300 hover:scale-110"
+                    >
+                      <FaLinkedin className="w-6 h-6 text-blue-600" />
+                    </a>
+                    <a
+                      href="https://www.instagram.com/yourusername/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-transform duration-300 hover:scale-110"
+                    >
+                      <FaInstagram className="w-6 h-6 text-pink-500" />
+                    </a>
+                    <a
+                      href="https://twitter.com/yourusername/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-transform duration-300 hover:scale-110"
+                    >
+                      <FaTwitter className="w-6 h-6 text-blue-400" />
+                    </a>
+                  </div>
+                  <button className="px-0.5 py-2 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white rounded-3xl shadow-lg hover:scale-105 transition-transform duration-300">
+                    Submit
+                  </button>
+
+
+
+
+
+                </form>
+
+              </div>
+            </div>
+
+         
+
+          </section>
+
+
+          <footer
+            id="contact"
+            className="bg-white text-gray-900 py-12 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center"
+          >
+            {/* Branding */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mb-4 md:mb-0 text-center md:text-left"
+            >
+              <h2 className="text-3xl font-semibold text-black">Ajinkya Dhumal</h2>
+              <p className="text-md mt-1 text-gray-900">Building ideas into reality</p>
+            </motion.div>
+
+            {/* Social Icons */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="flex space-x-4 mb-4 md:mb-0"
+            >
+              <a
+                href="https://github.com/ajinkyadhumal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-900 hover:text-white transition-colors duration-300"
+              >
+                <FaGithub className="w-6 h-6" />
+              </a>
+              <a
+                href="https://linkedin.com/in/ajinkyadhumal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-500 transition-colors duration-300"
+              >
+                <FaLinkedin className="w-6 h-6" />
+              </a>
+              <a
+                href="mailto:ajinkya@example.com"
+                className="text-red-600 hover:text-red-400 transition-colors duration-300"
+              >
+                <FaEnvelope className="w-6 h-6" />
+              </a>
+            </motion.div>
+
+            {/* Copyright */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-sm text-gray-600 text-center md:text-right"
+            >
+              © 2025 Ajinkya Dhumal. All rights reserved.
+            </motion.div>
+          </footer>
         </>
         )}
     </div>

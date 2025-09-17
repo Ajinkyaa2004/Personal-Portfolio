@@ -13,7 +13,7 @@ const SplashScreen = ({ onFinish }) => {
     return () => clearTimeout(timer);
   }, [onFinish]);
 
-  const text = "Welcome to my Portfolio".split("");
+  const text = "Initiating Portfolio...".split("");
 
   return (
     <AnimatePresence>
