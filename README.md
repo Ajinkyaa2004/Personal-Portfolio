@@ -1,7 +1,7 @@
 ## Personal Portfolio Website 
 
 ## Welcome to my personal portfolio! 🚀
-This project showcases my work, skills, and projects as a Computer Science and Engineering student specializing in AI, ML, and Web Development.
+This project showcases my work, skills, and projects as a Computer Science and Engineering student specializing in AI, ML, Web Development, and Product Management.
 
 It’s designed to be clean, responsive, and recruiter-friendly, giving a quick overview of who I am and what I can do.
 
