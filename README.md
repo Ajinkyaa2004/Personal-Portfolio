@@ -20,6 +20,9 @@ Other Tools: ShadCN UI, Lucide Icons
 
 
 Portfolio: [tsajinkya.vercel.app]
+
 Email: [dhumalajinkya2004@gmail.com]
+
 LinkedIn: [https://www.linkedin.com/in/ajinkya842004/]
+
 GitHub: [https://github.com/Ajinkyaa2004/]
