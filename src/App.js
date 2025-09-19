@@ -12,7 +12,6 @@ import { FaGithub, FaJs, FaDatabase } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
-import { AiFillInstagram } from "react-icons/ai";
 import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact } from "react-icons/si";
 import { SiMongodb } from 'react-icons/si';
 import { SiHtml5, SiCss3, SiJavascript } from 'react-icons/si';
@@ -27,52 +26,48 @@ import { SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobe
 import { DiScrum } from "react-icons/di";
 import { FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools } from "react-icons/fa";
 import { useInView } from "react-intersection-observer";
-
 import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
-
-
-
 
 const certifications = [
   {
     title: "IBM Certified Professional – Product Management",
     provider: "Coursera",
-    link: "https://your-certificate-link.com/ibm",
+    link: "https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing",
     detail: "Credential from IBM covering product lifecycle, strategy, and stakeholder management.",
     icon: <SiCoursera className="text-blue-600 text-xl" />,
   },
   {
-    title: "Product Management Specialization",
+    title: "Product Management Develop & Delever New Product",
     provider: "Coursera",
-    link: "https://your-certificate-link.com/product-management",
+    link: "https://drive.google.com/file/d/1lEzOWerwrLap2uGc234PWLgLQ_vEisx-/view?usp=sharing",
     detail: "5-course specialization on product foundations, collaboration, and delivery.",
     icon: <SiCoursera className="text-blue-600 text-xl" />,
   },
   {
     title: "Agile Development Scrum",
     provider: "Coursera",
-    link: "https://your-certificate-link.com/agile",
+    link: "https://drive.google.com/file/d/1T5fF2U1U4i_LdXPWI6bK6Dv9EW52UZHI/view?usp=sharing",
     detail: "Introduction to Agile Development and Scrum methodologies.",
     icon: <SiCoursera className="text-blue-600 text-xl" />,
   },
   {
     title: "Advanced Java Development",
     provider: "KR IT Education",
-    link: "https://your-certificate-link.com/java",
+    link: "https://drive.google.com/file/d/11EMlyfIUH_Wc629dzXJ62CO4ZgPlCs7i/view?usp=sharing",
     detail: "Covers OOP, HTML, CSS, JS, Java fundamentals, and advanced Java with Spring Boot & Hibernate.",
     icon: <FaJava className="text-red-500 text-xl" />,
   },
   {
     title: "Frontend Design (Web & Graphics)",
     provider: "Max Computer Education",
-    link: "https://your-certificate-link.com/frontend",
+    link: "https://drive.google.com/file/d/1jbBIoY49OooMGb7Icz9TbGn58oZaYWiH/view?usp=sharing",
     detail: "Web design, Adobe Illustrator, and InDesign certification.",
     icon: <SiAdobe className="text-pink-500 text-xl" />,
   },
   {
     title: "Data Analytics – Visualization",
     provider: "Infosys Springboard",
-    link: "https://your-certificate-link.com/data-analytics",
+    link: "https://drive.google.com/file/d/1pL3v0s58DW3GXRuRMithG-VreLmOLCuB/view?usp=sharing",
     detail: "Data visualization and analytics foundations.",
     icon: <SiGoogleanalytics className="text-green-600 text-xl" />,
   },
@@ -89,7 +84,7 @@ const achievements = [
     title: "World Innovation Expo 2023",
     detail: "Vehicle Maintenance Index project ranked in Top 70 of 500+ entries.",
     badge: "🌍 Top 70 / 500",
-    link: "https://your-certificate-link.com/worldexpo",
+    link: "https://drive.google.com/file/d/1aLjq3xezLE919ivxbxycRqn4CCuJr4zi/view?usp=sharing",
   },
   {
     title: "PAC HACK Volunteer",
@@ -213,11 +208,10 @@ const AnimatedProgress = ({ level }) => {
 };
 
 function App() {
-
   const [showSplash, setShowSplash] = useState(true);
+
   return (
     <div className="font-sans min-h-screen relative overflow-hidden">
-
       {showSplash ? (<SplashScreen onFinish={() => setShowSplash(false)} />) :
         (<> <Navbar />
 
@@ -257,9 +251,12 @@ function App() {
                 <span className="font-semibold">Aspiring Product Manager</span>.
               </p>
               {/* CTA Button */}
-              <button className="px-3 py-2 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white rounded-3xl shadow-lg hover:scale-105 transition-transform duration-300">
+              <a
+                href="#projects"
+                className="px-3 py-2 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white rounded-3xl shadow-lg hover:scale-105 transition-transform duration-300"
+              >
                 Explore My Work
-              </button>
+              </a>
               {/* Social Icons */}
               <div className="flex space-x-4 mt-4">
                 {/* GitHub */}
@@ -1111,7 +1108,13 @@ function App() {
 
                 {/* Maps Section */}
                 <div className="mt-6 space-y-4">
-                  <div className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md">
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md"
+                  >
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241255.88464005722!2d72.71354129026804!3d19.124179277428187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c81fb6b1611f%3A0x7c0b3edb6bdfa0f3!2sMumbai%20Suburban%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1758099618859!5m2!1sen!2sin"
                       width="100%"
@@ -1121,9 +1124,15 @@ function App() {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     ></iframe>
-                  </div>
+                  </motion.div>
 
-                  <div className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md">
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md"
+                  >
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d497715.74353709223!2d77.25172935932821!3d12.945964683328347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae16440acd0efd%3A0x58f093efec8f6c9f!2sBengaluru%20Urban%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1758099671246!5m2!1sen!2sin"
                       width="100%"
@@ -1133,10 +1142,9 @@ function App() {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     ></iframe>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
-
               {/* Contact Form - Right */}
               <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl shadow-xl p-10 border border-white/20 h-auto">
                 <motion.p
@@ -1167,7 +1175,7 @@ function App() {
                 </motion.p>
 
                 <form
-                  action="https://formspree.io/f/{your-form-id}" // Replace with Formspree endpoint
+                  action="https://formspree.io/f/xgvlgavv" // Replace with Formspree endpoint
                   method="POST"
                   className="grid grid-cols-1 md:grid-cols-2 gap-8"
                 >
@@ -1284,11 +1292,11 @@ function App() {
               </div>
             </div>
 
-         
+
 
           </section>
 
-
+          {/* Footer */}
           <footer
             id="contact"
             className="bg-white text-gray-900 py-12 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center"
