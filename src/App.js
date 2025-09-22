@@ -282,13 +282,20 @@ function App() {
                   className="transition-transform duration-300 hover:scale-110"
                 >
                   <svg
-                    className="w-6 h-6 text-blue-600"
+                    className="w-6 h-6 text-blue-600 "
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path d="M19 0h-14c-2.762 0-5 2.238-5 5v14c0 2.762 2.238 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.762-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.804-1.75-1.732 0-.957.798-1.732 1.75-1.732s1.75.775 1.75 1.732c0 .928-.784 1.732-1.75 1.732zm13.5 11.268h-3v-5.604c0-1.337-.025-3.062-1.865-3.062-1.867 0-2.153 1.458-2.153 2.965v5.701h-3v-10h2.881v1.367h.041c.401-.762 1.379-1.562 2.841-1.562 3.036 0 3.6 2.001 3.6 4.601v5.594z" />
                   </svg>
                 </a>
+
+                 <a
+                href="mailto:dhumalajinkya2004@gmail.com"
+                className="text-red-600 hover:text-red-400 transition-colors duration-300 transition-transform duration-300 hover:scale-110"
+              >
+                <FaEnvelope className="w-6 h-6" />
+              </a>
               </div>
             </div>
 
@@ -1323,7 +1330,7 @@ function App() {
                 href="https://github.com/ajinkyadhumal"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-900 hover:text-white transition-colors duration-300"
+                className="text-gray-700 hover:text-black transition-colors duration-300"
               >
                 <FaGithub className="w-6 h-6" />
               </a>
@@ -1336,7 +1343,7 @@ function App() {
                 <FaLinkedin className="w-6 h-6" />
               </a>
               <a
-                href="mailto:ajinkya@example.com"
+                href="mailto:dhumalajinkya2004@gmail.com"
                 className="text-red-600 hover:text-red-400 transition-colors duration-300"
               >
                 <FaEnvelope className="w-6 h-6" />
