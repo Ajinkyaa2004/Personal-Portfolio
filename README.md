@@ -19,10 +19,19 @@ Deployment: Vercel
 Other Tools: ShadCN UI, Lucide Icons
 
 
-Portfolio: [tsajinkya.vercel.app]
+## 🤝 Connect With Me  
 
-Email: [dhumalajinkya2004@gmail.com]
-
-LinkedIn: [https://www.linkedin.com/in/ajinkya842004/]
-
-GitHub: [https://github.com/Ajinkyaa2004/]
+<p align="center">
+  <a href="https://www.linkedin.com/in/ajinkya842004/" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:dhumalajinkya2004@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+  </a>
+  <a href="https://github.com/Ajinkyaa2004" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+  <a href="https://itsajinkya.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Portfolio-4CAF50?style=for-the-badge&logo=about.me&logoColor=white" />
+  </a>
+</p>
