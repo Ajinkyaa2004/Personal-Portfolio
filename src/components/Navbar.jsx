@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FolderOpen, Trophy, Code2, GraduationCap, Mail, Menu, X, Download, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -17,6 +17,7 @@ const Navbar = () => {
   const [activeLink, setActiveLink] = useState("");
   const lastScrollY = useRef(0);
   const hasEntered = useRef(false);
+  const ticking = useRef(false);
 
   // Delayed entrance after 3 seconds
   useEffect(() => {
@@ -27,35 +28,42 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Scroll direction detection & active section tracking
-  useEffect(() => {
-    const handleScroll = () => {
+  // Throttled scroll handler using requestAnimationFrame
+  const handleScroll = useCallback(() => {
+    if (ticking.current) return;
+    ticking.current = true;
+
+    requestAnimationFrame(() => {
       const currentY = window.scrollY;
       setScrolled(currentY > 20);
 
-      if (!hasEntered.current) return;
-
-      if (currentY > lastScrollY.current && currentY > 80) {
-        setVisible(false);
-        setIsOpen(false);
-      } else {
-        setVisible(true);
+      if (hasEntered.current) {
+        if (currentY > lastScrollY.current && currentY > 80) {
+          setVisible(false);
+          setIsOpen(false);
+        } else {
+          setVisible(true);
+        }
       }
       lastScrollY.current = currentY;
 
       // Track active section
-      const sections = links.map(l => document.getElementById(l.id)).filter(Boolean);
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (sections[i].getBoundingClientRect().top <= 200) {
+      for (let i = links.length - 1; i >= 0; i--) {
+        const el = document.getElementById(links[i].id);
+        if (el && el.getBoundingClientRect().top <= 200) {
           setActiveLink(links[i].id);
           break;
         }
       }
-    };
 
+      ticking.current = false;
+    });
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   return (
     <motion.nav
@@ -63,22 +71,23 @@ const Navbar = () => {
       animate={{ y: visible ? 0 : -120, opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-3 sm:pt-5 px-3 sm:px-4"
+      style={{ willChange: "transform, opacity" }}
     >
       <div
         className={`w-full max-w-5xl rounded-2xl flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 transition-all duration-500 border shadow-2xl relative overflow-hidden ${
           scrolled
-            ? "bg-black/70 backdrop-blur-2xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-            : "bg-black/30 backdrop-blur-xl border-white/5"
+            ? "bg-black/70 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+            : "bg-black/30 backdrop-blur-lg border-white/5"
         }`}
       >
         {/* Animated gradient border glow on hover */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-purple-500/0 hover:from-blue-500/10 hover:via-indigo-500/10 hover:to-purple-500/10 transition-all duration-700 pointer-events-none" />
-        
-        {/* Subtle noise texture */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none mix-blend-overlay rounded-2xl" />
+
+        {/* Subtle noise texture — inline, no external fetch */}
+        <div className="absolute inset-0 noise-texture opacity-[0.02] pointer-events-none mix-blend-overlay rounded-2xl" />
 
         {/* Logo */}
-        <motion.div 
+        <motion.div
           className="flex items-center gap-2 relative z-10"
           whileHover={{ scale: 1.03 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -170,7 +179,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-[70px] left-3 right-3 bg-[#0a0a0a]/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl p-4 shadow-[0_16px_48px_rgba(0,0,0,0.6)] md:hidden overflow-hidden"
+            className="absolute top-[70px] left-3 right-3 bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-4 shadow-[0_16px_48px_rgba(0,0,0,0.6)] md:hidden overflow-hidden"
           >
             {/* Decorative gradient blob */}
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" />
@@ -193,14 +202,14 @@ const Navbar = () => {
                 >
                   {/* Shimmer on hover */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-                  
+
                   <div className={`w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br ${link.color} ${
                     activeLink === link.id ? "opacity-100 shadow-lg" : "opacity-60 group-hover:opacity-100"
                   } transition-all duration-300`}>
                     <link.icon size={16} strokeWidth={2.5} className="text-white" />
                   </div>
                   <span className="relative z-10">{link.label}</span>
-                  
+
                   {activeLink === link.id && (
                     <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.6)]" />
                   )}

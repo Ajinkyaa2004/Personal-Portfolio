@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
-import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
 import { FaGithub, FaLinkedin, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
 import { SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
 import { DiJava, DiScrum } from "react-icons/di";
@@ -10,9 +9,20 @@ import { useInView } from "react-intersection-observer";
 import { MdEmail, MdLocationOn, MdArrowOutward, MdWork } from "react-icons/md";
 import { GraduationCap } from "lucide-react";
 
+// Lazy load heavy Lottie components AND their JSON data
 const Lottie = lazy(() => import("lottie-react"));
 const DotLottieReact = lazy(() =>
   import("@lottiefiles/dotlottie-react").then((mod) => ({ default: mod.DotLottieReact }))
+);
+
+// Lazy load Lottie JSON — this was ~200KB+ loaded synchronously before
+const loadLottieData = () => import("./lottie/DeveloperFrontEnd.json").then(m => m.default);
+
+// Wrapper component that lazy-loads Lottie + its data together
+const LazyHeroLottie = lazy(() =>
+  Promise.all([import("lottie-react"), loadLottieData()]).then(([mod, data]) => ({
+    default: () => <mod.default animationData={data} loop={true} className="w-full max-w-lg relative drop-shadow-2xl" />,
+  }))
 );
 
 const certifications = [
@@ -76,15 +86,20 @@ const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) =
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (inView) {
-      let start = 0;
-      const interval = setInterval(() => {
-        start += 1;
-        if (start > level) clearInterval(interval);
-        else setValue(start);
-      }, 15);
-      return () => clearInterval(interval);
-    }
+    if (!inView) return;
+    let start = 0;
+    let rafId;
+    const step = () => {
+      start += 2; // increment by 2 for fewer frames (was 1 every 15ms = ~67 frames, now ~50 frames via rAF)
+      if (start >= level) {
+        setValue(level);
+        return;
+      }
+      setValue(start);
+      rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
   }, [inView, level]);
 
   return (
@@ -97,12 +112,10 @@ const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) =
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: inView ? `${level}%` : "0%" }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${colorClass} relative`}
-        >
-           {/* Glowing Tip */}
-           <div className="absolute right-0 top-0 w-3 h-full bg-white rounded-full blur-[2px] opacity-80 animate-pulse"></div>
-        </motion.div>
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${colorClass}`}
+          style={{ willChange: "width" }}
+        />
       </div>
     </div>
   );
@@ -142,8 +155,8 @@ export default function App() {
 
   return (
     <div className="font-sans min-h-screen relative overflow-hidden bg-[#050505] text-slate-200 selection:bg-indigo-500/30 selection:text-white">
-      {/* Dynamic Background Noise/Gradient */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      {/* Dynamic Background Noise/Gradient — inline, no external fetch */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-20 noise-texture"></div>
       
       {showSplash ? (
         <SplashScreen onFinish={() => setShowSplash(false)} />
@@ -151,12 +164,12 @@ export default function App() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
           <Navbar />
 
-          {/* Ambient Background Orbs */}
+          {/* Ambient Background Orbs — reduced blur for GPU perf */}
           {!lowPerfMode && (
             <>
-              <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-600/20 rounded-full filter blur-[100px] pointer-events-none animate-pulse-slow"></div>
-              <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full filter blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-              <div className="fixed top-[40%] left-[20%] w-[30vw] h-[30vw] bg-purple-600/15 rounded-full filter blur-[120px] pointer-events-none animate-blob"></div>
+              <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-600/20 rounded-full filter blur-[80px] pointer-events-none animate-pulse-slow"></div>
+              <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full filter blur-[80px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+              <div className="fixed top-[40%] left-[20%] w-[30vw] h-[30vw] bg-purple-600/15 rounded-full filter blur-[80px] pointer-events-none animate-blob"></div>
             </>
           )}
 
@@ -214,12 +227,12 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.5, type: "spring" }}
               className="flex-1 flex justify-center items-center mt-12 md:mt-0 z-10 relative"
             >
-              {!lowPerfMode && <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>}
+              {!lowPerfMode && <div className="absolute inset-0 bg-blue-500/20 blur-[60px] rounded-full"></div>}
               {lowPerfMode ? (
                 <div className="w-full max-w-lg aspect-square rounded-full bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-cyan-500/15 border border-white/10" />
               ) : (
                 <Suspense fallback={<div className="w-full max-w-lg aspect-square rounded-full bg-white/5 border border-white/10" />}>
-                  <Lottie animationData={DeveloperFrontEnd} loop={true} className="w-full max-w-lg relative drop-shadow-2xl" />
+                  <LazyHeroLottie />
                 </Suspense>
               )}
             </motion.div>
@@ -228,8 +241,8 @@ export default function App() {
           {/* About / Bento Grid */}
           <section id="about" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
-            <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+            <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
 
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="mb-10">
@@ -251,12 +264,8 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px] md:auto-rows-[220px]">
                 {/* Main Intro */}
                 <motion.div initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }} viewport={{ once: true }} whileHover={{ y: -4, scale: 1.01 }} className="md:col-span-2 md:row-span-2 glass-panel hover-glass-panel rounded-3xl p-6 md:p-10 flex flex-col justify-between group overflow-hidden relative border border-white/10 hover:border-teal-500/50 transition-all duration-500 shadow-lg">
-                  <motion.div 
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }} 
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/30 rounded-full blur-[80px]" 
-                  />
-                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/30 rounded-full blur-[60px] animate-pulse-slow" />
+                  <div className="absolute inset-0 noise-texture opacity-20 group-hover:opacity-40 transition-opacity"></div>
                   
                   <div className="relative z-10 flex flex-col h-full justify-between">
                     <div>
@@ -278,13 +287,9 @@ export default function App() {
 
                 {/* Hackathon Widget */}
                 <motion.div initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} whileHover={{ y: -4, scale: 1.01 }} className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col items-start justify-end relative overflow-hidden group border border-white/10 hover:border-yellow-500/50 transition-all duration-500 shadow-lg">
-                  <motion.div 
-                    animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }} 
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -right-4 -top-4 text-8xl opacity-30 drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]"
-                  >
+                  <div className="absolute -right-4 -top-4 text-8xl opacity-30 drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]">
                     🏆
-                  </motion.div>
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
                   <div className="relative z-10 w-full">
@@ -383,8 +388,8 @@ export default function App() {
           {/* Education Timeline */}
           <section id="education" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}>
             {/* Section-level floating decorative orbs */}
-            <div className="absolute -top-32 -left-32 w-72 h-72 bg-amber-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
-            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+            <div className="absolute -top-32 -left-32 w-72 h-72 bg-amber-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
 
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="flex flex-col md:flex-row gap-12 items-start" ref={timelineRef}>
@@ -449,8 +454,8 @@ export default function App() {
           {/* Projects Gallery */}
           <section id="projects" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
-            <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+            <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
 
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="flex justify-between items-end mb-12">
@@ -519,7 +524,7 @@ export default function App() {
                     </div>
 
                     {/* Minimalist Tech Background Pattern */}
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay"></div>
+                    <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay"></div>
                     <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
 
                     <div className="flex justify-between items-start mb-6 relative z-10">
@@ -565,9 +570,9 @@ export default function App() {
           {/* Skills Grid */}
           <section id="skills" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
-             <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
-             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fuchsia-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+             <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
+             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fuchsia-500/5 rounded-full blur-[80px] pointer-events-none"></div>
 
              <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="mb-14 relative">
@@ -652,7 +657,7 @@ export default function App() {
                    className="lg:col-span-2 glass-panel rounded-[2rem] p-8 flex flex-col md:flex-row items-center justify-between group relative overflow-hidden border border-white/5 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] bg-gradient-to-br from-cyan-500/5 to-blue-600/5"
                 >
                   {/* Subtle Glow Overlay */}
-                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay z-0"></div>
+                  <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay z-0"></div>
                   <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay z-0"></div>
                   <div className="absolute -top-48 -left-48 w-96 h-96 bg-cyan-500/10 rounded-full blur-[80px] opacity-40 group-hover:opacity-100 transition-all duration-700 pointer-events-none z-0"></div>
 
@@ -690,9 +695,9 @@ export default function App() {
           {/* Achievements & Certifications — Premium Redesign */}
            <section id="achievements" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
-             <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
-             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+             <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
+             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none"></div>
 
              <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               {/* Section Header with animated accent */}
@@ -721,13 +726,9 @@ export default function App() {
                      viewport={{ once: true }}
                      className="text-lg md:text-xl font-bold text-white/90 flex flex-wrap items-center gap-3 mb-6 md:mb-7"
                    >
-                     <motion.div
-                       animate={{ rotate: [0, 10, -10, 0] }}
-                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                       className="p-2.5 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.2)]"
-                     >
+                     <div className="p-2.5 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.2)]">
                        <FaCertificate className="text-indigo-400 text-lg"/>
-                     </motion.div>
+                     </div>
                      <span>Certifications</span>
                      <span className="w-full sm:w-auto sm:ml-auto text-[11px] font-mono text-white/30 bg-white/5 px-3 py-1 rounded-full border border-white/10">{certifications.length} earned</span>
                    </motion.h4>
@@ -790,13 +791,9 @@ export default function App() {
                      viewport={{ once: true }}
                      className="text-lg md:text-xl font-bold text-white/90 flex flex-wrap items-center gap-3 mb-6 md:mb-7"
                    >
-                     <motion.div
-                       animate={{ rotate: [0, -15, 15, 0], scale: [1, 1.1, 1] }}
-                       transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                       className="p-2.5 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl border border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.2)]"
-                     >
+                     <div className="p-2.5 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl border border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.2)]">
                        <FaTrophy className="text-yellow-500 text-lg"/>
-                     </motion.div>
+                     </div>
                      <span>Achievements</span>
                      <span className="w-full sm:w-auto sm:ml-auto text-[11px] font-mono text-white/30 bg-white/5 px-3 py-1 rounded-full border border-white/10">{achievements.length} unlocked</span>
                    </motion.h4>
@@ -847,7 +844,7 @@ export default function App() {
                          <div className={`absolute -bottom-16 -right-16 w-36 h-36 ${glowColors[idx]} rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}></div>
                          
                          {/* Subtle background pattern */}
-                         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay rounded-2xl"></div>
+                         <div className="absolute inset-0 noise-texture opacity-[0.03] pointer-events-none mix-blend-overlay rounded-2xl"></div>
 
                          <div className="flex flex-col gap-3 relative z-10">
                            <div className="flex justify-between items-start">
@@ -878,17 +875,17 @@ export default function App() {
           {/* Contact Section */}
           <section id="contact" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
             {/* Section-level floating decorative orbs */}
-            <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+            <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[80px] pointer-events-none"></div>
 
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="glass-panel rounded-[1.75rem] md:rounded-[2rem] p-4 sm:p-6 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12 relative overflow-hidden border border-white/[0.06] hover:border-sky-500/30 transition-all duration-700">
                 {/* Multiple glow blobs */}
-                <div className="absolute top-[-20%] right-[-10%] w-[40vw] h-[40vw] bg-sky-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+                <div className="absolute top-[-20%] right-[-10%] w-[40vw] h-[40vw] bg-sky-600/10 rounded-full blur-[60px] pointer-events-none"></div>
                 <div className="absolute bottom-[-15%] left-[-5%] w-[30vw] h-[30vw] bg-violet-600/10 rounded-full blur-[80px] pointer-events-none"></div>
                 {/* Noise texture */}
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay rounded-[2rem]"></div>
+                <div className="absolute inset-0 noise-texture opacity-[0.03] pointer-events-none mix-blend-overlay rounded-[2rem]"></div>
                 
                 <div className="w-full md:w-1/2 flex flex-col justify-between relative z-10">
                   <div>

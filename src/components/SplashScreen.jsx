@@ -8,36 +8,23 @@ const SplashScreen = ({ onFinish }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(false);
-      setTimeout(onFinish, 1200); 
-    }, 3800); 
+      setTimeout(onFinish, 800); // reduced from 1200ms
+    }, 3000); // reduced from 3800ms
     return () => clearTimeout(timer);
   }, [onFinish]);
 
   const text = "Ajinkya Dhumal".split("");
 
-  // Generate floating particles with stable positions
-  const particles = useMemo(() => 
-    Array.from({ length: 30 }, (_, i) => ({
+  // Reduced from 30 to 12 particles — still looks great, much lighter
+  const particles = useMemo(() =>
+    Array.from({ length: 12 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 3 + 1,
       duration: Math.random() * 8 + 6,
-      delay: Math.random() * 4,
+      delay: Math.random() * 3,
       opacity: Math.random() * 0.15 + 0.05,
-    })), []
-  );
-
-  // Generate floating lines
-  const lines = useMemo(() =>
-    Array.from({ length: 8 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      width: Math.random() * 120 + 40,
-      duration: Math.random() * 10 + 8,
-      delay: Math.random() * 5,
-      opacity: Math.random() * 0.06 + 0.02,
-      angle: Math.random() * 60 - 30,
     })), []
   );
 
@@ -47,105 +34,45 @@ const SplashScreen = ({ onFinish }) => {
         <motion.div
           className="fixed inset-0 flex flex-col items-center justify-center bg-[#000000] z-[100] overflow-hidden"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* === AMBIENT BACKGROUND LAYERS === */}
-
-          {/* Layer 1: Drifting Gradient Orbs */}
-          <motion.div
-            className="absolute w-[60vw] h-[60vw] rounded-full mix-blend-screen filter blur-[150px]"
-            style={{ background: "radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%)", top: "-20%", left: "-15%" }}
-            animate={{ x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.15, 1] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          {/* === AMBIENT BACKGROUND — CSS-only orbs instead of Framer Motion === */}
+          <div
+            className="absolute w-[60vw] h-[60vw] rounded-full animate-splash-orb-1"
+            style={{ background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)", top: "-20%", left: "-15%", willChange: "transform" }}
           />
-          <motion.div
-            className="absolute w-[50vw] h-[50vw] rounded-full mix-blend-screen filter blur-[150px]"
-            style={{ background: "radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%)", bottom: "-25%", right: "-10%" }}
-            animate={{ x: [0, -50, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }}
-            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-          <motion.div
-            className="absolute w-[35vw] h-[35vw] rounded-full mix-blend-screen filter blur-[120px]"
-            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)", top: "40%", right: "10%" }}
-            animate={{ x: [0, -40, 20, 0], y: [0, 30, -20, 0], scale: [1, 1.1, 0.95, 1] }}
-            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <motion.div
-            className="absolute w-[40vw] h-[40vw] rounded-full mix-blend-screen filter blur-[130px]"
-            style={{ background: "radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)", bottom: "20%", left: "15%" }}
-            animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          <div
+            className="absolute w-[45vw] h-[45vw] rounded-full animate-splash-orb-2"
+            style={{ background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)", bottom: "-25%", right: "-10%", willChange: "transform" }}
           />
 
-          {/* Layer 2: Floating Particles */}
+          {/* Particles — reduced count, CSS animation fallback for better perf */}
           {particles.map((p) => (
-            <motion.div
+            <div
               key={p.id}
-              className="absolute rounded-full bg-white"
+              className="absolute rounded-full bg-white animate-splash-particle"
               style={{
                 width: p.size,
                 height: p.size,
                 left: `${p.x}%`,
                 top: `${p.y}%`,
-                opacity: 0,
-              }}
-              animate={{
-                opacity: [0, p.opacity, p.opacity, 0],
-                y: [0, -80, -160],
-                x: [0, (p.id % 2 === 0 ? 20 : -20), (p.id % 3 === 0 ? -10 : 10)],
-              }}
-              transition={{
-                duration: p.duration,
-                repeat: Infinity,
-                delay: p.delay,
-                ease: "easeInOut",
+                opacity: p.opacity,
+                animationDuration: `${p.duration}s`,
+                animationDelay: `${p.delay}s`,
+                willChange: "transform, opacity",
               }}
             />
           ))}
 
-          {/* Layer 3: Drifting Lines */}
-          {lines.map((l) => (
-            <motion.div
-              key={`line-${l.id}`}
-              className="absolute bg-gradient-to-r from-transparent via-white to-transparent"
-              style={{
-                width: l.width,
-                height: 1,
-                left: `${l.x}%`,
-                top: `${(l.id / lines.length) * 100}%`,
-                opacity: 0,
-                transform: `rotate(${l.angle}deg)`,
-              }}
-              animate={{
-                opacity: [0, l.opacity, l.opacity, 0],
-                x: [0, 100, 200],
-              }}
-              transition={{
-                duration: l.duration,
-                repeat: Infinity,
-                delay: l.delay,
-                ease: "linear",
-              }}
-            />
-          ))}
-
-          {/* Layer 4: Radial Pulse Ring behind spinner */}
-          <motion.div
-            className="absolute rounded-full border border-indigo-500/10"
+          {/* Radial Pulse Ring — CSS animation */}
+          <div
+            className="absolute rounded-full border border-indigo-500/10 animate-splash-pulse"
             style={{ width: 200, height: 200 }}
-            animate={{ scale: [1, 2.5, 1], opacity: [0.15, 0, 0.15] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute rounded-full border border-purple-500/10"
-            style={{ width: 150, height: 150 }}
-            animate={{ scale: [1, 3, 1], opacity: [0.1, 0, 0.1] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
 
-          {/* Layer 5: Subtle grid dot pattern */}
-          <div 
+          {/* Grid dot pattern */}
+          <div
             className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
@@ -161,12 +88,11 @@ const SplashScreen = ({ onFinish }) => {
               transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
               style={{
                 boxShadow: "0 0 40px 0 rgba(99, 102, 241, 0.5)",
+                willChange: "transform",
               }}
             >
-              <motion.div
-                className="w-full h-full border-t-2 border-blue-400 rounded-full blur-[2px]"
-                animate={{ rotate: -720 }}
-                transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+              <div
+                className="w-full h-full border-t-2 border-blue-400 rounded-full blur-[2px] animate-spin-reverse"
               />
             </motion.div>
 
@@ -176,11 +102,11 @@ const SplashScreen = ({ onFinish }) => {
               {text.map((char, index) => (
                 <motion.span
                   key={index}
-                  initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
+                  initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   transition={{
-                    delay: 0.5 + index * 0.08,
-                    duration: 0.8,
+                    delay: 0.4 + index * 0.06,
+                    duration: 0.6,
                     ease: [0.16, 1, 0.3, 1]
                   }}
                   className="inline-block"
@@ -191,10 +117,10 @@ const SplashScreen = ({ onFinish }) => {
             </motion.h1>
 
             <motion.div
-              className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md"
+              className="px-6 py-2 rounded-full border border-white/10 bg-white/5"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2, duration: 1 }}
+              transition={{ delay: 1.5, duration: 0.8 }}
             >
               <p className="text-white/60 text-sm tracking-widest uppercase font-semibold">
                 Building Reality
