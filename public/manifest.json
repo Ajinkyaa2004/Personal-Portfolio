@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Ajinkya",
+  "name": "Ajinkya Dhumal — Fullstack Developer & Product Manager",
+  "description": "Portfolio of Ajinkya Dhumal — Fullstack Web Developer & Aspiring Product Manager specializing in React, Next.js, Node.js.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +9,17 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "D.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "orientation": "portrait",
+  "theme_color": "#050505",
+  "background_color": "#050505",
+  "categories": ["portfolio", "developer", "technology"],
+  "lang": "en"
 }

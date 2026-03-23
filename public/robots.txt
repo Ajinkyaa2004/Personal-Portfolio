@@ -1,0 +1,21 @@
+# robots.txt for Ajinkya Dhumal Portfolio
+# https://itsajinkya.vercel.app
+
+User-agent: *
+Allow: /
+Disallow: /static/js/*.map
+Disallow: /static/css/*.map
+
+# Sitemap
+Sitemap: https://itsajinkya.vercel.app/sitemap.xml
+
+# Crawl-delay (optional, respected by some bots)
+Crawl-delay: 1
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+
+# Bing-specific
+User-agent: Bingbot
+Allow: /

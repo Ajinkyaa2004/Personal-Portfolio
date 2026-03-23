@@ -1,0 +1,78 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#050505"/>
+      <stop offset="50%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#050510"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="50%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="nameGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="50%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Ambient glow orbs -->
+  <circle cx="900" cy="200" r="250" fill="#6366f1" opacity="0.08" filter="url(#glow)"/>
+  <circle cx="200" cy="500" r="200" fill="#3b82f6" opacity="0.06" filter="url(#glow)"/>
+  <circle cx="1000" cy="500" r="180" fill="#22d3ee" opacity="0.05" filter="url(#glow)"/>
+
+  <!-- Subtle grid -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="20" cy="20" r="0.5" fill="white" opacity="0.08"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Top accent line -->
+  <rect x="80" y="80" width="60" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- Status badge -->
+  <rect x="80" y="110" width="210" height="32" rx="16" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+  <circle cx="100" cy="126" r="5" fill="#22c55e"/>
+  <text x="115" y="131" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white" fill-opacity="0.6" letter-spacing="2">OPEN TO OPPORTUNITIES</text>
+
+  <!-- Main heading -->
+  <text x="80" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="white" letter-spacing="-1">Hi! I'm</text>
+  <text x="80" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="78" font-weight="800" fill="url(#nameGrad)" letter-spacing="-1">Ajinkya.</text>
+
+  <!-- Description -->
+  <text x="80" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="white" fill-opacity="0.55" font-weight="300">Fullstack Web Developer &amp; Aspiring Product Manager</text>
+  <text x="80" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="white" fill-opacity="0.55" font-weight="300">bridging engineering and product strategy.</text>
+
+  <!-- Tech stack pills -->
+  <rect x="80" y="420" width="120" height="36" rx="18" fill="#3b82f6" fill-opacity="0.12" stroke="#3b82f6" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="140" y="443" font-family="monospace" font-size="13" fill="#60a5fa" text-anchor="middle" font-weight="600">&lt;React /&gt;</text>
+
+  <rect x="215" y="420" width="125" height="36" rx="18" fill="#6366f1" fill-opacity="0.12" stroke="#6366f1" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="278" y="443" font-family="monospace" font-size="13" fill="#818cf8" text-anchor="middle" font-weight="600">&lt;Next.js /&gt;</text>
+
+  <rect x="355" y="420" width="125" height="36" rx="18" fill="#06b6d4" fill-opacity="0.12" stroke="#06b6d4" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="418" y="443" font-family="monospace" font-size="13" fill="#22d3ee" text-anchor="middle" font-weight="600">&lt;Node.js /&gt;</text>
+
+  <!-- Domain URL pill -->
+  <rect x="80" y="530" width="260" height="40" rx="20" fill="white" fill-opacity="0.05" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="210" y="556" font-family="monospace" font-size="14" fill="white" fill-opacity="0.5" font-weight="500" text-anchor="middle">itsajinkya.vercel.app</text>
+
+  <!-- Right side decorative rings -->
+  <circle cx="950" cy="315" r="160" fill="none" stroke="url(#accent)" stroke-opacity="0.04" stroke-width="1"/>
+  <circle cx="950" cy="315" r="120" fill="none" stroke="url(#accent)" stroke-opacity="0.08" stroke-width="1"/>
+  <circle cx="950" cy="315" r="80" fill="none" stroke="url(#accent)" stroke-opacity="0.06" stroke-width="1"/>
+
+  <!-- Code brackets decoration -->
+  <text x="860" y="350" font-family="monospace" font-size="200" fill="white" fill-opacity="0.03" font-weight="300">{}</text>
+
+  <!-- Bottom border accent -->
+  <rect x="0" y="626" width="1200" height="4" fill="url(#accent)" opacity="0.6"/>
+</svg>

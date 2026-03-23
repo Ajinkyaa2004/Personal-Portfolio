@@ -163,6 +163,7 @@ export default function App() {
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
           <Navbar />
+          <main role="main">
 
           {/* Ambient Background Orbs — reduced blur for GPU perf */}
           {!lowPerfMode && (
@@ -174,7 +175,7 @@ export default function App() {
           )}
 
           {/* Hero Section */}
-          <section id="hero" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}>
+          <section id="hero" aria-label="Introduction" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}>
             <div className="flex-1 flex flex-col items-start px-4 md:px-10 justify-center space-y-6 z-20 w-full max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -205,17 +206,17 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }}
                 className="flex flex-wrap items-center gap-4 pt-2"
               >
-                <a href="#projects" className="group relative px-6 py-3 bg-white text-black font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95">
+                <a href="#projects" aria-label="View featured projects" className="group relative px-6 py-3 bg-white text-black font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95">
                   <span className="relative z-10 flex items-center gap-2">Explore Work <MdArrowOutward /></span>
                 </a>
                 
-                <div className="flex items-center gap-4 ml-2">
-                  {[ 
-                    { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", color: "hover:text-white" },
-                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", color: "hover:text-blue-400" },
-                    { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", color: "hover:text-red-400" }
+                <div className="flex items-center gap-4 ml-2" role="list" aria-label="Social links">
+                  {[
+                    { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", color: "hover:text-white", label: "GitHub Profile" },
+                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", color: "hover:text-blue-400", label: "LinkedIn Profile" },
+                    { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", color: "hover:text-red-400", label: "Send Email" }
                   ].map((item, i) => (
-                    <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className={`text-white/50 transition-colors duration-300 ${item.color} p-2 bg-white/5 rounded-full border border-white/5 hover:border-white/20 hover:bg-white/10`}>
+                    <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.label} className={`text-white/50 transition-colors duration-300 ${item.color} p-2 bg-white/5 rounded-full border border-white/5 hover:border-white/20 hover:bg-white/10`}>
                       <item.icon className="w-5 h-5" />
                     </a>
                   ))}
@@ -239,7 +240,7 @@ export default function App() {
           </section>
 
           {/* About / Bento Grid */}
-          <section id="about" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
+          <section id="about" aria-label="About Ajinkya Dhumal" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -386,7 +387,7 @@ export default function App() {
           </section>
 
           {/* Education Timeline */}
-          <section id="education" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}>
+          <section id="education" aria-label="Experience and Education Timeline" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -left-32 w-72 h-72 bg-amber-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -452,7 +453,7 @@ export default function App() {
           </section>
 
           {/* Projects Gallery */}
-          <section id="projects" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
+          <section id="projects" aria-label="Featured Projects Portfolio" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -568,7 +569,7 @@ export default function App() {
           </section>
 
           {/* Skills Grid */}
-          <section id="skills" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
+          <section id="skills" aria-label="Technical Skills and Capabilities" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -693,7 +694,7 @@ export default function App() {
           </section>
 
           {/* Achievements & Certifications — Premium Redesign */}
-           <section id="achievements" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
+           <section id="achievements" aria-label="Achievements and Certifications" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -873,7 +874,7 @@ export default function App() {
            </section>
 
           {/* Contact Section */}
-          <section id="contact" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
+          <section id="contact" aria-label="Contact Information" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -944,7 +945,7 @@ export default function App() {
                 </div>
 
                 <div className="md:w-1/2 w-full relative z-10">
-                  <form action="https://formspree.io/f/xgvlgavv" method="POST" className="space-y-4 sm:space-y-5 bg-black/40 backdrop-blur-xl p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/[0.06] hover:border-white/10 transition-all duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                  <form action="https://formspree.io/f/xgvlgavv" method="POST" aria-label="Contact form" className="space-y-4 sm:space-y-5 bg-black/40 backdrop-blur-xl p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/[0.06] hover:border-white/10 transition-all duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                        <input type="text" name="first_name" required placeholder="First Name" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
                        <input type="text" name="last_name" required placeholder="Last Name" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
@@ -962,8 +963,10 @@ export default function App() {
             </motion.div>
           </section>
 
+          </main>
+
           {/* Premium Footer */}
-          <footer className="relative py-14 px-6 mt-10 overflow-hidden">
+          <footer role="contentinfo" className="relative py-14 px-6 mt-10 overflow-hidden">
             {/* Top gradient border line */}
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
             {/* Subtle glow */}

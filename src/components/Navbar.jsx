@@ -67,6 +67,8 @@ const Navbar = () => {
 
   return (
     <motion.nav
+      aria-label="Main navigation"
+      role="navigation"
       initial={{ y: -120, opacity: 0 }}
       animate={{ y: visible ? 0 : -120, opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
@@ -138,6 +140,7 @@ const Navbar = () => {
             href="https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Download Resume (opens in new tab)"
             whileHover={{ scale: 1.04, y: -1 }}
             whileTap={{ scale: 0.97 }}
             className="flex items-center space-x-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-semibold text-sm transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] relative overflow-hidden group"
