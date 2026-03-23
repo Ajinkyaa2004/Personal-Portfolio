@@ -20,7 +20,7 @@ const loadLottieData = () => import("./lottie/DeveloperFrontEnd.json").then(m =>
 // Wrapper component that lazy-loads Lottie + its data together
 const LazyHeroLottie = lazy(() =>
   Promise.all([import("lottie-react"), loadLottieData()]).then(([mod, data]) => ({
-    default: () => <mod.default animationData={data} loop={true} className="w-full max-w-lg relative drop-shadow-2xl" />,
+    default: () => <mod.default animationData={data} loop={true} className="w-full max-w-lg h-[300px] sm:h-[360px] md:h-[440px] relative drop-shadow-2xl" />,
   }))
 );
 
@@ -174,7 +174,7 @@ export default function App() {
           )}
 
           {/* Hero Section */}
-          <section id="hero" aria-label="Introduction" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}>
+          <section id="hero" aria-label="Introduction" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
             <div className="flex-1 flex flex-col items-start px-4 md:px-10 justify-center space-y-6 z-20 w-full max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -228,7 +228,7 @@ export default function App() {
               className="flex-1 flex justify-center items-center mt-12 md:mt-0 z-10 relative"
             >
               {!lowPerfMode && <div className="absolute inset-0 bg-blue-500/20 blur-[60px] rounded-full"></div>}
-              <Suspense fallback={<div className="w-full max-w-lg aspect-square rounded-full bg-white/5 border border-white/10" />}>
+              <Suspense fallback={<div className="w-full max-w-lg h-[300px] sm:h-[360px] md:h-[440px] rounded-full bg-white/5 border border-white/10" />}>
                 <LazyHeroLottie />
               </Suspense>
             </motion.div>
@@ -564,7 +564,7 @@ export default function App() {
           </section>
 
           {/* Skills Grid */}
-          <section id="skills" aria-label="Technical Skills and Capabilities" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
+          <section id="skills" aria-label="Technical Skills and Capabilities" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -675,8 +675,8 @@ export default function App() {
                   </div>
                   
                   <div className="relative z-10 w-full md:w-1/2 flex justify-center mt-6 md:mt-0 opacity-90 group-hover:opacity-100 group-hover:scale-[1.15] drop-shadow-[0_0_25px_rgba(6,182,212,0.3)] transition-all duration-700">
-                     <Suspense fallback={<div className="w-full max-w-[420px] aspect-square rounded-full bg-white/5 border border-white/10" />}>
-                       <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] scale-110" />
+                     <Suspense fallback={<div className="w-full max-w-[420px] h-[280px] sm:h-[340px] md:h-[420px] rounded-full bg-white/5 border border-white/10" />}>
+                       <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] h-[280px] sm:h-[340px] md:h-[420px] scale-110" />
                      </Suspense>
                   </div>
                 </motion.div>
