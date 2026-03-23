@@ -9,8 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { MdEmail, MdLocationOn, MdArrowOutward, MdWork } from "react-icons/md";
 import { GraduationCap } from "lucide-react";
 
-// Lazy load heavy Lottie components AND their JSON data
-const Lottie = lazy(() => import("lottie-react"));
+// Lazy load heavy Lottie components
 const DotLottieReact = lazy(() =>
   import("@lottiefiles/dotlottie-react").then((mod) => ({ default: mod.DotLottieReact }))
 );
