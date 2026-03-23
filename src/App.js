@@ -228,13 +228,9 @@ export default function App() {
               className="flex-1 flex justify-center items-center mt-12 md:mt-0 z-10 relative"
             >
               {!lowPerfMode && <div className="absolute inset-0 bg-blue-500/20 blur-[60px] rounded-full"></div>}
-              {lowPerfMode ? (
-                <div className="w-full max-w-lg aspect-square rounded-full bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-cyan-500/15 border border-white/10" />
-              ) : (
-                <Suspense fallback={<div className="w-full max-w-lg aspect-square rounded-full bg-white/5 border border-white/10" />}>
-                  <LazyHeroLottie />
-                </Suspense>
-              )}
+              <Suspense fallback={<div className="w-full max-w-lg aspect-square rounded-full bg-white/5 border border-white/10" />}>
+                <LazyHeroLottie />
+              </Suspense>
             </motion.div>
           </section>
 
@@ -679,13 +675,9 @@ export default function App() {
                   </div>
                   
                   <div className="relative z-10 w-full md:w-1/2 flex justify-center mt-6 md:mt-0 opacity-90 group-hover:opacity-100 group-hover:scale-[1.15] drop-shadow-[0_0_25px_rgba(6,182,212,0.3)] transition-all duration-700">
-                     {lowPerfMode ? (
-                       <div className="w-full max-w-[420px] aspect-square rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-white/10" />
-                     ) : (
-                       <Suspense fallback={<div className="w-full max-w-[420px] aspect-square rounded-full bg-white/5 border border-white/10" />}>
-                         <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] scale-110" />
-                       </Suspense>
-                     )}
+                     <Suspense fallback={<div className="w-full max-w-[420px] aspect-square rounded-full bg-white/5 border border-white/10" />}>
+                       <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] scale-110" />
+                     </Suspense>
                   </div>
                 </motion.div>
               </div>
