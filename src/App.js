@@ -5,11 +5,11 @@ import SplashScreen from "./components/SplashScreen";
 import Lottie from "lottie-react";
 import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { FaGithub, FaJs, FaDatabase, FaLinkedin, FaInstagram, FaTwitter, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaDesktop, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
-import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
-import { DiJava, DiMysql, DiScrum } from "react-icons/di";
+import { FaGithub, FaLinkedin, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
+import { SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
+import { DiJava, DiScrum } from "react-icons/di";
 import { useInView } from "react-intersection-observer";
-import { MdEmail, MdLocationOn, MdPhone, MdArrowOutward, MdWork } from "react-icons/md";
+import { MdEmail, MdLocationOn, MdArrowOutward, MdWork } from "react-icons/md";
 import { GraduationCap } from "lucide-react";
 
 const certifications = [
@@ -107,8 +107,6 @@ const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) =
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
-  const { scrollYProgress } = useScroll();
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const timelineRef = useRef(null);
   const timelineTrackRef = useRef(null);
   const { scrollYProgress: timelineScroll } = useScroll({ target: timelineTrackRef, offset: ["start center", "end center"] });

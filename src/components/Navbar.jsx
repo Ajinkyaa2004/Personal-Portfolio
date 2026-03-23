@@ -83,7 +83,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.03 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
         >
-          <a href="#" className="flex items-center gap-1.5 group">
+          <a href="#hero" className="flex items-center gap-1.5 group">
             <div className="relative">
               <Sparkles className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 absolute -top-1 -right-1 transition-opacity duration-300" />
               <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-white cursor-pointer">
