@@ -190,15 +190,15 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight"
               >
-                Hi! I’m <br/>
-                <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-transparent bg-clip-text">Ajinkya.</span>
+                Hi! I&apos;m Ajinkya <br/>
+                <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-transparent bg-clip-text">Full Stack Engineer</span>
               </motion.h1>
 
               <motion.p 
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
                 className="text-base md:text-lg text-white/60 leading-relaxed font-light max-w-xl"
               >
-                Fullstack Web Developer & Aspiring Product Manager bridging the gap between <strong className="text-white/90">engineering</strong> and <strong className="text-white/90">product strategy</strong>.
+                Fullstack Web Developer &amp; Aspiring Product Manager bridging the gap between <strong className="text-white/90">engineering</strong> and <strong className="text-white/90">product strategy</strong>.
               </motion.p>
 
               <motion.div 
