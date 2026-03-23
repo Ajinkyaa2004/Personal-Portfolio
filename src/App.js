@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
 import Lottie from "lottie-react";
 import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { FaGithub, FaJs, FaDatabase, FaLinkedin, FaInstagram, FaTwitter, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaDesktop, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
-import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion } from "react-icons/si";
+import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
 import { DiJava, DiMysql, DiScrum } from "react-icons/di";
 import { useInView } from "react-intersection-observer";
 import { MdEmail, MdLocationOn, MdPhone, MdArrowOutward, MdWork } from "react-icons/md";
@@ -110,8 +110,11 @@ export default function App() {
   const { scrollYProgress } = useScroll();
   const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const timelineRef = useRef(null);
-  const { scrollYProgress: timelineScroll } = useScroll({ target: timelineRef, offset: ["start center", "end center"] });
+  const timelineTrackRef = useRef(null);
+  const { scrollYProgress: timelineScroll } = useScroll({ target: timelineTrackRef, offset: ["start center", "end center"] });
   const timelineHeight = useTransform(timelineScroll, [0, 1], ["0%", "100%"]);
+  const timelineGlowYRaw = useTransform(timelineScroll, [0, 1], ["2%", "98%"]);
+  const timelineGlowY = useSpring(timelineGlowYRaw, { damping: 15, mass: 0.3, stiffness: 80 });
 
   return (
     <div className="font-sans min-h-screen relative overflow-hidden bg-[#050505] text-slate-200 selection:bg-indigo-500/30 selection:text-white">
@@ -189,15 +192,31 @@ export default function App() {
           </section>
 
           {/* About / Bento Grid */}
-          <section id="about" className="relative min-h-screen py-16 px-6 md:px-20 z-10 max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }} viewport={{ once: true }}>
-              <h2 className="text-xs md:text-sm font-bold tracking-widest text-indigo-500 uppercase mb-2">About me</h2>
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-10 tracking-tight">Glimpse into my world.</h3>
+          <section id="about" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+            {/* Section-level floating decorative orbs */}
+            <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="mb-10">
+                <motion.div 
+                  initial={{ width: 0 }} 
+                  whileInView={{ width: "60px" }} 
+                  transition={{ duration: 0.8, delay: 0.3 }} 
+                  viewport={{ once: true }}
+                  className="h-1 bg-gradient-to-r from-teal-500 via-emerald-500 to-green-400 rounded-full mb-4"
+                />
+                <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 uppercase mb-3">About me</h2>
+                <h3 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+                  Glimpse into my <span className="bg-gradient-to-r from-teal-400 via-emerald-400 to-green-400 text-transparent bg-clip-text">world</span>.
+                </h3>
+                <p className="text-white/40 text-sm md:text-base mt-3 max-w-lg">A snapshot of who I am, what drives me, and the tech I breathe every day.</p>
+              </div>
 
               {/* Bento Grid layout */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px] md:auto-rows-[220px]">
                 {/* Main Intro */}
-                <motion.div className="md:col-span-2 md:row-span-2 glass-panel hover-glass-panel rounded-3xl p-6 md:p-10 flex flex-col justify-between group overflow-hidden relative border border-white/10 hover:border-cyan-500/50 transition-colors shadow-lg">
+                <motion.div initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: 0.1 }} viewport={{ once: true }} whileHover={{ y: -4, scale: 1.01 }} className="md:col-span-2 md:row-span-2 glass-panel hover-glass-panel rounded-3xl p-6 md:p-10 flex flex-col justify-between group overflow-hidden relative border border-white/10 hover:border-teal-500/50 transition-all duration-500 shadow-lg">
                   <motion.div 
                     animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }} 
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -224,7 +243,7 @@ export default function App() {
                 </motion.div>
 
                 {/* Hackathon Widget */}
-                <motion.div className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col items-start justify-end relative overflow-hidden group border border-white/10 hover:border-yellow-500/50 transition-colors shadow-lg">
+                <motion.div initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} whileHover={{ y: -4, scale: 1.01 }} className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col items-start justify-end relative overflow-hidden group border border-white/10 hover:border-yellow-500/50 transition-all duration-500 shadow-lg">
                   <motion.div 
                     animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }} 
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -247,27 +266,78 @@ export default function App() {
                 </motion.div>
 
                 {/* Tech Stack Marquee Widget */}
-                <motion.div className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col justify-center items-center relative overflow-hidden group border border-white/10 hover:border-cyan-500/50 transition-colors shadow-lg">
+                <motion.div initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: 0.3 }} viewport={{ once: true }} whileHover={{ y: -4, scale: 1.01 }} className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col justify-center items-center relative overflow-hidden group border border-white/10 hover:border-cyan-500/50 transition-all duration-500 shadow-lg">
                   <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
                   {/* Infinite scroll track */}
-                  <div className="flex w-[200%] gap-8 relative z-10 overflow-hidden text-5xl opacity-80 group-hover:opacity-100 transition-opacity whitespace-nowrap" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+                  <div
+                    className="relative z-10 self-stretch w-full overflow-hidden py-2 opacity-80 group-hover:opacity-100 transition-opacity"
+                    style={{
+                      maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+                      WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+                    }}
+                  >
                      <motion.div 
                         animate={{ x: ["0%", "-50%"] }} 
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                        className="flex gap-8 items-center justify-start min-w-full"
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        className="flex w-max gap-8 items-center whitespace-nowrap"
                      >
-                       <SiReact className="text-cyan-400 drop-shadow-md" />
-                       <SiNextdotjs className="text-white drop-shadow-md" />
-                       <SiTailwindcss className="text-sky-400 drop-shadow-md" />
-                       <SiMongodb className="text-green-500 drop-shadow-md" />
-                       <SiFigma className="text-pink-500 drop-shadow-md" />
-                       {/* Duplicated for infinite loop */}
-                       <SiReact className="text-cyan-400 drop-shadow-md" />
-                       <SiNextdotjs className="text-white drop-shadow-md" />
-                       <SiTailwindcss className="text-sky-400 drop-shadow-md" />
-                       <SiMongodb className="text-green-500 drop-shadow-md" />
-                       <SiFigma className="text-pink-500 drop-shadow-md" />
+                       <SiReact className="text-cyan-400 drop-shadow-md text-3xl" />
+                       <SiNextdotjs className="text-white drop-shadow-md text-3xl" />
+                       <SiTypescript className="text-blue-500 drop-shadow-md text-3xl" />
+                       <SiJavascript className="text-yellow-400 drop-shadow-md text-3xl" />
+                       <SiTailwindcss className="text-sky-400 drop-shadow-md text-3xl" />
+                       <SiShadcnui className="text-white drop-shadow-md text-3xl" />
+
+                       <SiNodedotjs className="text-green-500 drop-shadow-md text-3xl" />
+                       <SiExpress className="text-gray-400 drop-shadow-md text-3xl" />
+                       <SiFastapi className="text-green-400 drop-shadow-md text-3xl" />
+                       <SiSpringboot className="text-green-600 drop-shadow-md text-3xl" />
+
+                       <SiPostgresql className="text-blue-400 drop-shadow-md text-3xl" />
+                       <SiMongodb className="text-green-500 drop-shadow-md text-3xl" />
+                       <SiMysql className="text-blue-600 drop-shadow-md text-3xl" />
+                       <SiFirebase className="text-yellow-500 drop-shadow-md text-3xl" />
+
+                       <SiDocker className="text-blue-500 drop-shadow-md text-3xl" />
+                       <SiGit className="text-orange-500 drop-shadow-md text-3xl" />
+                       <SiGithub className="text-white drop-shadow-md text-3xl" />
+                       <SiPostman className="text-orange-400 drop-shadow-md text-3xl" />
+
+                       <SiFigma className="text-pink-500 drop-shadow-md text-3xl" />
+                       <SiJira className="text-blue-500 drop-shadow-md text-3xl" />
+
+                       <SiPython className="text-yellow-300 drop-shadow-md text-3xl" />
+                       <DiJava className="text-red-500 drop-shadow-md text-3xl" />
+
+                       {/* Duplicate for seamless loop */}
+                       <SiReact className="text-cyan-400 drop-shadow-md text-3xl" />
+                       <SiNextdotjs className="text-white drop-shadow-md text-3xl" />
+                       <SiTypescript className="text-blue-500 drop-shadow-md text-3xl" />
+                       <SiJavascript className="text-yellow-400 drop-shadow-md text-3xl" />
+                       <SiTailwindcss className="text-sky-400 drop-shadow-md text-3xl" />
+                       <SiShadcnui className="text-white drop-shadow-md text-3xl" />
+
+                       <SiNodedotjs className="text-green-500 drop-shadow-md text-3xl" />
+                       <SiExpress className="text-gray-400 drop-shadow-md text-3xl" />
+                       <SiFastapi className="text-green-400 drop-shadow-md text-3xl" />
+                       <SiSpringboot className="text-green-600 drop-shadow-md text-3xl" />
+
+                       <SiPostgresql className="text-blue-400 drop-shadow-md text-3xl" />
+                       <SiMongodb className="text-green-500 drop-shadow-md text-3xl" />
+                       <SiMysql className="text-blue-600 drop-shadow-md text-3xl" />
+                       <SiFirebase className="text-yellow-500 drop-shadow-md text-3xl" />
+
+                       <SiDocker className="text-blue-500 drop-shadow-md text-3xl" />
+                       <SiGit className="text-orange-500 drop-shadow-md text-3xl" />
+                       <SiGithub className="text-white drop-shadow-md text-3xl" />
+                       <SiPostman className="text-orange-400 drop-shadow-md text-3xl" />
+
+                       <SiFigma className="text-pink-500 drop-shadow-md text-3xl" />
+                       <SiJira className="text-blue-500 drop-shadow-md text-3xl" />
+
+                       <SiPython className="text-yellow-300 drop-shadow-md text-3xl" />
+                       <DiJava className="text-red-500 drop-shadow-md text-3xl" />
                      </motion.div>
                   </div>
                   <p className="text-white text-xs mt-8 tracking-widest uppercase font-bold relative z-10 bg-[#050505] px-5 py-2 rounded-full border border-white/10 group-hover:border-white/30 transition-colors shadow-xl">Core Stack</p>
@@ -277,19 +347,36 @@ export default function App() {
           </section>
 
           {/* Education Timeline */}
-          <section id="education" className="relative py-16 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+          <section id="education" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+            {/* Section-level floating decorative orbs */}
+            <div className="absolute -top-32 -left-32 w-72 h-72 bg-amber-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="flex flex-col md:flex-row gap-12 items-start" ref={timelineRef}>
                 <div className="w-full md:w-1/3 sticky top-32">
-                  <h2 className="text-xs md:text-sm font-bold tracking-widest text-indigo-500 uppercase mb-2">Timeline</h2>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Experience & Education</h3>
-                  <p className="text-white/50 text-sm md:text-base cursor-default">My formal path in professional tech roles and computer science.</p>
+                  <motion.div 
+                    initial={{ width: 0 }} 
+                    whileInView={{ width: "60px" }} 
+                    transition={{ duration: 0.8, delay: 0.3 }} 
+                    viewport={{ once: true }}
+                    className="h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-400 rounded-full mb-4"
+                  />
+                  <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 uppercase mb-3">Timeline</h2>
+                  <h3 className="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
+                    Experience & <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 text-transparent bg-clip-text">Education</span>
+                  </h3>
+                  <p className="text-white/40 text-sm md:text-base cursor-default">My formal path in professional tech roles and computer science.</p>
                 </div>
 
-                <div className="w-full md:w-2/3 space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-white/10 before:rounded-full overflow-hidden py-4">
+                <div ref={timelineTrackRef} className="w-full md:w-2/3 space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-white/10 before:rounded-full py-4">
                   <motion.div 
-                    className="absolute left-5 md:left-1/2 w-1.5 bg-gradient-to-b from-cyan-400 via-blue-500 to-indigo-600 -translate-x-[2.5px] md:-translate-x-1/2 z-0 rounded-full"
-                    style={{ height: timelineHeight, boxShadow: "0 0 20px rgba(34,211,238,0.8)" }}
+                    className="absolute top-0 left-5 md:left-1/2 w-1.5 bg-gradient-to-b from-amber-400 via-orange-500 to-yellow-500 -translate-x-[2.5px] md:-translate-x-1/2 z-0 rounded-full"
+                    style={{ height: timelineHeight, boxShadow: "0 0 25px rgba(251,146,60,0.8), 0 0 60px rgba(251,146,60,0.3)" }}
+                  />
+                  <motion.div
+                    className="absolute left-5 md:left-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-yellow-400 shadow-[0_0_18px_rgba(251,146,60,0.9),0_0_40px_rgba(251,146,60,0.45)]"
+                    style={{ top: timelineGlowY }}
                   />
                   {[ 
                     { isWork: true, year: "Nov 2025 – Present", title: "Full Stack Developer Intern", place: "Insight Fusion Analytics · Remote", desc: "Built scalable web apps with React.js, Next.js, Node.js. Designed PostgreSQL incremental ETL pipelines for a football platform. Contributed to AI-driven hiring evaluation systems. Collaborated in Agile workflows." },
@@ -297,24 +384,28 @@ export default function App() {
                     { isWork: false, year: "2019 – 2021", title: "Junior College (Science)", place: "Shri T.P Bhatia College of Science", desc: "Focused on core science subjects laying foundation for engineering." },
                     { isWork: false, year: "2008 – 2019", title: "Schooling", place: "St. Lawrence High School, Mumbai", desc: "Active in academics and various regional extracurricular activities." },
                   ].map((edu, idx) => (
-                    <div key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group z-10 w-full mb-8">
+                    <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: idx * 0.1 }} viewport={{ once: true }} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group z-10 w-full mb-8">
                       <motion.div 
                         initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }}
-                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${edu.isWork ? 'border-cyan-500/50 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:bg-cyan-500/20 group-hover:shadow-[0_0_25px_rgba(34,211,238,0.8)]' : 'border-indigo-500/50 text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] group-hover:bg-indigo-500/20'} bg-[#050505] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-all duration-300 relative z-20`}
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${edu.isWork ? 'border-amber-500/50 text-amber-400 shadow-[0_0_15px_rgba(251,146,60,0.5)] group-hover:bg-amber-500/20 group-hover:shadow-[0_0_25px_rgba(251,146,60,0.8)]' : 'border-orange-500/50 text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.5)] group-hover:shadow-[0_0_25px_rgba(249,115,22,0.8)] group-hover:bg-orange-500/20'} bg-[#050505] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-all duration-300 relative z-20`}
                       >
                          {edu.isWork ? <MdWork size={20} className="relative z-10" /> : <GraduationCap size={20} className="relative z-10" />}
                       </motion.div>
                       <motion.div 
-                        whileHover={{ scale: 1.02 }}
-                        className={`w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] glass-panel p-5 md:p-6 rounded-3xl relative border-l-4 border-l-transparent ${edu.isWork ? 'group-hover:border-l-cyan-400' : 'group-hover:border-l-indigo-400'} transition-all duration-300 shadow-xl`}
+                        whileHover={{ y: -3, scale: 1.015 }}
+                        className={`w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] glass-panel p-5 md:p-6 rounded-3xl relative border-l-4 border-l-transparent ${edu.isWork ? 'group-hover:border-l-amber-400' : 'group-hover:border-l-orange-400'} transition-all duration-500 shadow-xl`}
                       >
-                        <div className={`absolute inset-0 bg-gradient-to-r ${edu.isWork ? 'from-cyan-500/0 via-cyan-500/0 to-cyan-500/10' : 'from-indigo-500/0 via-indigo-500/0 to-indigo-500/10'} opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl duration-500`}></div>
-                        <span className={`font-mono text-xs md:text-sm ${edu.isWork ? 'text-cyan-400' : 'text-indigo-400'} mb-2 block relative z-10 font-bold tracking-wide`}>{edu.year}</span>
+                        {/* Shimmer overlay on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-3xl"></div>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${edu.isWork ? 'from-amber-500/0 via-amber-500/0 to-amber-500/10' : 'from-orange-500/0 via-orange-500/0 to-orange-500/10'} opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl duration-500`}></div>
+                        {/* Glow blob */}
+                        <div className={`absolute -top-12 -right-12 w-28 h-28 ${edu.isWork ? 'bg-amber-500/10' : 'bg-orange-500/10'} rounded-full blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}></div>
+                        <span className={`font-mono text-xs md:text-sm ${edu.isWork ? 'text-amber-400' : 'text-orange-400'} mb-2 block relative z-10 font-bold tracking-wide`}>{edu.year}</span>
                         <h4 className="text-lg md:text-xl font-bold text-white mb-2 relative z-10">{edu.title}</h4>
                         <span className="text-sm text-white/70 block mb-3 relative z-10 font-medium">{edu.place}</span>
                         <p className="text-xs md:text-sm text-white/50 leading-relaxed relative z-10">{edu.desc}</p>
                       </motion.div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
@@ -322,12 +413,26 @@ export default function App() {
           </section>
 
           {/* Projects Gallery */}
-          <section id="projects" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+          <section id="projects" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+            {/* Section-level floating decorative orbs */}
+            <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
               <div className="flex justify-between items-end mb-12">
                 <div>
-                  <h2 className="text-xs md:text-sm font-bold tracking-widest text-blue-500 uppercase mb-2">Portfolio</h2>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Featured Projects.</h3>
+                  <motion.div 
+                    initial={{ width: 0 }} 
+                    whileInView={{ width: "60px" }} 
+                    transition={{ duration: 0.8, delay: 0.3 }} 
+                    viewport={{ once: true }}
+                    className="h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-sky-400 rounded-full mb-4"
+                  />
+                  <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 uppercase mb-3">Portfolio</h2>
+                  <h3 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+                    Featured <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-400 text-transparent bg-clip-text">Projects</span>.
+                  </h3>
+                  <p className="text-white/40 text-sm md:text-base mt-3 max-w-lg">A showcase of production-grade apps and platforms I've engineered.</p>
                 </div>
                 <a href="https://github.com/Ajinkyaa2004" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 text-white/60 hover:text-white transition-colors bg-white/5 px-6 py-2.5 rounded-full border border-white/10 hover:bg-white/10 relative group text-sm font-medium">
                   <div className="absolute inset-0 bg-blue-500/10 rounded-full scale-0 group-hover:scale-100 transition-transform origin-center"></div>
@@ -364,10 +469,16 @@ export default function App() {
                 ].map((item, idx) => (
                   <motion.div 
                     key={idx} 
-                    whileHover={{ y: -4 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-300 ${item.theme}`}
+                    initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.5, delay: idx * 0.08 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -6, scale: 1.015 }}
+                    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-500 ${item.theme}`}
                   >
+                    {/* Shimmer overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-3xl z-[1]"></div>
+
                     {/* Background Icon Watermark */}
                     <div className="absolute -bottom-6 -right-6 text-[12rem] text-white opacity-[0.02] group-hover:opacity-[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none z-0">
                       <item.bgIcon />
@@ -418,11 +529,26 @@ export default function App() {
           </section>
 
           {/* Skills Grid */}
-          <section id="skills" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+          <section id="skills" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+             {/* Section-level floating decorative orbs */}
+             <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
+             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fuchsia-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+
              <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-              <div className="mb-12">
-                <h2 className="text-xs md:text-sm font-bold tracking-widest text-cyan-500 uppercase mb-2">Capabilities</h2>
-                <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Technical Arsenal.</h3>
+              <div className="mb-14 relative">
+                <motion.div 
+                  initial={{ width: 0 }} 
+                  whileInView={{ width: "60px" }} 
+                  transition={{ duration: 0.8, delay: 0.3 }} 
+                  viewport={{ once: true }}
+                  className="h-1 bg-gradient-to-r from-rose-500 via-pink-500 to-fuchsia-400 rounded-full mb-4"
+                />
+                <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-400 uppercase mb-3">Capabilities</h2>
+                <h3 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+                  Technical <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-fuchsia-400 text-transparent bg-clip-text">Arsenal</span>.
+                </h3>
+                <p className="text-white/40 text-sm md:text-base mt-3 max-w-lg">The tools, frameworks, and methodologies I wield to build world-class products.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -521,100 +647,277 @@ export default function App() {
              </motion.div>
           </section>
 
-          {/* Achievements & Certifications */}
-           <section id="achievements" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+          {/* Achievements & Certifications — Premium Redesign */}
+           <section id="achievements" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+             {/* Section-level floating decorative orbs */}
+             <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
+             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+
              <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-              <div className="mb-10">
-                <h2 className="text-xs md:text-sm font-bold tracking-widest text-purple-500 uppercase mb-2">Milestones</h2>
-                <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Growth & Accolades.</h3>
+              {/* Section Header with animated accent */}
+              <div className="mb-10 sm:mb-14 relative">
+                <motion.div 
+                  initial={{ width: 0 }} 
+                  whileInView={{ width: "60px" }} 
+                  transition={{ duration: 0.8, delay: 0.3 }} 
+                  viewport={{ once: true }}
+                  className="h-1 bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 rounded-full mb-4"
+                />
+                <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400 uppercase mb-3">Milestones</h2>
+                <h3 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                  Growth & <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 text-transparent bg-clip-text">Accolades</span>.
+                </h3>
+                <p className="text-white/40 text-sm md:text-base mt-3 max-w-lg leading-relaxed">A curated collection of certifications earned and milestones achieved on my journey.</p>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-6">
-                 {/* Certs col */}
-                 <div className="space-y-4">
-                   <h4 className="text-lg md:text-xl font-bold text-white/90 flex items-center gap-2 mb-6"><FaCertificate className="text-indigo-400"/> Certifications</h4>
+              <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
+                 {/* Certifications Column */}
+                 <div className="space-y-5">
+                   <motion.h4 
+                     initial={{ opacity: 0, x: -20 }} 
+                     whileInView={{ opacity: 1, x: 0 }} 
+                     transition={{ duration: 0.5 }}
+                     viewport={{ once: true }}
+                     className="text-lg md:text-xl font-bold text-white/90 flex flex-wrap items-center gap-3 mb-6 md:mb-7"
+                   >
+                     <motion.div
+                       animate={{ rotate: [0, 10, -10, 0] }}
+                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                       className="p-2.5 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl border border-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.2)]"
+                     >
+                       <FaCertificate className="text-indigo-400 text-lg"/>
+                     </motion.div>
+                     <span>Certifications</span>
+                     <span className="w-full sm:w-auto sm:ml-auto text-[11px] font-mono text-white/30 bg-white/5 px-3 py-1 rounded-full border border-white/10">{certifications.length} earned</span>
+                   </motion.h4>
+                   
                    {certifications.map((cert, idx) => (
-                     <a href={cert.link} target="_blank" rel="noreferrer" key={idx} className="glass-panel hover-glass-panel block p-5 rounded-2xl group relative overflow-hidden">
-                       <div className="flex items-start justify-between">
-                         <div className="flex gap-4 items-center">
-                           <div className="p-3 bg-white/5 rounded-xl border border-white/5">{cert.icon}</div>
-                           <div>
-                             <h5 className="font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-1">{cert.title}</h5>
-                             <p className="text-sm text-white/50">{cert.provider}</p>
+                     <motion.a 
+                       href={cert.link} 
+                       target="_blank" 
+                       rel="noreferrer" 
+                       key={idx}
+                       initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                       whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                       transition={{ duration: 0.5, delay: idx * 0.08 }}
+                       viewport={{ once: true }}
+                       whileHover={{ y: -3, scale: 1.015 }}
+                       className="milestone-card block p-4 sm:p-5 rounded-2xl group relative overflow-hidden border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl hover:border-indigo-500/40 transition-all duration-500"
+                     >
+                       {/* Shimmer overlay on hover */}
+                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+                       
+                       {/* Gradient accent line on left */}
+                       <div className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full bg-gradient-to-b from-indigo-500 via-purple-500 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                       
+                       {/* Glow blob */}
+                       <div className="absolute -top-12 -right-12 w-28 h-28 bg-indigo-500/10 rounded-full blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                       
+                       <div className="flex items-start sm:items-center justify-between relative z-10">
+                         <div className="flex gap-4 items-center min-w-0">
+                           {/* Numbered Index Badge */}
+                           <div className="relative flex-shrink-0">
+                             <div className="w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-br from-white/[0.08] to-white/[0.02] rounded-xl border border-white/10 flex items-center justify-center group-hover:border-indigo-500/40 group-hover:shadow-[0_0_20px_rgba(99,102,241,0.2)] transition-all duration-500">
+                               {cert.icon}
+                             </div>
+                             <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-[9px] font-bold text-white shadow-[0_0_10px_rgba(99,102,241,0.5)] border border-indigo-400/50">
+                               {idx + 1}
+                             </div>
+                           </div>
+                           <div className="min-w-0">
+                             <h5 className="font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-300 group-hover:to-cyan-300 transition-all duration-300 text-sm sm:text-base leading-snug break-words">{cert.title}</h5>
+                             <p className="text-xs text-white/40 mt-0.5 flex items-center gap-1.5">
+                               <span className="w-1 h-1 rounded-full bg-indigo-500/60"></span>
+                               {cert.provider}
+                             </p>
                            </div>
                          </div>
-                         <MdArrowOutward className="text-white/20 group-hover:text-white transition-colors" />
+                         <div className="hidden sm:flex w-8 h-8 rounded-full bg-white/[0.04] items-center justify-center group-hover:bg-indigo-500/20 group-hover:text-indigo-300 text-white/20 transition-all duration-300 flex-shrink-0 ml-3 group-hover:rotate-45">
+                           <MdArrowOutward className="text-sm" />
+                         </div>
                        </div>
-                     </a>
+                     </motion.a>
                    ))}
                  </div>
 
-                 {/* Achiev col */}
-                  <div className="space-y-4">
-                   <h4 className="text-lg md:text-xl font-bold text-white/90 flex items-center gap-2 mb-6"><FaTrophy className="text-yellow-500"/> Achievements</h4>
-                   {achievements.map((ach, idx) => (
-                     <a href={ach.link} target="_blank" rel="noreferrer" key={idx} className="glass-panel hover-glass-panel block p-5 rounded-2xl group relative overflow-hidden">
-                       <div className="flex flex-col gap-2">
-                         <div className="flex justify-between items-center">
-                            <span className="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-1 rounded-full font-medium whitespace-nowrap">{ach.badge}</span>
-                            <MdArrowOutward className="text-white/20 group-hover:text-white transition-colors" />
+                 {/* Achievements Column */}
+                 <div className="space-y-5">
+                   <motion.h4 
+                     initial={{ opacity: 0, x: -20 }} 
+                     whileInView={{ opacity: 1, x: 0 }} 
+                     transition={{ duration: 0.5, delay: 0.1 }}
+                     viewport={{ once: true }}
+                     className="text-lg md:text-xl font-bold text-white/90 flex flex-wrap items-center gap-3 mb-6 md:mb-7"
+                   >
+                     <motion.div
+                       animate={{ rotate: [0, -15, 15, 0], scale: [1, 1.1, 1] }}
+                       transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                       className="p-2.5 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl border border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.2)]"
+                     >
+                       <FaTrophy className="text-yellow-500 text-lg"/>
+                     </motion.div>
+                     <span>Achievements</span>
+                     <span className="w-full sm:w-auto sm:ml-auto text-[11px] font-mono text-white/30 bg-white/5 px-3 py-1 rounded-full border border-white/10">{achievements.length} unlocked</span>
+                   </motion.h4>
+                   
+                   {achievements.map((ach, idx) => {
+                     const badgeStyles = [
+                       "from-yellow-500/20 to-amber-500/20 text-yellow-300 border-yellow-500/40 shadow-[0_0_15px_rgba(234,179,8,0.15)]",
+                       "from-cyan-500/20 to-blue-500/20 text-cyan-300 border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)]",
+                       "from-emerald-500/20 to-green-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.15)]",
+                       "from-pink-500/20 to-rose-500/20 text-pink-300 border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.15)]",
+                     ];
+                     const hoverBorders = [
+                       "hover:border-yellow-500/40",
+                       "hover:border-cyan-500/40",
+                       "hover:border-emerald-500/40",
+                       "hover:border-pink-500/40",
+                     ];
+                     const glowColors = [
+                       "bg-yellow-500/10",
+                       "bg-cyan-500/10",
+                       "bg-emerald-500/10",
+                       "bg-pink-500/10",
+                     ];
+                     const textHovers = [
+                       "group-hover:from-yellow-300 group-hover:to-amber-200",
+                       "group-hover:from-cyan-300 group-hover:to-blue-200",
+                       "group-hover:from-emerald-300 group-hover:to-green-200",
+                       "group-hover:from-pink-300 group-hover:to-rose-200",
+                     ];
+
+                     return (
+                       <motion.a 
+                         href={ach.link} 
+                         target="_blank" 
+                         rel="noreferrer" 
+                         key={idx}
+                         initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                         whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                         transition={{ duration: 0.5, delay: idx * 0.1 }}
+                         viewport={{ once: true }}
+                         whileHover={{ y: -4, scale: 1.015 }}
+                         className={`milestone-card block p-4 sm:p-5 md:p-6 rounded-2xl group relative overflow-hidden border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl ${hoverBorders[idx]} transition-all duration-500`}
+                       >
+                         {/* Shimmer overlay */}
+                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+                         
+                         {/* Corner glow blob */}
+                         <div className={`absolute -bottom-16 -right-16 w-36 h-36 ${glowColors[idx]} rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}></div>
+                         
+                         {/* Subtle background pattern */}
+                         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay rounded-2xl"></div>
+
+                         <div className="flex flex-col gap-3 relative z-10">
+                           <div className="flex justify-between items-start">
+                              <motion.span 
+                                whileHover={{ scale: 1.05 }}
+                                className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r ${badgeStyles[idx]} border px-3 py-1.5 rounded-full whitespace-nowrap backdrop-blur-sm`}
+                              >
+                                {ach.badge}
+                              </motion.span>
+                              <div className="hidden sm:flex w-8 h-8 rounded-full bg-white/[0.04] items-center justify-center group-hover:bg-white/10 text-white/20 group-hover:text-white transition-all duration-300 flex-shrink-0 group-hover:rotate-45">
+                                <MdArrowOutward className="text-sm" />
+                              </div>
+                           </div>
+                           <h5 className={`font-bold text-white text-[15px] sm:text-base md:text-lg mt-1 leading-snug group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r ${textHovers[idx]} transition-all duration-300`}>{ach.title}</h5>
+                           <p className="text-xs md:text-sm text-white/40 leading-relaxed">{ach.detail}</p>
+                           
+                           {/* Bottom accent bar */}
+                           <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent mt-1 group-hover:via-white/20 transition-all duration-500"></div>
                          </div>
-                         <h5 className="font-bold text-white mt-1 group-hover:text-yellow-400 transition-colors">{ach.title}</h5>
-                         <p className="text-xs md:text-sm text-white/50 line-clamp-2">{ach.detail}</p>
-                       </div>
-                     </a>
-                   ))}
+                       </motion.a>
+                     );
+                   })}
                  </div>
               </div>
              </motion.div>
            </section>
 
           {/* Contact Section */}
-          <section id="contact" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10">
+          <section id="contact" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10">
+            {/* Section-level floating decorative orbs */}
+            <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-              <div className="glass-panel rounded-[2rem] p-6 md:p-12 flex flex-col md:flex-row gap-12 relative overflow-hidden">
-                <div className="absolute top-[-20%] right-[-10%] w-[40vw] h-[40vw] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+              <div className="glass-panel rounded-[1.75rem] md:rounded-[2rem] p-4 sm:p-6 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12 relative overflow-hidden border border-white/[0.06] hover:border-sky-500/30 transition-all duration-700">
+                {/* Multiple glow blobs */}
+                <div className="absolute top-[-20%] right-[-10%] w-[40vw] h-[40vw] bg-sky-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+                <div className="absolute bottom-[-15%] left-[-5%] w-[30vw] h-[30vw] bg-violet-600/10 rounded-full blur-[80px] pointer-events-none"></div>
+                {/* Noise texture */}
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay rounded-[2rem]"></div>
                 
-                <div className="md:w-1/2 flex flex-col justify-between">
+                <div className="w-full md:w-1/2 flex flex-col justify-between relative z-10">
                   <div>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">Let's Connect.</h2>
-                    <p className="text-white/60 text-base md:text-lg leading-relaxed mb-8 max-w-md">Have an exciting idea or an innovative product? Let's build something exceptional together. Drop me a message.</p>
+                    <motion.div 
+                      initial={{ width: 0 }} 
+                      whileInView={{ width: "60px" }} 
+                      transition={{ duration: 0.8, delay: 0.3 }} 
+                      viewport={{ once: true }}
+                      className="h-1 bg-gradient-to-r from-sky-400 via-blue-500 to-violet-500 rounded-full mb-4"
+                    />
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
+                      Let's <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-violet-400 text-transparent bg-clip-text">Connect</span>.
+                    </h2>
+                    <p className="text-white/50 text-sm sm:text-base md:text-lg leading-relaxed mb-6 md:mb-8 max-w-md">Have an exciting idea or an innovative product? Let's build something exceptional together.</p>
                   </div>
 
-                  <div className="space-y-6">
-                    <a href="mailto:dhumalajinkya2004@gmail.com" className="flex items-center gap-4 group">
-                      <div className="w-12 h-12 flex-shrink-0 rounded-full border border-white/10 flex justify-center items-center bg-white/5 group-hover:bg-blue-500 transition-colors">
-                        <MdEmail className="text-xl text-white group-hover:scale-110 transition-transform"/>
+                  <div className="space-y-4 sm:space-y-5">
+                    <motion.a href="mailto:dhumalajinkya2004@gmail.com" whileHover={{ x: 4 }} className="flex items-start sm:items-center gap-3 sm:gap-4 group p-3.5 sm:p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-sky-500/40 transition-all duration-500 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 rounded-xl border border-sky-500/30 flex justify-center items-center bg-gradient-to-br from-sky-500/20 to-blue-500/20 group-hover:shadow-[0_0_20px_rgba(14,165,233,0.3)] transition-all duration-500">
+                        <MdEmail className="text-xl text-sky-400 group-hover:scale-110 transition-transform"/>
                       </div>
-                      <div>
-                        <p className="text-sm text-white/40">Email me at</p>
-                        <p className="text-base md:text-lg font-medium text-white break-all">dhumalajinkya2004@gmail.com</p>
+                      <div className="relative z-10 min-w-0 flex-1">
+                        <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">Email me at</p>
+                        <p className="text-[13px] sm:text-sm md:text-base font-medium text-white break-words group-hover:text-sky-300 transition-colors">dhumalajinkya2004@gmail.com</p>
                       </div>
-                    </a>
+                      <div className="hidden sm:flex ml-auto w-8 h-8 rounded-full bg-white/[0.04] items-center justify-center group-hover:bg-sky-500/20 group-hover:text-sky-300 text-white/20 transition-all duration-300 flex-shrink-0 group-hover:rotate-45">
+                        <MdArrowOutward className="text-sm" />
+                      </div>
+                    </motion.a>
                     
-                    <div className="flex items-center gap-4 group">
-                      <div className="w-12 h-12 flex-shrink-0 rounded-full border border-white/10 flex justify-center items-center bg-white/5 group-hover:bg-purple-500 transition-colors">
-                        <MdLocationOn className="text-xl text-white group-hover:scale-110 transition-transform"/>
+                    <motion.div whileHover={{ x: 4 }} className="flex items-start sm:items-center gap-3 sm:gap-4 group p-3.5 sm:p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-violet-500/40 transition-all duration-500 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 rounded-xl border border-violet-500/30 flex justify-center items-center bg-gradient-to-br from-violet-500/20 to-blue-500/20 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-500">
+                        <MdLocationOn className="text-xl text-violet-400 group-hover:scale-110 transition-transform"/>
                       </div>
-                      <div>
-                        <p className="text-sm text-white/40">Based in</p>
-                        <p className="text-lg font-medium text-white">Mumbai & Bangalore, India</p>
+                      <div className="relative z-10 min-w-0 flex-1">
+                        <p className="text-xs text-white/40 uppercase tracking-wider font-semibold">Based in</p>
+                        <p className="text-[13px] sm:text-sm md:text-base font-medium text-white group-hover:text-violet-300 transition-colors">Mumbai & Bangalore, India</p>
                       </div>
+                    </motion.div>
+
+                    {/* Social Strip */}
+                    <div className="flex items-center gap-3 pt-2 sm:pt-4">
+                      {[ 
+                        { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", hoverColor: "hover:border-white/40 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.15)]" },
+                        { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", hoverColor: "hover:border-blue-400/40 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]" },
+                        { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", hoverColor: "hover:border-sky-400/40 hover:text-sky-400 hover:shadow-[0_0_15px_rgba(56,189,248,0.2)]" }
+                      ].map((item, i) => (
+                        <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className={`w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex justify-center items-center text-white/40 transition-all duration-300 ${item.hoverColor}`}>
+                          <item.icon size={16} />
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </div>
 
                 <div className="md:w-1/2 w-full relative z-10">
-                  <form action="https://formspree.io/f/xgvlgavv" method="POST" className="space-y-6 bg-black/40 backdrop-blur-xl p-8 rounded-3xl border border-white/5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                       <input type="text" name="first_name" required placeholder="First Name" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors" />
-                       <input type="text" name="last_name" required placeholder="Last Name" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors" />
+                  <form action="https://formspree.io/f/xgvlgavv" method="POST" className="space-y-4 sm:space-y-5 bg-black/40 backdrop-blur-xl p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/[0.06] hover:border-white/10 transition-all duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                       <input type="text" name="first_name" required placeholder="First Name" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
+                       <input type="text" name="last_name" required placeholder="Last Name" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
                     </div>
-                    <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors" />
-                    <textarea name="message" rows="4" required placeholder="Your Message" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors resize-none"></textarea>
+                    <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
+                    <textarea name="message" rows="4" required placeholder="Your Message" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 resize-none text-[13px] sm:text-sm"></textarea>
                     
-                    <button className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 group">
-                      Send Message <MdArrowOutward className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    <button className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-sky-500 via-blue-500 to-violet-500 text-white text-sm sm:text-base font-bold rounded-xl hover:shadow-[0_0_30px_rgba(14,165,233,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-2 group relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none"></div>
+                      <span className="relative z-10 flex items-center gap-2">Send Message <MdArrowOutward className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></span>
                     </button>
                   </form>
                 </div>
@@ -622,21 +925,40 @@ export default function App() {
             </motion.div>
           </section>
 
-          {/* Minimal Footer */}
-          <footer className="border-t border-white/5 py-10 px-6 mt-10">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="text-center md:text-left">
-                <h2 className="text-2xl font-bold tracking-tight text-white mb-1">Ajinkya.</h2>
-                <p className="text-sm text-white/40">Building ideas into reality.</p>
-              </div>
-              
-              <div className="flex gap-4">
-                <a href="https://github.com/Ajinkyaa2004" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex justify-center items-center hover:bg-white/10 transition-colors text-white/70 hover:text-white"><FaGithub size={18}/></a>
-                <a href="https://www.linkedin.com/in/ajinkya842004/" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex justify-center items-center hover:bg-white/10 transition-colors text-white/70 hover:text-white"><FaLinkedin size={18}/></a>
-              </div>
+          {/* Premium Footer */}
+          <footer className="relative py-14 px-6 mt-10 overflow-hidden">
+            {/* Top gradient border line */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+            {/* Subtle glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-indigo-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
-              <div className="text-sm text-white/30 text-center md:text-right">
-                © {new Date().getFullYear()} Ajinkya Dhumal.
+            <div className="max-w-6xl mx-auto relative z-10">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center md:text-left">
+                  <h2 className="text-2xl font-extrabold tracking-tight mb-1">
+                    <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 text-transparent bg-clip-text">Ajinkya.</span>
+                  </h2>
+                  <p className="text-sm text-white/40 font-medium">Building ideas into reality.</p>
+                </motion.div>
+                
+                <div className="flex items-center gap-3">
+                  {[ 
+                    { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", hoverColor: "hover:border-white/40 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]" },
+                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", hoverColor: "hover:border-blue-400/40 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]" },
+                    { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", hoverColor: "hover:border-red-400/40 hover:text-red-400 hover:shadow-[0_0_15px_rgba(248,113,113,0.15)]" }
+                  ].map((item, i) => (
+                    <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className={`w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex justify-center items-center text-white/40 transition-all duration-300 hover:scale-110 ${item.hoverColor}`}>
+                      <item.icon size={16} />
+                    </a>
+                  ))}
+                </div>
+
+                <div className="text-center md:text-right">
+                  <p className="text-xs text-white/60 font-mono tracking-wider">
+                    © {new Date().getFullYear()} Ajinkya Dhumal. All rights reserved.
+                  </p>
+                  <p className="text-[10px] text-white/60 mt-1 uppercase tracking-widest font-semibold">Designed & Built with ❤️</p>
+                </div>
               </div>
             </div>
           </footer>
