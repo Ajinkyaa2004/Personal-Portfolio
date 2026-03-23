@@ -46,6 +46,18 @@
   animation: pulse-slow 8s infinite ease-in-out;
 }
 
+@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-pulse-slow,
+  .animate-ping {
+    animation: none !important;
+  }
+
+  .glass-panel {
+    backdrop-filter: blur(8px);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

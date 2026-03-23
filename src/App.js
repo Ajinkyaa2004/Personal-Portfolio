@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
-import Lottie from "lottie-react";
 import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { FaGithub, FaLinkedin, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
 import { SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
 import { DiJava, DiScrum } from "react-icons/di";
 import { useInView } from "react-intersection-observer";
 import { MdEmail, MdLocationOn, MdArrowOutward, MdWork } from "react-icons/md";
 import { GraduationCap } from "lucide-react";
+
+const Lottie = lazy(() => import("lottie-react"));
+const DotLottieReact = lazy(() =>
+  import("@lottiefiles/dotlottie-react").then((mod) => ({ default: mod.DotLottieReact }))
+);
 
 const certifications = [
   { title: "IBM Certified Professional – Product Management", provider: "Coursera", link: "https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing", detail: "Credential from IBM covering product lifecycle, strategy, and stakeholder management.", icon: <SiCoursera className="text-blue-500 text-xl" /> },
@@ -107,12 +110,35 @@ const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) =
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const [lowPerfMode, setLowPerfMode] = useState(false);
   const timelineRef = useRef(null);
   const timelineTrackRef = useRef(null);
   const { scrollYProgress: timelineScroll } = useScroll({ target: timelineTrackRef, offset: ["start center", "end center"] });
   const timelineHeight = useTransform(timelineScroll, [0, 1], ["0%", "100%"]);
   const timelineGlowYRaw = useTransform(timelineScroll, [0, 1], ["2%", "98%"]);
-  const timelineGlowY = useSpring(timelineGlowYRaw, { damping: 15, mass: 0.3, stiffness: 80 });
+  const timelineGlowY = useSpring(timelineGlowYRaw, lowPerfMode ? { damping: 26, mass: 0.6, stiffness: 120 } : { damping: 15, mass: 0.3, stiffness: 80 });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePerfMode = () => {
+      const prefersReduced = mediaQuery.matches;
+      const lowCpu = typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4;
+      const lowMemory = typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4;
+      const smallViewport = window.innerWidth < 1024;
+      setLowPerfMode(prefersReduced || (smallViewport && (lowCpu || lowMemory)));
+    };
+
+    updatePerfMode();
+    mediaQuery.addEventListener("change", updatePerfMode);
+    window.addEventListener("resize", updatePerfMode, { passive: true });
+
+    return () => {
+      mediaQuery.removeEventListener("change", updatePerfMode);
+      window.removeEventListener("resize", updatePerfMode);
+    };
+  }, []);
 
   return (
     <div className="font-sans min-h-screen relative overflow-hidden bg-[#050505] text-slate-200 selection:bg-indigo-500/30 selection:text-white">
@@ -126,12 +152,16 @@ export default function App() {
           <Navbar />
 
           {/* Ambient Background Orbs */}
-          <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-600/20 rounded-full filter blur-[100px] pointer-events-none animate-pulse-slow"></div>
-          <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full filter blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-          <div className="fixed top-[40%] left-[20%] w-[30vw] h-[30vw] bg-purple-600/15 rounded-full filter blur-[120px] pointer-events-none animate-blob"></div>
+          {!lowPerfMode && (
+            <>
+              <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-600/20 rounded-full filter blur-[100px] pointer-events-none animate-pulse-slow"></div>
+              <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full filter blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+              <div className="fixed top-[40%] left-[20%] w-[30vw] h-[30vw] bg-purple-600/15 rounded-full filter blur-[120px] pointer-events-none animate-blob"></div>
+            </>
+          )}
 
           {/* Hero Section */}
-          <section id="hero" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
+          <section id="hero" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}>
             <div className="flex-1 flex flex-col items-start px-4 md:px-10 justify-center space-y-6 z-20 w-full max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -184,13 +214,19 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.5, type: "spring" }}
               className="flex-1 flex justify-center items-center mt-12 md:mt-0 z-10 relative"
             >
-              <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>
-              <Lottie animationData={DeveloperFrontEnd} loop={true} className="w-full max-w-lg relative drop-shadow-2xl" />
+              {!lowPerfMode && <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>}
+              {lowPerfMode ? (
+                <div className="w-full max-w-lg aspect-square rounded-full bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-cyan-500/15 border border-white/10" />
+              ) : (
+                <Suspense fallback={<div className="w-full max-w-lg aspect-square rounded-full bg-white/5 border border-white/10" />}>
+                  <Lottie animationData={DeveloperFrontEnd} loop={true} className="w-full max-w-lg relative drop-shadow-2xl" />
+                </Suspense>
+              )}
             </motion.div>
           </section>
 
           {/* About / Bento Grid */}
-          <section id="about" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+          <section id="about" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
@@ -345,7 +381,7 @@ export default function App() {
           </section>
 
           {/* Education Timeline */}
-          <section id="education" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+          <section id="education" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -left-32 w-72 h-72 bg-amber-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
@@ -411,7 +447,7 @@ export default function App() {
           </section>
 
           {/* Projects Gallery */}
-          <section id="projects" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+          <section id="projects" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
@@ -527,7 +563,7 @@ export default function App() {
           </section>
 
           {/* Skills Grid */}
-          <section id="skills" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+          <section id="skills" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
@@ -638,7 +674,13 @@ export default function App() {
                   </div>
                   
                   <div className="relative z-10 w-full md:w-1/2 flex justify-center mt-6 md:mt-0 opacity-90 group-hover:opacity-100 group-hover:scale-[1.15] drop-shadow-[0_0_25px_rgba(6,182,212,0.3)] transition-all duration-700">
-                     <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] scale-110" />
+                     {lowPerfMode ? (
+                       <div className="w-full max-w-[420px] aspect-square rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-white/10" />
+                     ) : (
+                       <Suspense fallback={<div className="w-full max-w-[420px] aspect-square rounded-full bg-white/5 border border-white/10" />}>
+                         <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] scale-110" />
+                       </Suspense>
+                     )}
                   </div>
                 </motion.div>
               </div>
@@ -646,7 +688,7 @@ export default function App() {
           </section>
 
           {/* Achievements & Certifications — Premium Redesign */}
-           <section id="achievements" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+           <section id="achievements" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
@@ -834,7 +876,7 @@ export default function App() {
            </section>
 
           {/* Contact Section */}
-          <section id="contact" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10">
+          <section id="contact" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[100px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
