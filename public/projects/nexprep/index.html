@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexPrep AI — AI-Powered Mock Interview Platform | Ajinkya Dhumal</title>
+  <meta name="description" content="NexPrep AI is an AI-powered mock interview platform with voice simulation, real-time feedback, and ATS resume checker. Built with Next.js, React, and Firebase." />
+  <link rel="canonical" href="https://itsajinkya.vercel.app/projects/nexprep" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://itsajinkya.vercel.app/projects/nexprep" />
+  <meta property="og:title" content="NexPrep AI — AI-Powered Mock Interview Platform | Ajinkya Dhumal" />
+  <meta property="og:description" content="NexPrep AI is an AI-powered mock interview platform with voice simulation, real-time feedback, and ATS resume checker. Built with Next.js, React, and Firebase." />
+  <meta property="og:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NexPrep AI — AI-Powered Mock Interview Platform | Ajinkya Dhumal" />
+  <meta name="twitter:description" content="NexPrep AI is an AI-powered mock interview platform with voice simulation, real-time feedback, and ATS resume checker. Built with Next.js, React, and Firebase." />
+  <meta name="twitter:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "NexPrep AI",
+    "description": "AI-powered mock interview platform with voice simulation, real-time feedback, and ATS resume checker.",
+    "url": "https://nexprep-ai.vercel.app/",
+    "author": { "@type": "Person", "name": "Ajinkya Dhumal", "url": "https://itsajinkya.vercel.app" },
+    "applicationCategory": "WebApplication",
+    "operatingSystem": "Web",
+    "programmingLanguage": ["Next.js", "React", "Firebase", "MongoDB", "Gemini AI"]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #050505; color: #e2e8f0; line-height: 1.6; }
+    nav { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+    nav a { color: #fff; font-weight: 800; font-size: 1.1rem; text-decoration: none; letter-spacing: -0.02em; }
+    nav a span { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    nav .back { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; }
+    nav .back:hover { color: #fff; }
+    .container { max-width: 800px; margin: 0 auto; padding: 48px 24px 80px; }
+    .breadcrumb { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    .breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+    .tag { display: inline-block; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #60a5fa; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { font-size: 1rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; max-width: 600px; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tech-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: monospace; font-weight: 600; }
+    .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn { display: inline-block; padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #3b82f6, #6366f1); color: #fff; }
+    .btn-secondary { border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; background: rgba(255,255,255,0.04); }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); margin-bottom: 40px; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: #60a5fa; margin-top: 36px; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.55); line-height: 1.75; margin-bottom: 12px; }
+    ul { color: rgba(255,255,255,0.55); line-height: 1.75; padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Ajinkya<span>.</span></a>
+    <a href="/#projects" class="back">← Back to Portfolio</a>
+  </nav>
+
+  <div class="container">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/#projects">Projects</a> / NexPrep AI</p>
+
+    <span class="tag">AI Platform</span>
+    <h1>NexPrep AI</h1>
+    <p class="subtitle">Mock interview platform simulating human voices with real-time feedback &amp; ATS checker.</p>
+
+    <div class="tech-list">
+      <span class="tech-pill">Next.js</span>
+      <span class="tech-pill">React</span>
+      <span class="tech-pill">Firebase</span>
+      <span class="tech-pill">MongoDB</span>
+      <span class="tech-pill">Gemini AI</span>
+      <span class="tech-pill">Web Speech API</span>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="https://nexprep-ai.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Live Demo</a>
+      <a href="/#projects" class="btn btn-secondary">← All Projects</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Overview</h2>
+    <p>NexPrep AI is a full-stack AI-powered mock interview platform designed to help job seekers prepare for technical and behavioral interviews. The platform simulates realistic interview scenarios using voice synthesis technology, enabling candidates to practice with human-like AI interviewers that adapt to their responses in real time.</p>
+    <p>Unlike passive preparation tools, NexPrep AI creates an active, pressure-tested environment where candidates receive immediate, structured feedback on their answers — covering content quality, communication clarity, and keyword alignment with job descriptions.</p>
+
+    <h2>Problem It Solves</h2>
+    <p>Traditional interview preparation is passive — candidates read questions from books or watch videos, but never experience the pressure of a real conversation. This gap between preparation and reality leads to interview anxiety and poor performance even for technically strong candidates.</p>
+    <p>NexPrep AI bridges this gap by creating a live, simulated interview environment that mirrors the pacing, follow-up questions, and evaluative pressure of actual interviews. By practicing in a realistic setting, candidates build both technical confidence and communication fluency simultaneously.</p>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Voice-simulated AI interviews with natural conversation flow and adaptive follow-ups</li>
+      <li>Real-time feedback engine analyzing answer quality, technical accuracy, and keyword density</li>
+      <li>ATS resume checker that scores resumes against specific job descriptions</li>
+      <li>Role-specific question banks covering frontend, backend, DSA, and product management</li>
+      <li>Session recording and performance analytics dashboard tracking progress over time</li>
+      <li>Customizable difficulty levels from entry-level to senior engineering interviews</li>
+    </ul>
+
+    <h2>Tech Stack</h2>
+    <p>Built with Next.js App Router for server-side rendering and optimal performance. Firebase handles authentication and real-time data synchronization across sessions. MongoDB stores interview sessions, question banks, and user analytics with efficient query patterns. The AI layer uses Google's Gemini API for generating contextual follow-up questions and evaluating answer completeness. Web Speech API enables voice input and output directly in the browser without additional plugins.</p>
+
+    <h2>Outcome</h2>
+    <p>NexPrep AI demonstrates the practical integration of LLM APIs with real-time web technologies to solve a genuine pain point in the job market. The platform showcases end-to-end product thinking — from identifying a user problem, designing the solution architecture, building the technical implementation, and iterating based on real user feedback. The project highlights skills in AI integration, real-time systems design, and user-centered product development.</p>
+  </div>
+
+  <footer>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+  </footer>
+</body>
+</html>

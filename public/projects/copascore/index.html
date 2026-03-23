@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CopaScore AI — Football Analytics with Live Data &amp; LLM Predictions | Ajinkya Dhumal</title>
+  <meta name="description" content="CopaScore AI delivers football analytics with live match data from SportsMonk API and AI-powered predictions from GROQ LLM. Built with Next.js and React." />
+  <link rel="canonical" href="https://itsajinkya.vercel.app/projects/copascore" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://itsajinkya.vercel.app/projects/copascore" />
+  <meta property="og:title" content="CopaScore AI — Football Analytics &amp; LLM Predictions | Ajinkya Dhumal" />
+  <meta property="og:description" content="CopaScore AI delivers football analytics with live match data from SportsMonk API and AI-powered predictions from GROQ LLM. Built with Next.js and React." />
+  <meta property="og:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CopaScore AI — Football Analytics &amp; LLM Predictions | Ajinkya Dhumal" />
+  <meta name="twitter:description" content="CopaScore AI delivers football analytics with live match data from SportsMonk API and AI-powered predictions from GROQ LLM. Built with Next.js and React." />
+  <meta name="twitter:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CopaScore AI",
+    "description": "Football analytics platform using SportsMonk API and GROQ LLM for live match data and AI-powered predictions.",
+    "url": "https://copascore-with-llm.onrender.com/",
+    "author": { "@type": "Person", "name": "Ajinkya Dhumal", "url": "https://itsajinkya.vercel.app" },
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Web",
+    "programmingLanguage": ["Next.js", "React", "Tailwind CSS", "Node.js"]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #050505; color: #e2e8f0; line-height: 1.6; }
+    nav { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+    nav a { color: #fff; font-weight: 800; font-size: 1.1rem; text-decoration: none; letter-spacing: -0.02em; }
+    nav a span { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    nav .back { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; }
+    nav .back:hover { color: #fff; }
+    .container { max-width: 800px; margin: 0 auto; padding: 48px 24px 80px; }
+    .breadcrumb { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    .breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+    .tag { display: inline-block; background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); color: #fb923c; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { font-size: 1rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; max-width: 600px; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tech-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: monospace; font-weight: 600; }
+    .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn { display: inline-block; padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; }
+    .btn-secondary { border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; background: rgba(255,255,255,0.04); }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); margin-bottom: 40px; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: #fb923c; margin-top: 36px; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.55); line-height: 1.75; margin-bottom: 12px; }
+    ul { color: rgba(255,255,255,0.55); line-height: 1.75; padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Ajinkya<span>.</span></a>
+    <a href="/#projects" class="back">← Back to Portfolio</a>
+  </nav>
+
+  <div class="container">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/#projects">Projects</a> / CopaScore AI</p>
+
+    <span class="tag">Analytics</span>
+    <h1>CopaScore AI</h1>
+    <p class="subtitle">Advanced football analytics using SportsMonk API &amp; GROQ LLM for live predictions.</p>
+
+    <div class="tech-list">
+      <span class="tech-pill">Next.js</span>
+      <span class="tech-pill">React</span>
+      <span class="tech-pill">Tailwind CSS</span>
+      <span class="tech-pill">Node.js</span>
+      <span class="tech-pill">SportsMonk API</span>
+      <span class="tech-pill">GROQ LLM</span>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="https://copascore-with-llm.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Live Demo</a>
+      <a href="/#projects" class="btn btn-secondary">← All Projects</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Overview</h2>
+    <p>CopaScore AI is a football analytics platform that combines live match data with large language model reasoning to deliver intelligent insights about ongoing and upcoming football matches. By integrating SportsMonk API's comprehensive football database with GROQ's fast LLM inference, the platform provides contextual analysis that goes beyond raw statistics.</p>
+    <p>The platform transforms structured sports data into natural language narratives, enabling fans and analysts to understand not just what happened in a match, but why — covering team form, head-to-head records, and key player contributions.</p>
+
+    <h2>Problem It Solves</h2>
+    <p>Football fans and analysts want more than raw statistics — they want context, narrative, and predictions that factor in recent form, squad depth, and tactical patterns. Existing analytics tools either require expensive subscriptions or deliver dry numbers without the contextual interpretation that makes sports data genuinely useful.</p>
+    <p>CopaScore AI democratizes sports analytics by combining rich, reliable data from SportsMonk with conversational AI analysis powered by GROQ, making professional-grade football intelligence accessible through a clean, fast web interface.</p>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Live match scores with real-time event tracking and minute-by-minute updates</li>
+      <li>AI-generated match previews with form analysis and head-to-head breakdowns</li>
+      <li>Player performance comparisons using advanced statistics and percentile rankings</li>
+      <li>League standings with form indicators and recent result visualizations</li>
+      <li>Natural language match summaries and post-match analysis generated by GROQ LLM</li>
+      <li>Historical head-to-head records with trend visualization across multiple seasons</li>
+    </ul>
+
+    <h2>Tech Stack</h2>
+    <p>The frontend uses Next.js App Router for server-side rendering of match data, ensuring fast initial load times even for data-heavy analytics pages. SportsMonk API provides comprehensive football data including live scores, player statistics, and historical records across major European leagues. GROQ's LLM API generates accurate, contextual narrative analysis from structured data inputs with minimal latency. A Node.js caching layer reduces API calls and maintains responsiveness during high-traffic match periods.</p>
+
+    <h2>Outcome</h2>
+    <p>CopaScore AI showcases the power of combining structured sports data APIs with LLM reasoning for real-world applications. Key engineering challenges included designing prompt strategies to generate accurate sports analysis without hallucination, building an efficient caching layer to handle API rate limits, and optimizing Next.js data fetching patterns for near-real-time sports data updates.</p>
+  </div>
+
+  <footer>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godrej Reserve — Enterprise Real Estate Landing Platform | Ajinkya Dhumal</title>
+  <meta name="description" content="Enterprise real estate landing platform for Godrej Properties built for lead generation, property showcasing, and scheduling APIs. Built with Next.js and React." />
+  <link rel="canonical" href="https://itsajinkya.vercel.app/projects/godrej-properties" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://itsajinkya.vercel.app/projects/godrej-properties" />
+  <meta property="og:title" content="Godrej Reserve — Enterprise Real Estate Landing Platform | Ajinkya Dhumal" />
+  <meta property="og:description" content="Enterprise real estate landing platform for Godrej Properties built for lead generation, property showcasing, and scheduling APIs. Built with Next.js and React." />
+  <meta property="og:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Godrej Reserve — Enterprise Real Estate Landing Platform | Ajinkya Dhumal" />
+  <meta name="twitter:description" content="Enterprise real estate landing platform for Godrej Properties built for lead generation, property showcasing, and scheduling APIs. Built with Next.js and React." />
+  <meta name="twitter:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Godrej Properties Reserve",
+    "description": "Enterprise real estate landing platform for Godrej Properties for lead generation, property showcasing, and appointment scheduling.",
+    "url": "https://www.godrejreserve.org.in/",
+    "author": { "@type": "Person", "name": "Ajinkya Dhumal", "url": "https://itsajinkya.vercel.app" },
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "programmingLanguage": ["Next.js", "React", "Tailwind CSS", "Node.js"]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #050505; color: #e2e8f0; line-height: 1.6; }
+    nav { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+    nav a { color: #fff; font-weight: 800; font-size: 1.1rem; text-decoration: none; letter-spacing: -0.02em; }
+    nav a span { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    nav .back { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; }
+    nav .back:hover { color: #fff; }
+    .container { max-width: 800px; margin: 0 auto; padding: 48px 24px 80px; }
+    .breadcrumb { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    .breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+    .tag { display: inline-block; background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); color: #c084fc; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { font-size: 1rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; max-width: 600px; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tech-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: monospace; font-weight: 600; }
+    .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn { display: inline-block; padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #a855f7, #7c3aed); color: #fff; }
+    .btn-secondary { border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; background: rgba(255,255,255,0.04); }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); margin-bottom: 40px; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: #c084fc; margin-top: 36px; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.55); line-height: 1.75; margin-bottom: 12px; }
+    ul { color: rgba(255,255,255,0.55); line-height: 1.75; padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Ajinkya<span>.</span></a>
+    <a href="/#projects" class="back">← Back to Portfolio</a>
+  </nav>
+
+  <div class="container">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/#projects">Projects</a> / Godrej Properties</p>
+
+    <span class="tag">Enterprise</span>
+    <h1>Godrej Properties Reserve</h1>
+    <p class="subtitle">High-performance real estate landing platform for lead generation &amp; robust scheduling APIs.</p>
+
+    <div class="tech-list">
+      <span class="tech-pill">Next.js</span>
+      <span class="tech-pill">React</span>
+      <span class="tech-pill">Tailwind CSS</span>
+      <span class="tech-pill">Node.js</span>
+      <span class="tech-pill">REST APIs</span>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="https://www.godrejreserve.org.in/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Live Site</a>
+      <a href="/#projects" class="btn btn-secondary">← All Projects</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Overview</h2>
+    <p>Godrej Properties Reserve is a high-performance enterprise landing platform built for one of India's most trusted real estate brands. The platform serves as the primary digital touchpoint for the Godrej Reserve project, designed to convert visitor interest into qualified leads through a seamless, persuasive user journey across all device types.</p>
+    <p>Every aspect of the platform — from page load performance to form interaction design — was optimized to maximize lead capture quality and minimize drop-off rates across the conversion funnel.</p>
+
+    <h2>Problem It Solves</h2>
+    <p>Real estate landing pages often suffer from slow load times, poor mobile experience, and disconnected lead management workflows. For a premium brand like Godrej Properties, every extra second of load time and every friction point in the inquiry flow directly impacts lead quality and conversion rates.</p>
+    <p>The challenge was to build an enterprise-grade platform that reflects Godrej's premium positioning, loads quickly on all devices and networks, and integrates seamlessly with the client's existing CRM and scheduling infrastructure.</p>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Pixel-perfect responsive design matching Godrej's brand guidelines across all breakpoints</li>
+      <li>Lead capture system with CRM integration via REST APIs for real-time data sync</li>
+      <li>Site visit scheduling module with calendar availability and confirmation workflows</li>
+      <li>Interactive property showcase with amenity highlights and location mapping</li>
+      <li>SEO-optimized content structure with schema markup for property listings</li>
+      <li>Performance-first architecture achieving fast Core Web Vitals across all pages</li>
+    </ul>
+
+    <h2>Tech Stack</h2>
+    <p>Built with Next.js for server-side rendering, ensuring all pages are fully crawlable by search engines and load quickly for users regardless of device or network speed. Tailwind CSS powers the responsive layout with custom brand-compliant color tokens and spacing scales. The backend scheduling and lead management APIs are built with Node.js, integrating with the client's existing CRM infrastructure to maintain a seamless lead flow from first click to site visit.</p>
+
+    <h2>Outcome</h2>
+    <p>The Godrej Properties platform is a live, production website serving real customers and generating qualified leads for one of India's top real estate developers. The project developed skills in enterprise client management, brand-compliant technical implementation, and building high-performance landing experiences where business outcomes are directly measurable through conversion data.</p>
+  </div>
+
+  <footer>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Algo Trade — Algorithmic Trading Platform for Indian Markets | Ajinkya Dhumal</title>
+  <meta name="description" content="Smart Algo Trade is a production-grade algorithmic trading platform for NSE and BSE markets using Kite Connect API, with strategy backtesting and live execution." />
+  <link rel="canonical" href="https://itsajinkya.vercel.app/projects/smart-algo-trade" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://itsajinkya.vercel.app/projects/smart-algo-trade" />
+  <meta property="og:title" content="Smart Algo Trade — Algorithmic Trading Platform | Ajinkya Dhumal" />
+  <meta property="og:description" content="Smart Algo Trade is a production-grade algorithmic trading platform for NSE and BSE markets using Kite Connect API, with strategy backtesting and live execution." />
+  <meta property="og:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Smart Algo Trade — Algorithmic Trading Platform | Ajinkya Dhumal" />
+  <meta name="twitter:description" content="Smart Algo Trade is a production-grade algorithmic trading platform for NSE and BSE markets using Kite Connect API, with strategy backtesting and live execution." />
+  <meta name="twitter:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Smart Algo Trade",
+    "description": "Production-grade algorithmic trading platform for Indian stock markets using Kite Connect API with backtesting and live execution.",
+    "url": "https://github.com/Ajinkyaa2004/Smart-Algo-Trading",
+    "author": { "@type": "Person", "name": "Ajinkya Dhumal", "url": "https://itsajinkya.vercel.app" },
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "programmingLanguage": ["React", "Node.js", "MongoDB", "Tailwind CSS"]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #050505; color: #e2e8f0; line-height: 1.6; }
+    nav { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+    nav a { color: #fff; font-weight: 800; font-size: 1.1rem; text-decoration: none; letter-spacing: -0.02em; }
+    nav a span { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    nav .back { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; }
+    nav .back:hover { color: #fff; }
+    .container { max-width: 800px; margin: 0 auto; padding: 48px 24px 80px; }
+    .breadcrumb { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    .breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+    .tag { display: inline-block; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #34d399; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { font-size: 1rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; max-width: 600px; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tech-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: monospace; font-weight: 600; }
+    .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn { display: inline-block; padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+    .btn-secondary { border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; background: rgba(255,255,255,0.04); }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); margin-bottom: 40px; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: #34d399; margin-top: 36px; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.55); line-height: 1.75; margin-bottom: 12px; }
+    ul { color: rgba(255,255,255,0.55); line-height: 1.75; padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Ajinkya<span>.</span></a>
+    <a href="/#projects" class="back">← Back to Portfolio</a>
+  </nav>
+
+  <div class="container">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/#projects">Projects</a> / Smart Algo Trade</p>
+
+    <span class="tag">FinTech</span>
+    <h1>Smart Algo Trade</h1>
+    <p class="subtitle">Production algorithmic trading platform for Indian Stock Market via Kite Connect API.</p>
+
+    <div class="tech-list">
+      <span class="tech-pill">React</span>
+      <span class="tech-pill">Tailwind CSS</span>
+      <span class="tech-pill">Framer Motion</span>
+      <span class="tech-pill">Node.js</span>
+      <span class="tech-pill">MongoDB</span>
+      <span class="tech-pill">Kite Connect API</span>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="https://github.com/Ajinkyaa2004/Smart-Algo-Trading" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub</a>
+      <a href="/#projects" class="btn btn-secondary">← All Projects</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Overview</h2>
+    <p>Smart Algo Trade is a production-grade algorithmic trading platform built for the Indian stock market. It integrates with the Zerodha Kite Connect API to enable automated strategy execution, real-time portfolio monitoring, and historical data analysis across NSE and BSE exchanges.</p>
+    <p>The platform is designed for retail traders who want to run algorithm-based strategies without relying on expensive institutional tools or fragile script-based automation. It brings professional-grade infrastructure to individual traders through a clean, intuitive interface.</p>
+
+    <h2>Problem It Solves</h2>
+    <p>Retail traders in India lack access to reliable, affordable algorithmic trading infrastructure. While institutional traders benefit from sophisticated platforms, retail investors are limited to manual execution or fragile automation scripts that break frequently and lack risk controls.</p>
+    <p>Smart Algo Trade democratizes algo trading by providing a robust, API-driven platform that any Zerodha account holder can use to implement, backtest, and deploy trading strategies — all without writing low-level broker API code from scratch.</p>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Live market data streaming via Kite Connect WebSocket with sub-second latency</li>
+      <li>Strategy backtesting engine using historical OHLCV data from NSE/BSE</li>
+      <li>Real-time portfolio dashboard with live P&amp;L, position tracking, and order history</li>
+      <li>Risk management controls including configurable stop-loss, target, and position sizing</li>
+      <li>Multiple built-in strategies: momentum, mean-reversion, and moving average crossover</li>
+      <li>Telegram integration for instant trade execution and position update alerts</li>
+    </ul>
+
+    <h2>Tech Stack</h2>
+    <p>The frontend is built with React and Tailwind CSS, with Framer Motion handling smooth chart transitions and dashboard state animations. The backend uses Node.js with Express to manage Kite Connect API authentication, order routing, and WebSocket data relay. MongoDB stores strategy configurations, historical trade records, and performance metrics. Real-time data synchronization is maintained through persistent WebSocket connections between the exchange feed and the dashboard UI.</p>
+
+    <h2>Outcome</h2>
+    <p>Smart Algo Trade demonstrates the complexity of building real-time financial applications where latency, reliability, and correctness are critical. The project developed skills in WebSocket reconnection logic, API rate limit handling, concurrent order management, and building auditable trade history systems — capabilities directly applicable to production FinTech development and quantitative finance engineering roles.</p>
+  </div>
+
+  <footer>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+  </footer>
+</body>
+</html>

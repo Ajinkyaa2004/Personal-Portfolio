@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skillquest IFA — Gamified Hiring &amp; Cognitive Skill Evaluation Platform | Ajinkya Dhumal</title>
+  <meta name="description" content="Skillquest IFA replaces traditional resumes with skill-based evaluation through gamified challenges. A hiring platform measuring cognitive and problem-solving ability." />
+  <link rel="canonical" href="https://itsajinkya.vercel.app/projects/skillquest-ifa" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://itsajinkya.vercel.app/projects/skillquest-ifa" />
+  <meta property="og:title" content="Skillquest IFA — Gamified Hiring &amp; Cognitive Skill Evaluation Platform" />
+  <meta property="og:description" content="Skillquest IFA replaces traditional resumes with skill-based evaluation through gamified challenges. A hiring platform measuring cognitive and problem-solving ability." />
+  <meta property="og:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Skillquest IFA — Gamified Hiring &amp; Evaluation Platform" />
+  <meta name="twitter:description" content="Skillquest IFA replaces traditional resumes with skill-based evaluation through gamified challenges. A hiring platform measuring cognitive and problem-solving ability." />
+  <meta name="twitter:image" content="https://itsajinkya.vercel.app/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Skillquest IFA",
+    "description": "Gamified hiring platform that evaluates candidates through cognitive challenges, replacing traditional resumes with skill-based scoring.",
+    "url": "https://ifa-hiring-platform.vercel.app",
+    "author": { "@type": "Person", "name": "Ajinkya Dhumal", "url": "https://itsajinkya.vercel.app" },
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "programmingLanguage": ["Next.js", "React", "Tailwind CSS", "PostgreSQL", "Drizzle ORM"]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #050505; color: #e2e8f0; line-height: 1.6; }
+    nav { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+    nav a { color: #fff; font-weight: 800; font-size: 1.1rem; text-decoration: none; letter-spacing: -0.02em; }
+    nav a span { background: linear-gradient(to right, #60a5fa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    nav .back { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5); text-decoration: none; }
+    nav .back:hover { color: #fff; }
+    .container { max-width: 800px; margin: 0 auto; padding: 48px 24px 80px; }
+    .breadcrumb { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    .breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+    .tag { display: inline-block; background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.25); color: #22d3ee; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { font-size: 1rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; max-width: 600px; }
+    .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tech-pill { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: monospace; font-weight: 600; }
+    .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn { display: inline-block; padding: 11px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; }
+    .btn-secondary { border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; background: rgba(255,255,255,0.04); }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); margin-bottom: 40px; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: #22d3ee; margin-top: 36px; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.55); line-height: 1.75; margin-bottom: 12px; }
+    ul { color: rgba(255,255,255,0.55); line-height: 1.75; padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Ajinkya<span>.</span></a>
+    <a href="/#projects" class="back">← Back to Portfolio</a>
+  </nav>
+
+  <div class="container">
+    <p class="breadcrumb"><a href="/">Home</a> / <a href="/#projects">Projects</a> / Skillquest IFA</p>
+
+    <span class="tag">Enterprise</span>
+    <h1>Skillquest IFA</h1>
+    <p class="subtitle">Gamified hiring platform evaluating real cognitive and problem-solving skills — built for Insight Fusion Analytics.</p>
+
+    <div class="tech-list">
+      <span class="tech-pill">Next.js</span>
+      <span class="tech-pill">React</span>
+      <span class="tech-pill">Tailwind CSS</span>
+      <span class="tech-pill">Node.js</span>
+      <span class="tech-pill">PostgreSQL</span>
+      <span class="tech-pill">Drizzle ORM</span>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="https://ifa-hiring-platform.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Live Platform</a>
+      <a href="/#projects" class="btn btn-secondary">← All Projects</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Overview</h2>
+    <p>Skillquest IFA is a next-generation hiring platform that replaces traditional CV screening with gamified cognitive challenges and skill assessments. Built for Insight Fusion Analytics, the platform evaluates candidates on real-world problem-solving ability, analytical thinking, and domain knowledge — metrics proven to be more predictive of job performance than résumés alone.</p>
+    <p>The platform creates an objective, standardized evaluation pipeline that surfaces the best candidates regardless of educational background or presentation skills, enabling more equitable and effective hiring decisions.</p>
+
+    <h2>Problem It Solves</h2>
+    <p>Traditional hiring processes are plagued by résumé bias, inefficient screening, and poor signal quality. Hiring managers spend hours reviewing applications that look identical on paper, with no reliable way to differentiate candidates based on actual ability. Standard interviews also suffer from inconsistency and interviewer bias.</p>
+    <p>Skillquest IFA solves this by creating a data-driven, tamper-resistant evaluation pipeline that scores candidates on actual performance across standardized challenges — giving hiring managers a clear, quantitative signal for every candidate who completes the assessment.</p>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Multi-stage gamified assessment pipeline with adaptive difficulty progression</li>
+      <li>Domain-specific challenge sets for analytics, technical, and business reasoning roles</li>
+      <li>Real-time scoring engine with automatic percentile ranking against all candidates</li>
+      <li>Candidate dashboard showing progress, performance breakdown, and improvement areas</li>
+      <li>Employer dashboard with side-by-side candidate comparison and scoring transparency</li>
+      <li>Automated shortlisting based on configurable scoring thresholds per role</li>
+    </ul>
+
+    <h2>Tech Stack</h2>
+    <p>Built with Next.js App Router for SSR and dynamic routing, ensuring fast page loads and full SEO coverage. PostgreSQL with Drizzle ORM provides type-safe, efficient data access for candidate records and assessment results with strong referential integrity. The assessment engine runs server-side to prevent client-side manipulation of answers or timing. React powers the gamified challenge interfaces with smooth transitions between question stages. Deployed on Vercel for globally distributed performance.</p>
+
+    <h2>Outcome</h2>
+    <p>Skillquest IFA is a live enterprise product used in actual hiring workflows at Insight Fusion Analytics. The project developed deep skills in building fair assessment architectures, designing tamper-proof server-side evaluation systems, and creating a user experience that motivates authentic candidate performance — all core challenges in building effective HR technology at scale.</p>
+  </div>
+
+  <footer>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+  </footer>
+</body>
+</html>
