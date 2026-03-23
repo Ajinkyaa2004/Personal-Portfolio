@@ -988,7 +988,7 @@ export default function App() {
                   <p className="text-xs text-white/60 font-mono tracking-wider">
                     © {new Date().getFullYear()} Ajinkya Dhumal. All rights reserved.
                   </p>
-                  <p className="text-[10px] text-white/60 mt-1 uppercase tracking-widest font-semibold">Designed & Built with ❤️</p>
+                  <p className="text-[10px] text-white/60 mt-1 uppercase tracking-widest font-semibold">Crafted for impact...</p>
                 </div>
               </div>
             </div>
