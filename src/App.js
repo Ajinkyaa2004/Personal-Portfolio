@@ -1,1368 +1,648 @@
-"use client";
-
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
 import Lottie from "lottie-react";
 import DeveloperFrontEnd from "./lottie/DeveloperFrontEnd.json";
-import robotAnim from "./lottie/Robotsayshello.json";
-import BookLoading from "./lottie/Bookloading.json";
-import { FaGithub, FaJs, FaDatabase } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact } from "react-icons/si";
-import { SiMongodb } from 'react-icons/si';
-import { SiHtml5, SiCss3, SiJavascript } from 'react-icons/si';
-import { SiFramer, } from 'react-icons/si';
-import { SiSpringboot } from "react-icons/si";
-import { DiJava, DiMysql } from 'react-icons/di';
-import { FaDesktop } from 'react-icons/fa';
-import { FaCertificate, FaTrophy, FaJava, FaEnvelope } from "react-icons/fa";
-import { SiCoursera, SiAdobe, SiGoogleanalytics } from "react-icons/si";
-import GearAnim from "./lottie/GearsLottieAnimation.json";
-import { SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion } from "react-icons/si";
-import { DiScrum } from "react-icons/di";
-import { FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools } from "react-icons/fa";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { FaGithub, FaJs, FaDatabase, FaLinkedin, FaInstagram, FaTwitter, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaDesktop, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaTools, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
+import { SiVercel, SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiNotion } from "react-icons/si";
+import { DiJava, DiMysql, DiScrum } from "react-icons/di";
 import { useInView } from "react-intersection-observer";
-import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
+import { MdEmail, MdLocationOn, MdPhone, MdArrowOutward, MdWork } from "react-icons/md";
+import { GraduationCap } from "lucide-react";
 
 const certifications = [
-  {
-    title: "IBM Certified Professional – Product Management",
-    provider: "Coursera",
-    link: "https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing",
-    detail: "Credential from IBM covering product lifecycle, strategy, and stakeholder management.",
-    icon: <SiCoursera className="text-blue-600 text-xl" />,
-  },
-  {
-    title: "Product Management Develop & Delever New Product",
-    provider: "Coursera",
-    link: "https://drive.google.com/file/d/1lEzOWerwrLap2uGc234PWLgLQ_vEisx-/view?usp=sharing",
-    detail: "5-course specialization on product foundations, collaboration, and delivery.",
-    icon: <SiCoursera className="text-blue-600 text-xl" />,
-  },
-  {
-    title: "Agile Development Scrum",
-    provider: "Coursera",
-    link: "https://drive.google.com/file/d/1T5fF2U1U4i_LdXPWI6bK6Dv9EW52UZHI/view?usp=sharing",
-    detail: "Introduction to Agile Development and Scrum methodologies.",
-    icon: <SiCoursera className="text-blue-600 text-xl" />,
-  },
-  {
-    title: "Advanced Java Development",
-    provider: "KR IT Education",
-    link: "https://drive.google.com/file/d/11EMlyfIUH_Wc629dzXJ62CO4ZgPlCs7i/view?usp=sharing",
-    detail: "Covers OOP, HTML, CSS, JS, Java fundamentals, and advanced Java with Spring Boot & Hibernate.",
-    icon: <FaJava className="text-red-500 text-xl" />,
-  },
-  {
-    title: "Frontend Design (Web & Graphics)",
-    provider: "Max Computer Education",
-    link: "https://drive.google.com/file/d/1jbBIoY49OooMGb7Icz9TbGn58oZaYWiH/view?usp=sharing",
-    detail: "Web design, Adobe Illustrator, and InDesign certification.",
-    icon: <SiAdobe className="text-pink-500 text-xl" />,
-  },
-  {
-    title: "Data Analytics – Visualization",
-    provider: "Infosys Springboard",
-    link: "https://drive.google.com/file/d/1pL3v0s58DW3GXRuRMithG-VreLmOLCuB/view?usp=sharing",
-    detail: "Data visualization and analytics foundations.",
-    icon: <SiGoogleanalytics className="text-green-600 text-xl" />,
-  },
+  { title: "IBM Certified Professional – Product Management", provider: "Coursera", link: "https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing", detail: "Credential from IBM covering product lifecycle, strategy, and stakeholder management.", icon: <SiCoursera className="text-blue-500 text-xl" /> },
+  { title: "Product Management Develop & Deliver New Product", provider: "Coursera", link: "https://drive.google.com/file/d/1lEzOWerwrLap2uGc234PWLgLQ_vEisx-/view?usp=sharing", detail: "5-course specialization on product foundations, collaboration, and delivery.", icon: <SiCoursera className="text-blue-500 text-xl" /> },
+  { title: "Agile Development Scrum", provider: "Coursera", link: "https://drive.google.com/file/d/1T5fF2U1U4i_LdXPWI6bK6Dv9EW52UZHI/view?usp=sharing", detail: "Introduction to Agile Development and Scrum methodologies.", icon: <SiCoursera className="text-blue-500 text-xl" /> },
+  { title: "Advanced Java Development", provider: "KR IT Education", link: "https://drive.google.com/file/d/11EMlyfIUH_Wc629dzXJ62CO4ZgPlCs7i/view?usp=sharing", detail: "Covers OOP, HTML, CSS, JS, Java fundamentals, and advanced Java with Spring Boot & Hibernate.", icon: <FaJava className="text-orange-500 text-xl" /> },
+  { title: "Frontend Design (Web & Graphics)", provider: "Max Computer Education", link: "https://drive.google.com/file/d/1jbBIoY49OooMGb7Icz9TbGn58oZaYWiH/view?usp=sharing", detail: "Web design, Adobe Illustrator, and InDesign certification.", icon: <SiAdobe className="text-red-500 text-xl" /> },
+  { title: "Data Analytics – Visualization", provider: "Infosys Springboard", link: "https://drive.google.com/file/d/1pL3v0s58DW3GXRuRMithG-VreLmOLCuB/view?usp=sharing", detail: "Data visualization and analytics foundations.", icon: <SiGoogleanalytics className="text-yellow-500 text-xl" /> },
 ];
 
 const achievements = [
-  {
-    title: "Dizzy Hackers Hackathon",
-    detail: "Led JUJUTSU CODERS to Top 5 among 60+ teams with a Decentralized Identity project.",
-    badge: "🏆 Top 5 Finalist",
-    link: "https://your-certificate-link.com/dizzyhackers",
-  },
-  {
-    title: "World Innovation Expo 2023",
-    detail: "Vehicle Maintenance Index project ranked in Top 70 of 500+ entries.",
-    badge: "🌍 Top 70 / 500",
-    link: "https://drive.google.com/file/d/1aLjq3xezLE919ivxbxycRqn4CCuJr4zi/view?usp=sharing",
-  },
-  {
-    title: "PAC HACK Volunteer",
-    detail: "Coordinated and supported 200+ participants at national-level hackathon.",
-    badge: "🙌 Volunteer",
-    link: "https://your-certificate-link.com/pachack",
-  },
-  {
-    title: "Final Year Project Lead",
-    detail: "MediaMind-ML-360 Platform – leading a 3-member engineering team.",
-    badge: "👨‍💻 Team Lead",
-    link: "https://your-certificate-link.com/finalyearproject",
-  },
+  { title: "Dizzy Hackers Hackathon", detail: "Led JUJUTSU CODERS to Top 5 among 60+ teams with a Decentralized Identity project.", badge: "Top 5 Finalist", link: "https://github.com/Ajinkyaa2004/ZenID-JUJUTSU-CODERS" },
+  { title: "World Innovation Expo 2023", detail: "Vehicle Maintenance Index project ranked in Top 70 of 500+ entries.", badge: "Top 70 / 500", link: "https://drive.google.com/file/d/1aLjq3xezLE919ivxbxycRqn4CCuJr4zi/view?usp=sharing" },
+  { title: "PAC HACK Volunteer", detail: "Coordinated and supported 200+ participants at national-level hackathon.", badge: "Volunteer", link: "#" },
+  { title: "Final Year Project Lead", detail: "MediaMind-ML-360 Platform – leading a 3-member engineering team.", badge: "Team Lead", link: "https://github.com/Ajinkyaa2004/MediaMind-ML-360" },
 ];
 
 const categories = [
-  {
-    title: "Product & PM",
-    icon: <FaProjectDiagram />,
-    skills: [
+  { title: "Product & PM", icon: <FaProjectDiagram />, skills: [
       { name: "Agile (Scrum/Kanban)", icon: <DiScrum className="text-orange-400" />, level: 85, learning: false },
       { name: "Product Roadmapping", icon: <SiFigma className="text-cyan-500" />, level: 78, learning: false },
       { name: "User Research", icon: <SiFigma className="text-pink-500" />, level: 75, learning: false },
-      { name: "Market & Competetive Analysis", icon: <SiFigma className="text-purple-500" />, level: 80, learning: false },
+      { name: "Competitive Analysis", icon: <SiFigma className="text-purple-500" />, level: 80, learning: false },
       { name: "Prototyping (Figma)", icon: <SiFigma className="text-yellow-400" />, level: 80, learning: true },
-      { name: "Stakeholder Management", icon: <SiFigma className="text-blue-500" />, level: 80, learning: false },
+      { name: "Stakeholder Mgt", icon: <SiFigma className="text-blue-500" />, level: 80, learning: false },
       { name: "Google Analytics", icon: <SiGoogleanalytics className="text-orange-500" />, level: 80, learning: true }
     ],
   },
-  {
-    title: "Frontend",
-    icon: <FaCode />,
-    skills: [
-      { name: "HTML", icon: <SiHtml5 className="text-orange-500" />, level: 90, learning: false, note: "Used across projects & portfolios" },
+  { title: "Frontend Engineering", icon: <FaCode />, skills: [
+      { name: "HTML", icon: <SiHtml5 className="text-orange-500" />, level: 90, learning: false },
       { name: "CSS", icon: <SiCss3 className="text-blue-500" />, level: 90, learning: false },
       { name: "JavaScript", icon: <SiJavascript className="text-yellow-400" />, level: 90, learning: true },
       { name: "React", icon: <SiReact className="text-cyan-400" />, level: 88, learning: false },
-      { name: "Next.js", icon: <SiNextdotjs />, level: 75, learning: false },
+      { name: "Next.js", icon: <SiNextdotjs className="text-white" />, level: 75, learning: false },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-sky-400" />, level: 85, learning: false },
     ],
   },
-  {
-    title: "Backend",
-    icon: <FaServer />,
-    skills: [
+  { title: "System Architecture", icon: <FaServer />, skills: [
       { name: "Spring Boot", icon: <SiSpringboot className="text-green-500" />, level: 70, learning: true },
-      { name: "APIs", icon: <SiReact className="text-indigo-400" />, level: 80, learning: false },
-    ],
-  },
-  {
-    title: "Databases",
-    icon: <FaDatabase />,
-    skills: [
-      { name: "MySQL", icon: <SiMysql className="text-blue-600" />, level: 78, learning: false },
-      { name: "MongoDB", icon: <SiMongodb className="text-green-600" />, level: 85, learning: false },
+      { name: "REST APIs", icon: <SiReact className="text-indigo-400" />, level: 80, learning: false },
+      { name: "MySQL", icon: <SiMysql className="text-blue-400" />, level: 78, learning: false },
+      { name: "MongoDB", icon: <SiMongodb className="text-green-500" />, level: 85, learning: false },
       { name: "Drizzle ORM", icon: <SiDrizzle className="text-emerald-400" />, level: 90, learning: true },
       { name: "Firebase", icon: <SiFirebase className="text-yellow-500" />, level: 90, learning: false },
     ],
   },
-  {
-    title: "Tools & Collaboration",
-    icon: <FaTools />,
-    skills: [
-      { name: "GitHub", icon: <SiGithub />, level: 85, learning: false },
-      { name: "Jira", icon: <SiJirasoftware className="text-blue-500" />, level: 80, learning: false },
-      { name: "Notion", icon: <SiNotion />, level: 75, learning: true },
-    ],
-  },
-  {
-    title: "Design",
-    icon: <FaPaintBrush />,
-    skills: [
+  { title: "Design & Workflow", icon: <FaPaintBrush />, skills: [
+      { name: "GitHub", icon: <SiGithub className="text-white" />, level: 85, learning: false },
+      { name: "Jira / Notion", icon: <SiJirasoftware className="text-blue-500" />, level: 80, learning: false },
       { name: "Figma", icon: <SiFigma className="text-pink-500" />, level: 80, learning: false },
-      { name: "Canva", icon: <SiCanva className="text-teal-500" />, level: 82, learning: false },
-      { name: "Illustrator", icon: <SiAdobeillustrator className="text-orange-600" />, level: 60, learning: true },
+      { name: "Canva", icon: <SiCanva className="text-blue-500" />, level: 82, learning: false },
       { name: "Photoshop", icon: <SiAdobephotoshop className="text-blue-400" />, level: 65, learning: false },
+      { name: "Illustrator", icon: <SiAdobeillustrator className="text-orange-500" />, level: 60, learning: true },
     ],
   },
-
 ];
 
-const AnimatedProgress = ({ level }) => {
-  const { ref, inView } = useInView({ triggerOnce: true });
+const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const [value, setValue] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inView) {
       let start = 0;
       const interval = setInterval(() => {
         start += 1;
-        if (start > level) {
-          clearInterval(interval);
-        } else {
-          setValue(start);
-        }
-      }, 15); // speed of count-up
+        if (start > level) clearInterval(interval);
+        else setValue(start);
+      }, 15);
+      return () => clearInterval(interval);
     }
   }, [inView, level]);
 
   return (
-    <div ref={ref} className="w-full mt-auto">
+    <div ref={ref} className="w-full mt-auto pt-2 group-hover/skill:drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] transition-all duration-300">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-gray-700">Proficiency</span>
-        <span className="text-xs font-medium">{value}%</span>
+        <span className="text-[10px] text-white/30 tracking-widest uppercase font-semibold">Proficiency</span>
+        <span className="text-xs font-mono font-bold text-white/90 bg-white/5 px-2 py-0.5 rounded-md border border-white/10">{value} / 100</span>
       </div>
-
-      <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+      <div className="w-full bg-[#050505] rounded-full h-1.5 border border-white/5 relative overflow-hidden">
         <motion.div
-          className="h-2 rounded-full"
           initial={{ width: 0 }}
-          animate={{ width: inView ? `${level}%` : 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(58,65,198,1) 0%, rgba(108,99,255,1) 50%, rgba(0,212,255,1) 100%)",
-          }}
-        />
+          animate={{ width: inView ? `${level}%` : "0%" }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className={`absolute left-0 top-0 h-full rounded-full bg-gradient-to-r ${colorClass} relative`}
+        >
+           {/* Glowing Tip */}
+           <div className="absolute right-0 top-0 w-3 h-full bg-white rounded-full blur-[2px] opacity-80 animate-pulse"></div>
+        </motion.div>
       </div>
     </div>
   );
 };
 
-function App() {
+export default function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const { scrollYProgress } = useScroll();
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const timelineRef = useRef(null);
+  const { scrollYProgress: timelineScroll } = useScroll({ target: timelineRef, offset: ["start center", "end center"] });
+  const timelineHeight = useTransform(timelineScroll, [0, 1], ["0%", "100%"]);
 
   return (
-    <div className="font-sans min-h-screen relative overflow-hidden">
-      {showSplash ? (<SplashScreen onFinish={() => setShowSplash(false)} />) :
-        (<> <Navbar />
+    <div className="font-sans min-h-screen relative overflow-hidden bg-[#050505] text-slate-200 selection:bg-indigo-500/30 selection:text-white">
+      {/* Dynamic Background Noise/Gradient */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      
+      {showSplash ? (
+        <SplashScreen onFinish={() => setShowSplash(false)} />
+      ) : (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
+          <Navbar />
 
-          {/* Animated Gradient Background */}
-          <div className="absolute inset-0 -z-10 animate-gradient bg-gradient-to-br from-[#d0d3ff] via-[#ffffff] via-[#ffffff] to-[#9ef2ff]" />
-          <style jsx>{`
-        .animate-gradient {
-          background-size: 300% 300%;
-          animation: gradientShift 8s ease infinite;
-        }
-        @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-         `}
-          </style>
+          {/* Ambient Background Orbs */}
+          <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-600/20 rounded-full filter blur-[100px] pointer-events-none animate-pulse-slow"></div>
+          <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 rounded-full filter blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+          <div className="fixed top-[40%] left-[20%] w-[30vw] h-[30vw] bg-purple-600/15 rounded-full filter blur-[120px] pointer-events-none animate-blob"></div>
 
           {/* Hero Section */}
-          <section
-            className="min-h-screen flex flex-col  md:flex-row mt-4 items-center justify-center text-left relative z-10 px-6 md:px-20 gap-10">
-            {/* Left Content */}
-            <div className="flex-1 flex flex-col items-start px-6 md:px-20 pt-16 md:pt-0 justify-center space-y-6">
-              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent">
-                Hi! I’m Ajinkya
-              </h1>
-
-              <p className="text-xl md:text-2xl text-gray-800">
-                I’m a <span className="font-semibold">Fullstack Web Developer</span> with a focus on{" "}
-                <span className="font-semibold">Frontend</span>, and an{" "}
-                <span className="font-semibold">Aspiring Product Manager</span>.
-              </p>
-              {/* CTA Button */}
-              <a
-                href="#projects"
-                className="px-3 py-2 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white rounded-3xl shadow-lg hover:scale-105 transition-transform duration-300"
+          <section id="hero" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
+            <div className="flex-1 flex flex-col items-start px-4 md:px-10 justify-center space-y-6 z-20 w-full max-w-2xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
               >
-                Explore My Work
-              </a>
-              {/* Social Icons */}
-              <div className="flex space-x-4 mt-4">
-                {/* GitHub */}
-                <a
-                  href="https://github.com/Ajinkyaa2004"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-transform duration-300 hover:scale-110"
-                >
-                  <svg
-                    className="w-6 h-6 text-gray-800"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577v-2.02c-3.338.726-4.033-1.61-4.033-1.61-.546-1.385-1.333-1.753-1.333-1.753-1.09-.745.082-.73.082-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.805 1.305 3.49.997.108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.335-5.466-5.932 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.48 11.48 0 0 1 3-.405c1.02.005 2.045.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.922.435.372.81 1.102.81 2.222v3.293c0 .32.21.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z" />
-                  </svg>
-                </a>
-                {/* LinkedIn */}
-                <a
-                  href="https://www.linkedin.com/in/ajinkya842004/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-transform duration-300 hover:scale-110"
-                >
-                  <svg
-                    className="w-6 h-6 text-blue-600 "
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M19 0h-14c-2.762 0-5 2.238-5 5v14c0 2.762 2.238 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.762-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.804-1.75-1.732 0-.957.798-1.732 1.75-1.732s1.75.775 1.75 1.732c0 .928-.784 1.732-1.75 1.732zm13.5 11.268h-3v-5.604c0-1.337-.025-3.062-1.865-3.062-1.867 0-2.153 1.458-2.153 2.965v5.701h-3v-10h2.881v1.367h.041c.401-.762 1.379-1.562 2.841-1.562 3.036 0 3.6 2.001 3.6 4.601v5.594z" />
-                  </svg>
-                </a>
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-xs font-medium text-white/70 tracking-wide uppercase">Open to Opportunities</span>
+              </motion.div>
 
-                 <a
-                href="mailto:dhumalajinkya2004@gmail.com"
-                className="text-red-600 hover:text-red-400 transition-colors duration-300 transition-transform duration-300 hover:scale-110"
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight"
               >
-                <FaEnvelope className="w-6 h-6" />
-              </a>
-              </div>
+                Hi! I’m <br/>
+                <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-transparent bg-clip-text">Ajinkya.</span>
+              </motion.h1>
+
+              <motion.p 
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-base md:text-lg text-white/60 leading-relaxed font-light max-w-xl"
+              >
+                Fullstack Web Developer & Aspiring Product Manager bridging the gap between <strong className="text-white/90">engineering</strong> and <strong className="text-white/90">product strategy</strong>.
+              </motion.p>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }}
+                className="flex flex-wrap items-center gap-4 pt-2"
+              >
+                <a href="#projects" className="group relative px-6 py-3 bg-white text-black font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95">
+                  <span className="relative z-10 flex items-center gap-2">Explore Work <MdArrowOutward /></span>
+                </a>
+                
+                <div className="flex items-center gap-4 ml-2">
+                  {[ 
+                    { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", color: "hover:text-white" },
+                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", color: "hover:text-blue-400" },
+                    { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", color: "hover:text-red-400" }
+                  ].map((item, i) => (
+                    <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className={`text-white/50 transition-colors duration-300 ${item.color} p-2 bg-white/5 rounded-full border border-white/5 hover:border-white/20 hover:bg-white/10`}>
+                      <item.icon className="w-5 h-5" />
+                    </a>
+                  ))}
+                </div>
+              </motion.div>
             </div>
 
-            {/* Right Illustration */}
-            <div className="flex-1 flex items-center justify-center">
-              <Lottie
-                animationData={DeveloperFrontEnd}
-                loop={true}
-                className="w-full max-w-md"
-              />
-            </div>
-
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.5, type: "spring" }}
+              className="flex-1 flex justify-center items-center mt-12 md:mt-0 z-10 relative"
+            >
+              <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>
+              <Lottie animationData={DeveloperFrontEnd} loop={true} className="w-full max-w-lg relative drop-shadow-2xl" />
+            </motion.div>
           </section>
 
-          {/* About Section */}
-          <section
-            id="about"
-            className="flex flex-col items-center justify-center py-16 px-6 md:px-20 bg-transparent relative z-10 ">
-            {/* Heading */}
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}>
-              A Glimpse of Me
-            </motion.h2>
-            {/* Content */}
-            <div className="max-w-3xl text-center text-lg space-y-6 text-gray-600 leading-relaxed">
-              <motion.div
-                className="relative flex items-center justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}>
-                {/* Lottie Animation Behind Text */}
-                <div
-                  className="absolute -left-16 md:-left-40 bottom-1 opacity-80 transform -rotate-12 hidden md:block"
-                  style={{
-                    width: '200px',
-                    height: '200px',
-                  }}
-                >
-                  <Lottie
-                    animationData={robotAnim}
-                    loop={true}
-                    style={{ width: '350px', height: '300px' }}
+          {/* About / Bento Grid */}
+          <section id="about" className="relative min-h-screen py-16 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }} viewport={{ once: true }}>
+              <h2 className="text-xs md:text-sm font-bold tracking-widest text-indigo-500 uppercase mb-2">About me</h2>
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-10 tracking-tight">Glimpse into my world.</h3>
+
+              {/* Bento Grid layout */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px] md:auto-rows-[220px]">
+                {/* Main Intro */}
+                <motion.div className="md:col-span-2 md:row-span-2 glass-panel hover-glass-panel rounded-3xl p-6 md:p-10 flex flex-col justify-between group overflow-hidden relative border border-white/10 hover:border-cyan-500/50 transition-colors shadow-lg">
+                  <motion.div 
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }} 
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/30 rounded-full blur-[80px]" 
                   />
-                </div>
-                {/* Text overlapping animation */}
-                <p className="text-gray-700 text-lg md:text-xl z-10">
-                  I'm <span className=" font-semibold">Ajinkya Dhumal</span> — a{" "}
-                  <span className="text-[#6C63FF] font-medium">Fullstack Web Developer</span> specializing in Frontend,
-                  and a final-year Computer Science (AI/ML) student at Presidency University, Bangalore.
-                </p>
-              </motion.div>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                I’ve built responsive, user-focused web applications and recently ranked in the Top 5 out of 60 teams at a national hackathon. I focus on creating clean, scalable solutions with strong attention to performance and user experience.
-                Alongside development, I’ve also been exploring
-                <span className="text-[#6C63FF] font-medium"> Product Management</span> — defining features, structuring roadmaps,
-                and collaborating with teams to deliver impactful solutions.
-              </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                Looking ahead, I aim to bridge engineering with product thinking — growing as a developer
-                while sharpening product skills to deliver solutions that create real user impact.
-              </motion.p>
-            </div>
-          </section>
-
-          {/* Education Section */}
-          <section
-            id="education"
-            className="flex flex-col items-center justify-start mt-12 px-6 md:px-20 py-12 bg-transparent relative z-10 " >
-            {/* Left Content - Timeline */}
-            <div className="flex-1">
-              <motion.h2
-                className="text-4xl md:text-5xl font-bold mb-12 
-             bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] 
-             bg-clip-text text-transparent w-fit mx-auto"
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}>
-                Academic Journey
-              </motion.h2>
-              {/* Timeline */}
-              <div className="relative border-l-4 border-indigo-500 pl-10 space-y-16">
-                {/* Arrow indicator on the timeline */}
-                <div className="absolute left-[-10px] top-0 bottom-0 flex flex-col justify-between">
-                  <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[15px] border-l-indigo-500 border-b-[10px] border-b-transparent"></div>
-                </div>
-                {/* School */}
-                <div className="relative flex items-start gap-4">
-                  <div className="absolute -left-8 top-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white border-2 border-white transform transition-transform duration-300 hover:scale-110">
-                    {/* School Icon */}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12 12 0 01.84 6.17L12 20l-7-3.252a12 12 0 01.84-6.17L12 14z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold text-gray-800 relative left-4">Schooling</h3>
-                    <span className="text-sm text-gray-500 relative left-4">2008 – 2019</span>
-                    <motion.p
-                      className="mt-2 text-gray-600 relative left-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      Completed schooling at <span className="font-medium">St. Lawrence High School, Mumbai</span>,
-                      focusing on academics and extracurriculars.
-                    </motion.p>
-                  </div>
-                </div>
-                {/* Junior College */}
-                <div className="relative flex items-start gap-4">
-                  <div className="absolute -left-8 top-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white border-2 border-white transform transition-transform duration-300 hover:scale-110">
-                    {/* College Icon */}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold text-gray-800 relative left-4">Junior College</h3>
-                    <span className="text-sm text-gray-500 relative left-4">2019 – 2021</span>
-                    <motion.p
-                      className="mt-2 text-gray-600 relative left-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    >
-                      Studied at <span className="font-medium">Shri T.P Bhatia College of Science, Mumbai</span>,
-                      focusing on Science stream and preparing for engineering.
-                    </motion.p>
-                  </div>
-                </div>
-                {/* B.Tech */}
-                <div className="relative flex items-start gap-4">
-                  <div className="absolute -left-8 top-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white border-2 border-white transform transition-transform duration-300 hover:scale-110">
-                    {/* University Icon */}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14v7m0 0l-3-3m3 3l3-3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold text-gray-800 relative left-4">B.Tech in CSE (AI & ML)</h3>
-                    <span className="text-sm text-gray-500 relative left-4">2021 – 2026</span>
-                    <motion.p
-                      className="mt-2 text-gray-600 relative left-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      viewport={{ once: true }}>
-                      Pursuing Computer Science & Engineering with specialization in
-                      Artificial Intelligence and Machine Learning at
-                      <span className="font-medium"> Presidency University, Bangalore</span>.
-                    </motion.p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Right Side Animation */}
-            <div className="hidden md:block absolute right-28 top-16 opacity-80 rotate-2">
-              <Lottie animationData={BookLoading} loop={true} className="w-72 h-72 " />
-            </div>
-          </section>
-
-          {/* Project Section*/}
-          <section
-            id="projects"
-            className="min-h-screen flex flex-col items-center justify-start mt-12 px-6 md:px-20 bg-transparent relative z-10 top-20 mb-52 "  >
-            {/* Heading */}
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#595ec0] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent w-fit mx-auto"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              What I’ve Built & Led
-            </motion.h2>
-            {/* Cards Grid */}
-            <div className="grid gap-6 w-full justify-center"
-              style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}  >
-              {/* ---- Card 1 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2"
-                style={{ height: "auto" }}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
-                <div className="relative z-10 text-center flex flex-col justify-between h-full">
-                  <h1 className="text-5xl font-bold text-left text-gray-900 mb-4">NexPrep</h1>
-                  <p className="text-base text-gray-700 rounded-md p-3 -mt-2 text-left">
-                    An AI-powered mock interview platform that simulates real-time, voice-based interviews using Vapi voice agents or React Speech Recognition.
-                    It provides instant feedback and scoring, helping candidates practice and improve their interview skills.
-                  </p>
-                  <div className="flex flex-wrap justify-start gap-6 mt-6 text-2xl text-gray-700">
-                    <SiNextdotjs title="Next.js" />
-                    <SiFirebase title="Firebase" className="text-yellow-500" />
-                    <SiTailwindcss title="Tailwind CSS" className="text-sky-500" />
-                    <SiDrizzle title="Drizzle ORM" className="text-green-500" />
-                    <FaJs title="JavaScript" className="text-yellow-400" />
-                  </div>
-                  <div className="flex flex-wrap justify-start gap-6 mt-6">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/NexPrep"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-2"
-                    >
-                      <FaGithub className="text-xl" /> GitHub
-                    </a>
-                    <a
-                      href="https://nexprep-ai.vercel.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-2"
-                    >
-                      <SiVercel className="text-xl" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-              {/* ---- Card 2 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="relative z-10 text-center flex flex-col justify-between h-full">
-                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Fab Wear</h1>
-                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
-                    A full-stack e-commerce web app with product listing, cart, and payment gateway integration.
-                  </p>
-                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
-                    <SiHtml5 title="React" className="text-orange-500" />
-                    <SiCss3 title="Node.js" className="text-blue-500" />
-                    <FaJs title="JavaScript" className="text-yellow-400" />
-                  </div>
-                  <div className="flex flex-wrap justify-start gap-4 mt-1">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/FabWear-E-Commerce-Webapp"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <FaGithub className="text-lg" /> GitHub
-                    </a>
-                    <a
-                      href="https://fab-wear.vercel.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <SiVercel className="text-lg" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-              {/* ---- Card 3 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
-                <div className="relative z-10 text-center flex flex-col justify-between h-full">
-                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Portfolio</h1>
-                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
-                    A personal portfolio showcasing my projects, skills, and resume with modern, responsive design.
-                  </p>
-                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
-                    <SiReact title="React" className="text-sky-500" />
-                    <SiTailwindcss title="TailwindCSS" className="text-teal-400" />
-                    <SiFramer title="Framer Motion" className="text-purple-600" />
-                    <FaJs title="JavaScript" className="text-yellow-400" />
-                  </div>
-                  <div className="flex flex-wrap justify-start gap-4 mt-1">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/Personal-Portfolio"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <FaGithub className="text-lg" /> GitHub
-                    </a>
-                    <a
-                      href="https://itsajinkya.vercel.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <SiVercel className="text-lg" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-              {/* ---- Card 4 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
-                <div className="relative z-10 text-center flex flex-col justify-between h-full">
-                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Hotel MS</h1>
-                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
-                    Hotel management software using Java and MySQL for bookings, customer data, and billing.
-                  </p>
-                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
-                    <DiJava color="#f89820" />
-                    <DiMysql color="#00758F" />
-                    <FaDesktop title="Java Swing UI" className="text-gray-700" />
-                  </div>
-                  <div className="flex flex-wrap justify-start gap-4 mt-1">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/Hotel-Management-System"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <FaGithub className="text-lg" /> GitHub
-                    </a>
-                    <a
-                      href=""
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <SiVercel className="text-lg" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-              {/* ---- Card 5 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-6 flex flex-col justify-between bg-[#fdfdfd]"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
-                <div className="relative z-10 text-center flex flex-col justify-between h-full">
-                  <h1 className="text-3xl font-bold text-left text-gray-900 mb-3 -mt-4">Web Chat</h1>
-                  <p className="text-sm text-gray-700 rounded-md -mt-2 text-left">
-                    Instantly connect and communicate on a modern, fast, real-time web chat platform.
-                  </p>
-                  <div className="flex justify-start gap-4 mt-1 text-2xl text-gray-700">
-                    <SiSpringboot color="#6DB33F" />
-                    <DiJava color="#f89820" />
-                    <FaJs title="JavaScript" className="text-yellow-400" />
-                  </div>
-                  <div className="flex flex-wrap justify-start gap-4 mt-1">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/Web-Chat"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <FaGithub className="text-lg" /> GitHub
-                    </a>
-                    <a
-                      href=""
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <SiVercel className="text-lg" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-              {/* ---- Card 6 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd]"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
-                <div className="relative z-10 text-left">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2 -mt-3">Zen-Identity</h1>
-                  <p className="text-sm text-gray-700 rounded-md p-2">
-                    A decentralized id management system that provides secure, private, and digital credentials with user-controlled access.
-                  </p>
-                  <div className="flex gap-4 mt-3 text-2xl text-gray-700">
-                    <SiNextdotjs title="Next.js" className="text-black" />
-                    <SiTailwindcss title="TailwindCSS" className="text-teal-400" />
-                    <SiFirebase title="Firebase" className="text-yellow-500" />
-                  </div>
-                  <div className="flex gap-4 mt-4">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/ZenID-JUJUTSU-CODERS"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <FaGithub className="text-lg" /> GitHub
-                    </a>
-                    <a
-                      href="https://your-portfolio.vercel.app"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl text-sm hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <SiVercel className="text-lg" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-              {/* ---- Card 7 ---- */}
-              <motion.div
-                className="rounded-3xl shadow-xl relative overflow-hidden p-5 flex flex-col justify-between bg-[#fdfdfd] col-span-1 md:col-span-2"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.6, ease: "easeOut", type: "spring", stiffness: 200, damping: 20 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-[#989be7] to-[#a3f0ff] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-                <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-gradient-to-r from-[#a3f0ff] to-[#989be7] rounded-full filter blur-2xl opacity-40 animate-blob"></div>
-
-                <div className="relative z-10 text-left">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">MediaMind ML-360</h1>
-                  <p className="text-sm text-gray-700 rounded-md p-2">
-                    AI-powered 360-degree feedback software that monitors and analyzes Government of India news stories across multiple regional languages using web crawling, OCR, and sentiment analysis to provide real-time alerts and insights.
-                  </p>
-                  <div className="flex gap-4 mt-3 text-2xl text-gray-700">
-                    <SiNextdotjs title="Next.js" className="text-black" />
-                    <SiTailwindcss title="Tailwind CSS" className="text-sky-500" />
-                    <SiFramer title="Framer Motion" className="text-purple-600" />
-                    <SiMongodb title="MongoDB" className="text-green-600" />
-                    <SiDrizzle title="Drizzle ORM" className="text-green-500" />
-                    <SiFirebase title="Firebase (Auth & Firestore)" className="text-yellow-500" />
-                  </div>
-                  <div className="flex gap-4 mt-4">
-                    <a
-                      href="https://github.com/Ajinkyaa2004/MediaMind-ML-360"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <FaGithub className="text-xl" /> GitHub
-                    </a>
-                    <a
-                      href="https://mediamindml-360.vercel.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-3xl hover:scale-105 transition-transform duration-300 flex items-center gap-1"
-                    >
-                      <SiVercel className="text-xl" /> Demo
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-            {/* Blob Animation Keyframes */}
-            <style>
-              {`
-    .animate-blob {
-      animation: blob 20s infinite; /* slower, more subtle */
-      opacity: 0.25; /* lighter effect */
-      filter: blur(18px); /* softer blur */
-    }
-    @keyframes blob {
-      0% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(15px, -25px) scale(1.05); }
-      66% { transform: translate(-10px, 10px) scale(0.95); }
-      100% { transform: translate(0px, 0px) scale(1); }
-    }
-  `}
-            </style>
-          </section>
-
-          {/* Achievements Section */}
-          <section
-            id="achievements"
-            className="min-h-screen flex flex-col items-center justify-center px-6 md:px-20 relative z-10 bg-transparent "
-          >
-            {/* Heading */}
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#595ec0] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent w-fit mx-auto"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              Growth & Achievements
-            </motion.h2>
-
-            {/* Certifications */}
-            <motion.div
-              className="w-full max-w-5xl mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.15 },
-                },
-              }}
-            >
-              <h3 className="text-2xl font-semibold mb-6 text-gray-800  flex items-center gap-2">
-                <FaCertificate className="text-indigo-600" /> Certifications
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {certifications.map((cert, index) => (
-                  <motion.div
-                    key={index}
-                    className="relative rounded-2xl shadow-md p-6 bg-white/40 dark:bg-white/10 backdrop-blur-lg flex flex-col gap-2 overflow-hidden border border-white/20 group"
-                    whileHover={{ scale: 1.03 }}
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-                    }}
-                  >
-                    {/* Background Gear Animation */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none 
-                                    left-10 sm:left-20 md:left-40 lg:left-60 xl:left-80">
-                      <Lottie
-                        animationData={GearAnim}
-                        loop={true}
-                        className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
-                      />
+                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                  
+                  <div className="relative z-10 flex flex-col h-full justify-between">
+                    <div>
+                      <h4 className="text-2xl font-bold text-white mb-4">Crafting code with purpose.</h4>
+                      <p className="text-white/70 leading-relaxed text-base max-w-xl">
+                        I'm a final-year CS (AI/ML) student at Presidency University. I specialize in the modern web stack, specifically React ecosystems, delivering responsive and extremely robust interfaces. 
+                        <br/><br/>
+                        Beyond aesthetics, my true passion lies in Product Management—defining roadmaps, structuring features, and delivering solutions that solve real-world problems.
+                      </p>
                     </div>
-
-
-                    {/* Foreground Content */}
-                    <div className="relative z-10 flex items-center gap-2">
-                      {cert.icon}
-                      <h4 className="font-semibold text-lg">{cert.title}</h4>
+                    
+                    <div className="flex flex-wrap gap-3 mt-8">
+                       <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full text-blue-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div> {'<React.js />'}</span>
+                       <span className="px-4 py-2 bg-indigo-500/10 border border-indigo-500/30 rounded-full text-indigo-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse delay-75"></div> {'<Next.js />'}</span>
+                       <span className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse delay-150"></div> {'<Node.js />'}</span>
                     </div>
-                    <p className="relative z-10 text-sm text-gray-500">{cert.provider}</p>
-
-                    {/* Hover Detail */}
-                    <div className="absolute inset-0 bg-indigo-100 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center text-sm text-gray-700 z-20">
-                      <p>{cert.detail}</p>
-                      <a
-                        href={cert.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-indigo-600 text-sm font-medium mt-2 inline-block hover:scale-105 transition-transform duration-300"
-                      >
-                        📄 View Certificate
-                      </a>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Achievements */}
-            <motion.div
-              className="w-full max-w-5xl"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-                },
-              }}
-            >
-              <h3 className="text-2xl font-semibold mb-6 text-gray-800  flex items-center gap-2">
-                <FaTrophy className="text-yellow-500" /> Achievements
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {achievements.map((ach, index) => (
-                  <motion.div
-                    key={index}
-                    className="relative rounded-2xl shadow-lg p-6 bg-white/40 dark:bg-white/10 backdrop-blur-lg flex flex-col gap-2 overflow-hidden border border-white/20 group"
-                    whileHover={{ scale: 1.03 }}
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-                    }}
-                  >
-                    {/* Background Gear Animation */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none 
-  left-10 sm:left-20 md:left-40 lg:left-60 xl:left-80">
-                      <Lottie
-                        animationData={GearAnim}
-                        loop={true}
-                        className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
-                      />
-                    </div>
-
-
-                    {/* Foreground Content */}
-                    <div className="relative z-10">
-                      <h4 className="font-semibold text-lg">{ach.title}</h4>
-                      <span className="text-xs bg-indigo-100 text-indigo-600 px-2 py-1 rounded-full font-medium inline-block mb-1">
-                        {ach.badge}
-                      </span>
-                      <p className="text-sm text-gray-500">{ach.detail}</p>
-
-                      {/* View Certificate */}
-                      <a
-                        href={ach.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-indigo-600 text-sm font-medium mt-2 inline-block hover:scale-105 transition-transform duration-300"
-                      >
-                        📑 View Certificate
-                      </a>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </section>
-
-          {/* Skills Section */}
-          <section
-            id="skills"
-            className="min-h-screen top-20 flex flex-col items-center justify-center px-6 md:px-20 relative z-10 bg-transparent py-16 mb-32"
-          >
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              Product & Technical Skills
-            </motion.h2>
-
-            <div className="space-y-12 w-full max-w-6xl">
-              {categories.map((category, index) => (
-                <motion.div
-                  key={category.title}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.08 }}
-                  viewport={{ once: true }}
-                >
-                  <span className="text-2xl text-indigo-500">{category.icon}</span>
-                  <h3 className="text-xl font-semibold mb-6">{category.title}</h3>
-
-                  {/* grid of skill cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {category.skills.map((skill) => (
-                      <motion.div
-                        key={skill.name}
-                        whileHover={{ scale: 1.03 }}
-                        initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.35 }}
-                        className="relative group p-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg flex flex-col items-start gap-3"
-                        style={{ minHeight: 120 }}
-                      >
-                        {/* icon + name + learning badge */}
-                        <div className="w-full flex items-start justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="text-3xl">{skill.icon}</div>
-                            <div>
-                              <p className="text-sm font-semibold">{skill.name}</p>
-                              {skill.note && (
-                                <p className="text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-all duration-200">
-                                  {skill.note}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-
-                          {skill.learning && (
-                            <div className="ml-3">
-                              <span className="inline-flex items-center gap-1 text-xs font-semibold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-black px-2 py-1 rounded-full shadow-sm">
-                                <span>🔥</span>
-                                <span>Learning</span>
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* proficiency bar with animation */}
-                        <AnimatedProgress level={skill.level} />
-                      </motion.div>
-                    ))}
                   </div>
                 </motion.div>
-              ))}
-            </div>
+
+                {/* Hackathon Widget */}
+                <motion.div className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col items-start justify-end relative overflow-hidden group border border-white/10 hover:border-yellow-500/50 transition-colors shadow-lg">
+                  <motion.div 
+                    animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }} 
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -right-4 -top-4 text-8xl opacity-30 drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]"
+                  >
+                    🏆
+                  </motion.div>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative z-10 w-full">
+                    <div className="flex justify-between items-center mb-4">
+                      <h4 className="text-white font-bold text-xl">Hackathon Champ</h4>
+                      <span className="flex h-3 w-3 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+                      </span>
+                    </div>
+                    <p className="text-white/60 text-sm font-medium">Ranked in the Top 5 / 60+ teams at the Dizzy Hackers National Hackathon.</p>
+                  </div>
+                </motion.div>
+
+                {/* Tech Stack Marquee Widget */}
+                <motion.div className="glass-panel hover-glass-panel rounded-3xl p-6 flex flex-col justify-center items-center relative overflow-hidden group border border-white/10 hover:border-cyan-500/50 transition-colors shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Infinite scroll track */}
+                  <div className="flex w-[200%] gap-8 relative z-10 overflow-hidden text-5xl opacity-80 group-hover:opacity-100 transition-opacity whitespace-nowrap" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+                     <motion.div 
+                        animate={{ x: ["0%", "-50%"] }} 
+                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                        className="flex gap-8 items-center justify-start min-w-full"
+                     >
+                       <SiReact className="text-cyan-400 drop-shadow-md" />
+                       <SiNextdotjs className="text-white drop-shadow-md" />
+                       <SiTailwindcss className="text-sky-400 drop-shadow-md" />
+                       <SiMongodb className="text-green-500 drop-shadow-md" />
+                       <SiFigma className="text-pink-500 drop-shadow-md" />
+                       {/* Duplicated for infinite loop */}
+                       <SiReact className="text-cyan-400 drop-shadow-md" />
+                       <SiNextdotjs className="text-white drop-shadow-md" />
+                       <SiTailwindcss className="text-sky-400 drop-shadow-md" />
+                       <SiMongodb className="text-green-500 drop-shadow-md" />
+                       <SiFigma className="text-pink-500 drop-shadow-md" />
+                     </motion.div>
+                  </div>
+                  <p className="text-white text-xs mt-8 tracking-widest uppercase font-bold relative z-10 bg-[#050505] px-5 py-2 rounded-full border border-white/10 group-hover:border-white/30 transition-colors shadow-xl">Core Stack</p>
+                </motion.div>
+              </div>
+            </motion.div>
           </section>
+
+          {/* Education Timeline */}
+          <section id="education" className="relative py-16 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="flex flex-col md:flex-row gap-12 items-start" ref={timelineRef}>
+                <div className="w-full md:w-1/3 sticky top-32">
+                  <h2 className="text-xs md:text-sm font-bold tracking-widest text-indigo-500 uppercase mb-2">Timeline</h2>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Experience & Education</h3>
+                  <p className="text-white/50 text-sm md:text-base cursor-default">My formal path in professional tech roles and computer science.</p>
+                </div>
+
+                <div className="w-full md:w-2/3 space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-white/10 before:rounded-full overflow-hidden py-4">
+                  <motion.div 
+                    className="absolute left-5 md:left-1/2 w-1.5 bg-gradient-to-b from-cyan-400 via-blue-500 to-indigo-600 -translate-x-[2.5px] md:-translate-x-1/2 z-0 rounded-full"
+                    style={{ height: timelineHeight, boxShadow: "0 0 20px rgba(34,211,238,0.8)" }}
+                  />
+                  {[ 
+                    { isWork: true, year: "Nov 2025 – Present", title: "Full Stack Developer Intern", place: "Insight Fusion Analytics · Remote", desc: "Built scalable web apps with React.js, Next.js, Node.js. Designed PostgreSQL incremental ETL pipelines for a football platform. Contributed to AI-driven hiring evaluation systems. Collaborated in Agile workflows." },
+                    { isWork: false, year: "2021 – 2026", title: "B.Tech in CSE (AI & ML)", place: "Presidency University, Bangalore", desc: "Pursuing Engineering with specialization in AI and Machine Learning." },
+                    { isWork: false, year: "2019 – 2021", title: "Junior College (Science)", place: "Shri T.P Bhatia College of Science", desc: "Focused on core science subjects laying foundation for engineering." },
+                    { isWork: false, year: "2008 – 2019", title: "Schooling", place: "St. Lawrence High School, Mumbai", desc: "Active in academics and various regional extracurricular activities." },
+                  ].map((edu, idx) => (
+                    <div key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group z-10 w-full mb-8">
+                      <motion.div 
+                        initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }}
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${edu.isWork ? 'border-cyan-500/50 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:bg-cyan-500/20 group-hover:shadow-[0_0_25px_rgba(34,211,238,0.8)]' : 'border-indigo-500/50 text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.8)] group-hover:bg-indigo-500/20'} bg-[#050505] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-all duration-300 relative z-20`}
+                      >
+                         {edu.isWork ? <MdWork size={20} className="relative z-10" /> : <GraduationCap size={20} className="relative z-10" />}
+                      </motion.div>
+                      <motion.div 
+                        whileHover={{ scale: 1.02 }}
+                        className={`w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] glass-panel p-5 md:p-6 rounded-3xl relative border-l-4 border-l-transparent ${edu.isWork ? 'group-hover:border-l-cyan-400' : 'group-hover:border-l-indigo-400'} transition-all duration-300 shadow-xl`}
+                      >
+                        <div className={`absolute inset-0 bg-gradient-to-r ${edu.isWork ? 'from-cyan-500/0 via-cyan-500/0 to-cyan-500/10' : 'from-indigo-500/0 via-indigo-500/0 to-indigo-500/10'} opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl duration-500`}></div>
+                        <span className={`font-mono text-xs md:text-sm ${edu.isWork ? 'text-cyan-400' : 'text-indigo-400'} mb-2 block relative z-10 font-bold tracking-wide`}>{edu.year}</span>
+                        <h4 className="text-lg md:text-xl font-bold text-white mb-2 relative z-10">{edu.title}</h4>
+                        <span className="text-sm text-white/70 block mb-3 relative z-10 font-medium">{edu.place}</span>
+                        <p className="text-xs md:text-sm text-white/50 leading-relaxed relative z-10">{edu.desc}</p>
+                      </motion.div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </section>
+
+          {/* Projects Gallery */}
+          <section id="projects" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="flex justify-between items-end mb-12">
+                <div>
+                  <h2 className="text-xs md:text-sm font-bold tracking-widest text-blue-500 uppercase mb-2">Portfolio</h2>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Featured Projects.</h3>
+                </div>
+                <a href="https://github.com/Ajinkyaa2004" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 text-white/60 hover:text-white transition-colors bg-white/5 px-6 py-2.5 rounded-full border border-white/10 hover:bg-white/10 relative group text-sm font-medium">
+                  <div className="absolute inset-0 bg-blue-500/10 rounded-full scale-0 group-hover:scale-100 transition-transform origin-center"></div>
+                  <span className="relative z-10 flex items-center gap-2">View all 30+ repos on GitHub <MdArrowOutward /></span>
+                </a>
+              </div>
+
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {[ 
+                  { title: "NexPrep AI", tag: "AI Platform", desc: "Mock interview platform simulating human voices with real-time feedback & ATS checker.", 
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiFirebase, color: "text-[#FFCA28]"}, {Icon: SiMongodb, color: "text-[#47A248]"}], 
+                    bgIcon: FaRobot,
+                    gh: "https://nexprep-ai.vercel.app/", demo: "https://nexprep-ai.vercel.app/", theme: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] glow-blue", textGlow: "group-hover:text-blue-400" },
+                  { title: "Smart Algo Trade", tag: "FinTech", desc: "Production algorithmic trading platform for Indian Stock Market via Kite Connect API.", 
+                    tech: [{Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}, {Icon: SiMongodb, color: "text-[#47A248]"}], 
+                    bgIcon: FaChartLine,
+                    gh: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", demo: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", theme: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] glow-emerald", textGlow: "group-hover:text-emerald-400" },
+                  { title: "CopaScore AI", tag: "Analytics", desc: "Advanced football analytics using SportsMonk API & GROQ LLM for live predictions.", 
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}], 
+                    bgIcon: FaFutbol,
+                    gh: "https://copascore-with-llm.onrender.com/", demo: "https://copascore-with-llm.onrender.com/", theme: "hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] glow-orange", textGlow: "group-hover:text-orange-400" },
+                  { title: "Godrej Properties", tag: "Enterprise", desc: "High-performance real estate landing platform for lead generation & robust scheduling APIs.", 
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}], 
+                    bgIcon: FaBuilding,
+                    gh: "https://www.godrejreserve.org.in/", demo: "https://www.godrejreserve.org.in/", theme: "hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] glow-purple", textGlow: "group-hover:text-purple-400" },
+                  { title: "Skillquest IFA", tag: "Enterprise", desc: "Gamified hiring platform evaluating real cognitive and problem-solving skills.", 
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}], 
+                    bgIcon: FaUserTie,
+                    gh: "https://ifa-hiring-platform.vercel.app", demo: "https://ifa-hiring-platform.vercel.app", theme: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] glow-cyan", textGlow: "group-hover:text-cyan-400" },
+                  { title: "Max Extrusions", tag: "B2B Website", desc: "Production-ready B2B corporate website with optimized product catalog & infrastructure.", 
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}], 
+                    bgIcon: FaIndustry,
+                    gh: "https://www.maxextrusions.com/", demo: "https://www.maxextrusions.com/", theme: "hover:border-slate-400/50 hover:shadow-[0_0_30px_rgba(148,163,184,0.15)] glow-slate", textGlow: "group-hover:text-slate-300" },
+                ].map((item, idx) => (
+                  <motion.div 
+                    key={idx} 
+                    whileHover={{ y: -4 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-300 ${item.theme}`}
+                  >
+                    {/* Background Icon Watermark */}
+                    <div className="absolute -bottom-6 -right-6 text-[12rem] text-white opacity-[0.02] group-hover:opacity-[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none z-0">
+                      <item.bgIcon />
+                    </div>
+
+                    {/* Minimalist Tech Background Pattern */}
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
+
+                    <div className="flex justify-between items-start mb-6 relative z-10">
+                      <div className="flex gap-2">
+                        {item.tech.map((techItem, i) => (
+                           <div key={i} className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors shadow-sm">
+                             <techItem.Icon className={`${techItem.color} opacity-70 group-hover:opacity-100 transition-opacity text-sm drop-shadow-md`} />
+                           </div>
+                        ))}
+                      </div>
+                      <span className="text-[10px] font-mono tracking-widest uppercase text-white/40 border border-white/10 px-2.5 py-1 rounded-full">{item.tag}</span>
+                    </div>
+                    
+                    <div className="relative z-10 flex-grow">
+                      <h4 className={`text-xl font-bold text-white mb-3 transition-colors duration-300 ${item.textGlow}`}>
+                        {item.title}
+                      </h4>
+                      <p className="text-white/50 text-sm leading-relaxed mb-6 font-medium">
+                        {item.desc}
+                      </p>
+                    </div>
+                    
+                    <div className="relative z-10 mt-auto pt-4 border-t border-white/5 group-hover:border-white/10 transition-colors">
+                      <a href={item.demo} target="_blank" rel="noreferrer" className="flex items-center justify-between w-full text-white/70 group-hover:text-white transition-colors text-sm font-semibold">
+                        <span>Live Project</span>
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white text-white group-hover:text-black transition-all duration-300 group-hover:-translate-y-1">
+                          <MdArrowOutward />
+                        </div>
+                      </a>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="mt-8 flex justify-center md:hidden">
+                <a href="https://github.com/Ajinkyaa2004" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors bg-white/5 px-6 py-3 rounded-full border border-white/10">
+                   GitHub <MdArrowOutward />
+                </a>
+              </div>
+            </motion.div>
+          </section>
+
+          {/* Skills Grid */}
+          <section id="skills" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="mb-12">
+                <h2 className="text-xs md:text-sm font-bold tracking-widest text-cyan-500 uppercase mb-2">Capabilities</h2>
+                <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Technical Arsenal.</h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {categories.map((cat, idx) => {
+                  const colors = [
+                    "from-blue-500 to-cyan-400",
+                    "from-emerald-400 to-teal-500",
+                    "from-orange-400 to-red-500",
+                    "from-purple-500 to-pink-500",
+                    "from-cyan-400 to-blue-500",
+                    "from-slate-300 to-slate-500"
+                  ];
+                  const glows = [
+                    "group-hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] bg-blue-500/10",
+                    "group-hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] bg-emerald-500/10",
+                    "group-hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] bg-orange-500/10",
+                    "group-hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] bg-purple-500/10",
+                    "group-hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] bg-cyan-500/10",
+                    "group-hover:border-slate-500/50 hover:shadow-[0_0_30px_rgba(148,163,184,0.15)] bg-slate-500/10"
+                  ];
+                  
+                  return (
+                    <motion.div 
+                       whileHover={{ y: -6 }}
+                       transition={{ type: 'spring', stiffness: 300 }}
+                       key={idx} 
+                       className={`glass-panel rounded-[2rem] p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-300 ${glows[idx].split(' ')[0]} ${glows[idx].split(' ')[1]}`}
+                    >
+                      {/* Background Icon Watermark */}
+                      <div className="absolute -bottom-8 -right-8 text-[12rem] text-white opacity-[0.02] group-hover:opacity-[0.04] group-hover:scale-110 group-hover:-rotate-12 transition-all duration-700 pointer-events-none z-0">
+                        {cat.icon}
+                      </div>
+
+                      {/* Subtle Glow Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay"></div>
+                      <div className={`absolute -top-24 -right-24 w-48 h-48 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none z-0 ${glows[idx].split(' ')[2]}`}></div>
+  
+                      <div className="flex items-center gap-4 mb-8 text-white text-xl relative z-10 border-b border-white/5 pb-5">
+                         <div className="text-white p-3 bg-white/5 rounded-2xl border border-white/10 group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300 shadow-sm">{cat.icon}</div>
+                         <h4 className="font-bold tracking-wide">{cat.title}</h4>
+                      </div>
+  
+                      <div className="space-y-6 relative z-10 w-full flex-grow">
+                        {cat.skills.map((skill, sIdx) => (
+                          <div key={sIdx} className="w-full flex flex-col group/skill mt-2">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-lg text-white/50 group-hover/skill:text-white group-hover/skill:scale-110 group-hover/skill:-translate-y-0.5 transition-all duration-300">{skill.icon}</span>
+                                <span className="text-sm font-semibold text-white/70 group-hover/skill:text-white transition-colors">{skill.name}</span>
+                              </div>
+                              {skill.learning && (
+                                <span className="text-[9px] font-mono uppercase tracking-widest bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded-full border border-yellow-500/20 shadow-[0_0_10px_rgba(234,179,8,0.1)]">Learning</span>
+                              )}
+                            </div>
+                            <AnimatedProgress level={skill.level} colorClass={colors[idx]} />
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Animated Grid Filler Widget (Spans remaining columns) */}
+                <motion.div 
+                   whileHover={{ y: -6 }}
+                   transition={{ type: 'spring', stiffness: 300 }}
+                   className="lg:col-span-2 glass-panel rounded-[2rem] p-8 flex flex-col md:flex-row items-center justify-between group relative overflow-hidden border border-white/5 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] bg-gradient-to-br from-cyan-500/5 to-blue-600/5"
+                >
+                  {/* Subtle Glow Overlay */}
+                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay z-0"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay z-0"></div>
+                  <div className="absolute -top-48 -left-48 w-96 h-96 bg-cyan-500/10 rounded-full blur-[80px] opacity-40 group-hover:opacity-100 transition-all duration-700 pointer-events-none z-0"></div>
+
+                  <div className="relative z-10 w-full md:w-1/2 space-y-5">
+                     <div className="flex items-center gap-3 mb-2">
+                       <span className="relative flex h-3 w-3">
+                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                         <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                       </span>
+                       <h4 className="text-cyan-400 font-bold tracking-widest text-[10px] uppercase border border-cyan-500/20 px-3 py-1 rounded-full bg-cyan-500/10 shadow-[0_0_10px_rgba(6,182,212,0.2)]">Live Environment</h4>
+                     </div>
+                     <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">Constantly learning, building, and scaling.</h3>
+                     <p className="text-white/50 text-sm leading-relaxed max-w-sm">Every day is an opportunity to explore architecture, optimize algorithms, and push robust enterprise-grade code into production.</p>
+                     <div className="pt-2">
+                       <a href="https://github.com/Ajinkyaa2004" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-bold bg-white text-black px-5 py-2.5 rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                         <FaGithub className="text-lg" /> Explore GitHub
+                       </a>
+                     </div>
+                  </div>
+                  
+                  <div className="relative z-10 w-full md:w-1/2 flex justify-center mt-6 md:mt-0 opacity-90 group-hover:opacity-100 group-hover:scale-[1.15] drop-shadow-[0_0_25px_rgba(6,182,212,0.3)] transition-all duration-700">
+                     <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] scale-110" />
+                  </div>
+                </motion.div>
+              </div>
+             </motion.div>
+          </section>
+
+          {/* Achievements & Certifications */}
+           <section id="achievements" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="mb-10">
+                <h2 className="text-xs md:text-sm font-bold tracking-widest text-purple-500 uppercase mb-2">Milestones</h2>
+                <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Growth & Accolades.</h3>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                 {/* Certs col */}
+                 <div className="space-y-4">
+                   <h4 className="text-lg md:text-xl font-bold text-white/90 flex items-center gap-2 mb-6"><FaCertificate className="text-indigo-400"/> Certifications</h4>
+                   {certifications.map((cert, idx) => (
+                     <a href={cert.link} target="_blank" rel="noreferrer" key={idx} className="glass-panel hover-glass-panel block p-5 rounded-2xl group relative overflow-hidden">
+                       <div className="flex items-start justify-between">
+                         <div className="flex gap-4 items-center">
+                           <div className="p-3 bg-white/5 rounded-xl border border-white/5">{cert.icon}</div>
+                           <div>
+                             <h5 className="font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-1">{cert.title}</h5>
+                             <p className="text-sm text-white/50">{cert.provider}</p>
+                           </div>
+                         </div>
+                         <MdArrowOutward className="text-white/20 group-hover:text-white transition-colors" />
+                       </div>
+                     </a>
+                   ))}
+                 </div>
+
+                 {/* Achiev col */}
+                  <div className="space-y-4">
+                   <h4 className="text-lg md:text-xl font-bold text-white/90 flex items-center gap-2 mb-6"><FaTrophy className="text-yellow-500"/> Achievements</h4>
+                   {achievements.map((ach, idx) => (
+                     <a href={ach.link} target="_blank" rel="noreferrer" key={idx} className="glass-panel hover-glass-panel block p-5 rounded-2xl group relative overflow-hidden">
+                       <div className="flex flex-col gap-2">
+                         <div className="flex justify-between items-center">
+                            <span className="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-1 rounded-full font-medium whitespace-nowrap">{ach.badge}</span>
+                            <MdArrowOutward className="text-white/20 group-hover:text-white transition-colors" />
+                         </div>
+                         <h5 className="font-bold text-white mt-1 group-hover:text-yellow-400 transition-colors">{ach.title}</h5>
+                         <p className="text-xs md:text-sm text-white/50 line-clamp-2">{ach.detail}</p>
+                       </div>
+                     </a>
+                   ))}
+                 </div>
+              </div>
+             </motion.div>
+           </section>
 
           {/* Contact Section */}
-          <section
-            id="contact"
-            className="min-h-screen top-20 flex flex-col items-center justify-center px-6 md:px-20 relative z-10 bg-transparent py-16 mb-32"
-          >
-            {/* Heading */}
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] bg-clip-text text-transparent drop-shadow-md"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              We'd love to hear from you
-            </motion.h2>
+          <section id="contact" className="relative py-16 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10">
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="glass-panel rounded-[2rem] p-6 md:p-12 flex flex-col md:flex-row gap-12 relative overflow-hidden">
+                <div className="absolute top-[-20%] right-[-10%] w-[40vw] h-[40vw] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+                
+                <div className="md:w-1/2 flex flex-col justify-between">
+                  <div>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">Let's Connect.</h2>
+                    <p className="text-white/60 text-base md:text-lg leading-relaxed mb-8 max-w-md">Have an exciting idea or an innovative product? Let's build something exceptional together. Drop me a message.</p>
+                  </div>
 
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-
-              {/* Left Section */}
-              <div className="flex flex-col space-y-6">
-                {/* Contact Info Cards */}
-                <div className="flex flex-col justify-center space-y-4">
-                  {/* Email */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="flex flex-col items-center md:items-start text-center md:text-left p-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
-                  >
-                    <span className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white text-lg mb-3">
-                      <MdEmail className="w-6 h-6" />
-                    </span>
-                    <h3 className="font-semibold text-gray-600 text-sm">Email</h3>
-                    <p className="text-gray-600 text-xs">Reach out anytime, we respond fast.</p>
-                    <a
-                      href="mailto:dhumalajinkya2004@gmail.com"
-                      className="text-[#00D4FF] font-medium text-sm mt-1"
-                    >
-                      dhumalajinkya2004@gmail.com
+                  <div className="space-y-6">
+                    <a href="mailto:dhumalajinkya2004@gmail.com" className="flex items-center gap-4 group">
+                      <div className="w-12 h-12 flex-shrink-0 rounded-full border border-white/10 flex justify-center items-center bg-white/5 group-hover:bg-blue-500 transition-colors">
+                        <MdEmail className="text-xl text-white group-hover:scale-110 transition-transform"/>
+                      </div>
+                      <div>
+                        <p className="text-sm text-white/40">Email me at</p>
+                        <p className="text-base md:text-lg font-medium text-white break-all">dhumalajinkya2004@gmail.com</p>
+                      </div>
                     </a>
-                  </motion.div>
-
-                  {/* Office */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex flex-col items-center md:items-start text-center md:text-left p-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
-                  >
-                    <span className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white text-lg mb-3">
-                      <MdLocationOn className="w-6 h-6" />
-                    </span>
-                    <h3 className="font-semibold text-gray-600 text-sm">Work Location</h3>
-                    <p className="text-gray-600 text-xs">Always available at these locations.</p>
-                    <a href="#" className="text-[#00D4FF] font-medium text-sm mt-1">
-                      Bangalore, Mumbai - India
-                    </a>
-                  </motion.div>
-
-                  {/* Phone */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="flex flex-col items-center md:items-start text-center md:text-left p-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
-                  >
-                    <span className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white text-lg mb-3">
-                      <MdPhone className="w-6 h-6" />
-                    </span>
-                    <h3 className="font-semibold text-gray-600 text-sm">Phone</h3>
-                    <p className="text-gray-600 text-xs">Reachable throughout the day.</p>
-                    <a
-                      href="tel:+919004933771"
-                      className="text-[#00D4FF] font-medium text-sm mt-1"
-                    >
-                      +91 90049 33771
-                    </a>
-                  </motion.div>
+                    
+                    <div className="flex items-center gap-4 group">
+                      <div className="w-12 h-12 flex-shrink-0 rounded-full border border-white/10 flex justify-center items-center bg-white/5 group-hover:bg-purple-500 transition-colors">
+                        <MdLocationOn className="text-xl text-white group-hover:scale-110 transition-transform"/>
+                      </div>
+                      <div>
+                        <p className="text-sm text-white/40">Based in</p>
+                        <p className="text-lg font-medium text-white">Mumbai & Bangalore, India</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-
-
-                {/* Maps Section */}
-                <div className="mt-6 space-y-4">
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md"
-                  >
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241255.88464005722!2d72.71354129026804!3d19.124179277428187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c81fb6b1611f%3A0x7c0b3edb6bdfa0f3!2sMumbai%20Suburban%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1758099618859!5m2!1sen!2sin"
-                      width="100%"
-                      height="155"
-                      style={{ border: 0 }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    className="rounded-3xl overflow-hidden shadow-md border border-white/20 bg-white/5 backdrop-blur-md"
-                  >
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d497715.74353709223!2d77.25172935932821!3d12.945964683328347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae16440acd0efd%3A0x58f093efec8f6c9f!2sBengaluru%20Urban%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1758099671246!5m2!1sen!2sin"
-                      width="100%"
-                      height="155"
-                      style={{ border: 0 }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                  </motion.div>
+                <div className="md:w-1/2 w-full relative z-10">
+                  <form action="https://formspree.io/f/xgvlgavv" method="POST" className="space-y-6 bg-black/40 backdrop-blur-xl p-8 rounded-3xl border border-white/5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                       <input type="text" name="first_name" required placeholder="First Name" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors" />
+                       <input type="text" name="last_name" required placeholder="Last Name" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors" />
+                    </div>
+                    <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors" />
+                    <textarea name="message" rows="4" required placeholder="Your Message" className="w-full bg-white/5 text-white placeholder:text-white/50 rounded-xl px-4 py-4 border border-white/10 focus:border-blue-500 focus:outline-none transition-colors resize-none"></textarea>
+                    
+                    <button className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 group">
+                      Send Message <MdArrowOutward className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </button>
+                  </form>
                 </div>
               </div>
-              {/* Contact Form - Right */}
-              <div className="w-full bg-white/10 backdrop-blur-xl rounded-2xl shadow-xl p-10 border border-white/20 h-auto">
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-sm font-medium text-[#6C63FF] text-left"
-                >
-                  Contact us
-                </motion.p>
-
-                <motion.h3
-                  initial={{ opacity: 0, y: -10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.1 }}
-                  className="text-4xl font-bold text-gray-700 text-left mt-1"
-                >
-                  Get in touch
-                </motion.h3>
-
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="text-gray-600 text-left mt-3 mb-10"
-                >
-                  Have a question, idea, or opportunity? I’d love to hear from you. Drop a message below or reach out via email, and I’ll get back to you promptly. Let’s connect and explore possibilities together.
-                </motion.p>
-
-                <form
-                  action="https://formspree.io/f/xgvlgavv" // Replace with Formspree endpoint
-                  method="POST"
-                  className="grid grid-cols-1 md:grid-cols-2 gap-8"
-                >
-                  {/* Inputs */}
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="first_name"
-                      required
-                      placeholder=" "
-                      className="peer w-full bg-white/5 text-gray-800 rounded-xl px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
-                    />
-                    <label className="absolute left-4 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
-                      First name
-                    </label>
-                  </div>
-
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="last_name"
-                      required
-                      placeholder=" "
-                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
-                    />
-                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
-                      Last name
-                    </label>
-                  </div>
-
-                  <div className="relative md:col-span-2">
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      placeholder=" "
-                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
-                    />
-                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
-                      Email
-                    </label>
-                  </div>
-
-                  <div className="relative md:col-span-2">
-                    <input
-                      type="text"
-                      name="phone"
-                      placeholder=" "
-                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
-                    />
-                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
-                      Phone number
-                    </label>
-                  </div>
-
-                  <div className="relative md:col-span-2">
-                    <textarea
-                      name="message"
-                      rows="5"
-                      required
-                      placeholder=" "
-                      className="peer w-full  bg-white/5 text-gray-800 rounded-lg px-4 pt-5 pb-2 border border-black focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/40 outline-none transition"
-                    ></textarea>
-                    <label className="absolute left-4 top-2 text-gray-300 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-600 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-[#6C63FF] peer-focus:text-sm">
-                      Message
-                    </label>
-                  </div>
-
-                  {/* Social Icons */}
-                  <div className="flex space-x-4 mt-4 md:col-span-2">
-                    <a
-                      href="https://github.com/Ajinkyaa2004"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-transform duration-300 hover:scale-110"
-                    >
-                      <FaGithub className="w-6 h-6 text-gray-800" />
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/ajinkya842004/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-transform duration-300 hover:scale-110"
-                    >
-                      <FaLinkedin className="w-6 h-6 text-blue-600" />
-                    </a>
-                    <a
-                      href="https://www.instagram.com/yourusername/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-transform duration-300 hover:scale-110"
-                    >
-                      <FaInstagram className="w-6 h-6 text-pink-500" />
-                    </a>
-                    <a
-                      href="https://twitter.com/yourusername/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-transform duration-300 hover:scale-110"
-                    >
-                      <FaTwitter className="w-6 h-6 text-blue-400" />
-                    </a>
-                  </div>
-                  <button className="px-0.5 py-2 bg-gradient-to-r from-[#3A41C6] via-[#6C63FF] to-[#00D4FF] text-white rounded-3xl shadow-lg hover:scale-105 transition-transform duration-300">
-                    Submit
-                  </button>
-
-
-
-
-
-                </form>
-
-              </div>
-            </div>
-
-
-
+            </motion.div>
           </section>
 
-          {/* Footer */}
-          <footer
-            id="contact"
-            className="bg-white text-gray-900 py-12 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center"
-          >
-            {/* Branding */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-4 md:mb-0 text-center md:text-left"
-            >
-              <h2 className="text-3xl font-semibold text-black">Ajinkya Dhumal</h2>
-              <p className="text-md mt-1 text-gray-900">Building ideas into reality</p>
-            </motion.div>
+          {/* Minimal Footer */}
+          <footer className="border-t border-white/5 py-10 px-6 mt-10">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="text-center md:text-left">
+                <h2 className="text-2xl font-bold tracking-tight text-white mb-1">Ajinkya.</h2>
+                <p className="text-sm text-white/40">Building ideas into reality.</p>
+              </div>
+              
+              <div className="flex gap-4">
+                <a href="https://github.com/Ajinkyaa2004" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex justify-center items-center hover:bg-white/10 transition-colors text-white/70 hover:text-white"><FaGithub size={18}/></a>
+                <a href="https://www.linkedin.com/in/ajinkya842004/" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex justify-center items-center hover:bg-white/10 transition-colors text-white/70 hover:text-white"><FaLinkedin size={18}/></a>
+              </div>
 
-            {/* Social Icons */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="flex space-x-4 mb-4 md:mb-0"
-            >
-              <a
-                href="https://github.com/ajinkyadhumal"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 hover:text-black transition-colors duration-300"
-              >
-                <FaGithub className="w-6 h-6" />
-              </a>
-              <a
-                href="https://linkedin.com/in/ajinkyadhumal"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-500 transition-colors duration-300"
-              >
-                <FaLinkedin className="w-6 h-6" />
-              </a>
-              <a
-                href="mailto:dhumalajinkya2004@gmail.com"
-                className="text-red-600 hover:text-red-400 transition-colors duration-300"
-              >
-                <FaEnvelope className="w-6 h-6" />
-              </a>
-            </motion.div>
-
-            {/* Copyright */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-sm text-gray-600 text-center md:text-right"
-            >
-              © 2025 Ajinkya Dhumal. All rights reserved.
-            </motion.div>
+              <div className="text-sm text-white/30 text-center md:text-right">
+                © {new Date().getFullYear()} Ajinkya Dhumal.
+              </div>
+            </div>
           </footer>
-        </>
-        )}
+
+        </motion.div>
+      )}
     </div>
   );
 }
-export default App;
