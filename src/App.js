@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
-import { FaGithub, FaLinkedin, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaCode, FaServer, FaPaintBrush, FaProjectDiagram, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry } from "react-icons/fa";
-import { SiNextdotjs, SiFirebase, SiTailwindcss, SiDrizzle, SiReact, SiMongodb, SiHtml5, SiCss3, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiJirasoftware, SiFigma, SiAdobeillustrator, SiGithub, SiAdobephotoshop, SiCanva, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
-import { DiJava, DiScrum } from "react-icons/di";
+import { FaGithub, FaLinkedin, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaCode, FaServer, FaProjectDiagram, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry, FaHockeyPuck, FaLaptopCode, FaDatabase, FaBrain, FaRocket, FaHandshake } from "react-icons/fa";
+import { SiNextdotjs, SiFirebase, SiTailwindcss, SiReact, SiMongodb, SiJavascript, SiFramer, SiSpringboot, SiCoursera, SiAdobe, SiGoogleanalytics, SiMysql, SiFigma, SiGithub, SiTypescript, SiShadcnui, SiNodedotjs, SiExpress, SiFastapi, SiPostgresql, SiDocker, SiGit, SiPostman, SiJira, SiPython } from "react-icons/si";
+import { DiJava } from "react-icons/di";
 import { useInView } from "react-intersection-observer";
 import { MdEmail, MdLocationOn, MdArrowOutward, MdWork } from "react-icons/md";
 import { GraduationCap } from "lucide-react";
@@ -40,42 +40,104 @@ const achievements = [
   { title: "Final Year Project Lead", detail: "MediaMind-ML-360 Platform – leading a 3-member engineering team.", badge: "Team Lead", link: "https://github.com/Ajinkyaa2004/MediaMind-ML-360" },
 ];
 
+// Current professional roles — surfaced high on the page for instant credibility
+const currentRoles = [
+  {
+    company: "Hudl",
+    role: "Elite Project Analyst — Instat Ice Hockey",
+    period: "May 2026 – Present",
+    tag: "Sports Analytics",
+    icon: <FaHockeyPuck />,
+    accentText: "text-cyan-400",
+    accentBorder: "hover:border-cyan-500/40",
+    accentGrad: "from-cyan-400 to-sky-500",
+    accentGlow: "bg-cyan-500/10",
+    points: [
+      "Analyze & tag professional ice hockey matches using Hudl Instat methodologies.",
+      "Deliver accurate event & performance data for teams, coaches, and analysts.",
+      "Uphold strict quality, consistency, and data-accuracy standards across analytics workflows.",
+    ],
+  },
+  {
+    company: "Insight Fusion Analytics",
+    role: "Full Stack Developer",
+    period: "Oct 2025 – Present",
+    tag: "Product Engineering",
+    icon: <FaLaptopCode />,
+    accentText: "text-indigo-400",
+    accentBorder: "hover:border-indigo-500/40",
+    accentGrad: "from-indigo-400 to-blue-500",
+    accentGlow: "bg-indigo-500/10",
+    points: [
+      "Build scalable web platforms with React.js, Next.js, and Node.js.",
+      "Design PostgreSQL incremental ETL pipelines powering a live football product.",
+      "Contribute to AI-driven hiring-evaluation systems in Agile delivery.",
+    ],
+  },
+  {
+    company: "Freelance",
+    role: "Product-Focused Full Stack Developer",
+    period: "Ongoing",
+    tag: "Client Work",
+    icon: <FaHandshake />,
+    accentText: "text-emerald-400",
+    accentBorder: "hover:border-emerald-500/40",
+    accentGrad: "from-emerald-400 to-teal-500",
+    accentGlow: "bg-emerald-500/10",
+    points: [
+      "Ship web products end to end for businesses and startups.",
+      "Translate business goals into clean, conversion-focused interfaces.",
+      "Own the full lifecycle — product thinking, build, and deployment.",
+    ],
+  },
+];
+
+// Professional snapshot — quick metrics recruiters scan first
+const stats = [
+  { value: "Hudl", label: "Elite Project Analyst", sub: "Instat Ice Hockey", icon: <FaHockeyPuck />, accent: "from-cyan-400 to-sky-500" },
+  { value: "IFA", label: "Full Stack Developer", sub: "AI & Analytics", icon: <FaLaptopCode />, accent: "from-indigo-400 to-blue-500" },
+  { value: 20, suffix: "+", label: "GitHub Repositories", icon: <FaGithub />, accent: "from-slate-300 to-slate-500" },
+  { value: 10, suffix: "+", label: "Projects Built", icon: <FaRocket />, accent: "from-emerald-400 to-teal-500" },
+  { value: "Winner", label: "Hackathon Champion", sub: "IFA Hackathon", icon: <FaTrophy />, accent: "from-yellow-400 to-amber-500" },
+  { value: "Top 5", label: "Hackathon Finalist", sub: "Dizzy Hackers", icon: <FaChartLine />, accent: "from-purple-400 to-pink-500" },
+];
+
+// "Interested In" — signals to recruiters what roles to reach out about
+const interests = [
+  { label: "Full Stack Engineering", icon: <FaCode /> },
+  { label: "Product-Focused Engineering", icon: <FaProjectDiagram /> },
+  { label: "AI Platforms", icon: <FaBrain /> },
+  { label: "Data-Driven Products", icon: <FaChartLine /> },
+  { label: "Freelance Development", icon: <FaHandshake /> },
+];
+
 const categories = [
-  { title: "Product & PM", icon: <FaProjectDiagram />, skills: [
-      { name: "Agile (Scrum/Kanban)", icon: <DiScrum className="text-orange-400" />, level: 85, learning: false },
-      { name: "Product Roadmapping", icon: <SiFigma className="text-cyan-500" />, level: 78, learning: false },
-      { name: "User Research", icon: <SiFigma className="text-pink-500" />, level: 75, learning: false },
-      { name: "Competitive Analysis", icon: <SiFigma className="text-purple-500" />, level: 80, learning: false },
-      { name: "Prototyping (Figma)", icon: <SiFigma className="text-yellow-400" />, level: 80, learning: true },
-      { name: "Stakeholder Mgt", icon: <SiFigma className="text-blue-500" />, level: 80, learning: false },
-      { name: "Google Analytics", icon: <SiGoogleanalytics className="text-orange-500" />, level: 80, learning: true }
+  { title: "Frontend", icon: <FaCode />, skills: [
+      { name: "React", icon: <SiReact className="text-cyan-400" />, level: 90 },
+      { name: "Next.js", icon: <SiNextdotjs className="text-white" />, level: 85 },
+      { name: "TypeScript", icon: <SiTypescript className="text-blue-500" />, level: 80 },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-sky-400" />, level: 88 },
     ],
   },
-  { title: "Frontend Engineering", icon: <FaCode />, skills: [
-      { name: "HTML", icon: <SiHtml5 className="text-orange-500" />, level: 90, learning: false },
-      { name: "CSS", icon: <SiCss3 className="text-blue-500" />, level: 90, learning: false },
-      { name: "JavaScript", icon: <SiJavascript className="text-yellow-400" />, level: 90, learning: true },
-      { name: "React", icon: <SiReact className="text-cyan-400" />, level: 88, learning: false },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" />, level: 75, learning: false },
-      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-sky-400" />, level: 85, learning: false },
+  { title: "Backend", icon: <FaServer />, skills: [
+      { name: "Node.js", icon: <SiNodedotjs className="text-green-500" />, level: 85 },
+      { name: "Spring Boot", icon: <SiSpringboot className="text-green-500" />, level: 72 },
+      { name: "FastAPI", icon: <SiFastapi className="text-green-400" />, level: 75 },
+      { name: "REST APIs", icon: <SiExpress className="text-gray-400" />, level: 85 },
     ],
   },
-  { title: "System Architecture", icon: <FaServer />, skills: [
-      { name: "Spring Boot", icon: <SiSpringboot className="text-green-500" />, level: 70, learning: true },
-      { name: "REST APIs", icon: <SiReact className="text-indigo-400" />, level: 80, learning: false },
-      { name: "MySQL", icon: <SiMysql className="text-blue-400" />, level: 78, learning: false },
-      { name: "MongoDB", icon: <SiMongodb className="text-green-500" />, level: 85, learning: false },
-      { name: "Drizzle ORM", icon: <SiDrizzle className="text-emerald-400" />, level: 90, learning: true },
-      { name: "Firebase", icon: <SiFirebase className="text-yellow-500" />, level: 90, learning: false },
+  { title: "Databases", icon: <FaDatabase />, skills: [
+      { name: "PostgreSQL", icon: <SiPostgresql className="text-blue-400" />, level: 82 },
+      { name: "MongoDB", icon: <SiMongodb className="text-green-500" />, level: 85 },
+      { name: "Firebase", icon: <SiFirebase className="text-yellow-500" />, level: 88 },
+      { name: "MySQL", icon: <SiMysql className="text-blue-500" />, level: 78 },
     ],
   },
-  { title: "Design & Workflow", icon: <FaPaintBrush />, skills: [
-      { name: "GitHub", icon: <SiGithub className="text-white" />, level: 85, learning: false },
-      { name: "Jira / Notion", icon: <SiJirasoftware className="text-blue-500" />, level: 80, learning: false },
-      { name: "Figma", icon: <SiFigma className="text-pink-500" />, level: 80, learning: false },
-      { name: "Canva", icon: <SiCanva className="text-blue-500" />, level: 82, learning: false },
-      { name: "Photoshop", icon: <SiAdobephotoshop className="text-blue-400" />, level: 65, learning: false },
-      { name: "Illustrator", icon: <SiAdobeillustrator className="text-orange-500" />, level: 60, learning: true },
+  { title: "AI & Analytics", icon: <FaBrain />, skills: [
+      { name: "LLM Integration", icon: <FaRobot className="text-purple-400" />, level: 80 },
+      { name: "Sports Analytics", icon: <FaChartLine className="text-cyan-400" />, level: 85 },
+      { name: "Data Pipelines / ETL", icon: <FaDatabase className="text-emerald-400" />, level: 80 },
+      { name: "Data Visualization", icon: <SiGoogleanalytics className="text-orange-500" />, level: 78 },
     ],
   },
 ];
@@ -120,6 +182,90 @@ const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) =
   );
 };
 
+// Animated number that counts up once it scrolls into view
+const CountUp = ({ end, suffix = "", duration = 1400 }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
+  const [n, setN] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let rafId;
+    let startTime;
+    const step = (now) => {
+      if (startTime === undefined) startTime = now;
+      const progress = Math.min((now - startTime) / duration, 1);
+      setN(Math.floor(progress * end));
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        setN(end);
+      }
+    };
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [inView, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {n}
+      {suffix}
+    </span>
+  );
+};
+
+// Reusable project card — shared by Featured and Client & Commercial grids
+const ProjectCard = ({ item, idx }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30, scale: 0.97 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ duration: 0.5, delay: idx * 0.08 }}
+    viewport={{ once: true }}
+    whileHover={{ y: -6, scale: 1.015 }}
+    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-500 ${item.theme}`}
+  >
+    {/* Shimmer overlay on hover */}
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-3xl z-[1]"></div>
+
+    {/* Background Icon Watermark */}
+    <div className="absolute -bottom-6 -right-6 text-[12rem] text-white opacity-[0.02] group-hover:opacity-[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none z-0">
+      <item.bgIcon />
+    </div>
+
+    {/* Minimalist Tech Background Pattern */}
+    <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
+
+    <div className="flex justify-between items-start mb-6 relative z-10">
+      <div className="flex gap-2">
+        {item.tech.map((techItem, i) => (
+           <div key={i} className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors shadow-sm">
+             <techItem.Icon className={`${techItem.color} opacity-70 group-hover:opacity-100 transition-opacity text-sm drop-shadow-md`} />
+           </div>
+        ))}
+      </div>
+      <span className="text-[10px] font-mono tracking-widest uppercase text-white/40 border border-white/10 px-2.5 py-1 rounded-full">{item.tag}</span>
+    </div>
+
+    <div className="relative z-10 flex-grow">
+      <h4 className={`text-xl font-bold text-white mb-3 transition-colors duration-300 ${item.textGlow}`}>
+        {item.title}
+      </h4>
+      <p className="text-white/50 text-sm leading-relaxed mb-6 font-medium">
+        {item.desc}
+      </p>
+    </div>
+
+    <div className="relative z-10 mt-auto pt-4 border-t border-white/5 group-hover:border-white/10 transition-colors">
+      <a href={item.demo} target="_blank" rel="noreferrer" className="flex items-center justify-between w-full text-white/70 group-hover:text-white transition-colors text-sm font-semibold">
+        <span>Live Project</span>
+        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white text-white group-hover:text-black transition-all duration-300 group-hover:-translate-y-1">
+          <MdArrowOutward />
+        </div>
+      </a>
+    </div>
+  </motion.div>
+);
+
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [lowPerfMode, setLowPerfMode] = useState(false);
@@ -152,6 +298,9 @@ export default function App() {
     };
   }, []);
 
+  const contactFieldClass =
+    "w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus-visible:outline-none transition-all duration-300 text-[13px] sm:text-sm";
+
   return (
     <div className="font-sans min-h-screen relative overflow-hidden bg-[#050505] text-slate-200 selection:bg-indigo-500/30 selection:text-white">
       {/* Dynamic Background Noise/Gradient — inline, no external fetch */}
@@ -162,7 +311,7 @@ export default function App() {
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
           <Navbar />
-          <main role="main">
+          <main role="main" className="portfolio-content">
 
           {/* Ambient Background Orbs — reduced blur for GPU perf */}
           {!lowPerfMode && (
@@ -174,32 +323,48 @@ export default function App() {
           )}
 
           {/* Hero Section */}
-          <section id="hero" aria-label="Introduction" className="relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
+          <section id="hero" aria-label="Introduction" className="theme-section relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
             <div className="flex-1 flex flex-col items-start px-4 md:px-10 justify-center space-y-6 z-20 w-full max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
+                className="inline-flex items-center space-x-2 px-3 py-1 rounded-full theme-soft-panel backdrop-blur-md"
               >
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span className="text-xs font-medium text-white/70 tracking-wide uppercase">Open to Opportunities</span>
+                <span className="text-xs font-medium text-white/70 tracking-wide uppercase">Open to Full-Time &amp; Freelance</span>
               </motion.div>
 
-              <motion.h1 
-                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight"
+              <motion.span
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-sm md:text-base font-semibold tracking-[0.2em] uppercase text-white/50"
               >
-                Hi! I&apos;m Ajinkya <br/>
-                <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-transparent bg-clip-text">Full Stack Engineer</span>
+                Hi, I&apos;m Ajinkya Dhumal
+              </motion.span>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.1]"
+              >
+                Full Stack Engineer <br/>
+                <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-transparent bg-clip-text">Building AI &amp; Data-Driven Products</span>
               </motion.h1>
 
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
                 className="text-base md:text-lg text-white/60 leading-relaxed font-light max-w-xl"
               >
-                Fullstack Web Developer &amp; Aspiring Product Manager bridging the gap between <strong className="text-white/90">engineering</strong> and <strong className="text-white/90">product strategy</strong>.
+                <strong className="text-white/90">Elite Project Analyst @ Hudl</strong> · <strong className="text-white/90">Full Stack Developer @ Insight Fusion Analytics</strong> — building scalable AI, analytics, and web platforms.
               </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }}
+                className="flex flex-wrap items-center gap-2.5 pt-1"
+              >
+                {["AI", "Analytics", "Product", "Engineering"].map((kw) => (
+                  <span key={kw} className="text-[11px] font-mono uppercase tracking-widest text-white/60 bg-white/5 border border-white/10 rounded-full px-3 py-1">{kw}</span>
+                ))}
+              </motion.div>
 
               <motion.div 
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }}
@@ -208,7 +373,11 @@ export default function App() {
                 <a href="#projects" aria-label="View featured projects" className="group relative px-6 py-3 bg-white text-black font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95">
                   <span className="relative z-10 flex items-center gap-2">Explore Work <MdArrowOutward /></span>
                 </a>
-                
+
+                <a href="#contact" aria-label="Go to contact section" className="group px-6 py-3 rounded-full font-semibold border border-white/20 text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                  Contact Me <FaEnvelope className="text-sm" />
+                </a>
+
                 <div className="flex items-center gap-4 ml-2" role="list" aria-label="Social links">
                   {[
                     { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", color: "hover:text-white", label: "GitHub Profile" },
@@ -228,14 +397,98 @@ export default function App() {
               className="flex-1 flex justify-center items-center mt-12 md:mt-0 z-10 relative"
             >
               {!lowPerfMode && <div className="absolute inset-0 bg-blue-500/20 blur-[60px] rounded-full"></div>}
-              <Suspense fallback={<div className="w-full max-w-lg h-[300px] sm:h-[360px] md:h-[440px] rounded-full bg-white/5 border border-white/10" />}>
+              <Suspense fallback={<div className="w-full max-w-lg h-[300px] sm:h-[360px] md:h-[440px] rounded-full theme-soft-panel" />}>
                 <LazyHeroLottie />
               </Suspense>
             </motion.div>
           </section>
 
+          {/* Professional Snapshot — quick-scan credibility band */}
+          <section id="snapshot" aria-label="Professional Snapshot" className="theme-section relative px-6 md:px-20 z-10 max-w-6xl mx-auto mb-6">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }}
+              className="glass-panel rounded-3xl p-6 md:p-8 border border-white/10 relative overflow-hidden">
+              <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay" />
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600/15 rounded-full blur-[70px] pointer-events-none animate-pulse-slow" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+                  </span>
+                  <h2 className="text-[11px] md:text-xs font-bold tracking-[0.3em] uppercase text-white/50">Professional Snapshot</h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
+                  {stats.map((s, i) => (
+                    <motion.div key={i}
+                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.07 }} viewport={{ once: true }}
+                      className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4 flex flex-col items-start gap-3 hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm bg-gradient-to-br ${s.accent} shadow-lg`}>
+                        {s.icon}
+                      </div>
+                      <div className={`text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r ${s.accent} text-transparent bg-clip-text leading-none`}>
+                        {typeof s.value === "number" ? <CountUp end={s.value} suffix={s.suffix || ""} /> : s.value}
+                      </div>
+                      <div className="leading-tight">
+                        <p className="text-[12px] md:text-sm font-semibold text-white/90">{s.label}</p>
+                        {s.sub && <p className="text-[10px] md:text-[11px] text-white/40 mt-0.5">{s.sub}</p>}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </section>
+
+          {/* Current Roles */}
+          <section id="roles" aria-label="Current Roles" className="theme-section relative py-16 md:py-24 px-6 md:px-20 z-10 max-w-6xl mx-auto">
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-cyan-600/12 rounded-full blur-[70px] pointer-events-none animate-blob" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow" />
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <div className="mb-10">
+                <motion.div initial={{ width: 0 }} whileInView={{ width: "60px" }} transition={{ duration: 0.8, delay: 0.3 }} viewport={{ once: true }}
+                  className="h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-400 rounded-full mb-4" />
+                <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 uppercase mb-3">Where I Work</h2>
+                <h3 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+                  Current <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 text-transparent bg-clip-text">Roles</span>.
+                </h3>
+                <p className="text-white/40 text-sm md:text-base mt-3 max-w-lg">Three hats, one throughline — turning data and ideas into products that ship.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {currentRoles.map((r, i) => (
+                  <motion.div key={i}
+                    initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: i * 0.12 }} viewport={{ once: true }}
+                    whileHover={{ y: -6 }}
+                    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/10 ${r.accentBorder} transition-all duration-500 shadow-lg`}>
+                    <div className={`absolute -top-16 -right-16 w-40 h-40 ${r.accentGlow} rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+                    <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay" />
+                    <div className="relative z-10 flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-5">
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl bg-gradient-to-br ${r.accentGrad} shadow-lg`}>
+                          {r.icon}
+                        </div>
+                        <span className="text-[10px] font-mono tracking-widest uppercase text-white/40 border border-white/10 px-2.5 py-1 rounded-full">{r.tag}</span>
+                      </div>
+                      <h4 className="text-xl font-bold text-white mb-1">{r.company}</h4>
+                      <p className={`text-sm font-semibold ${r.accentText} mb-1`}>{r.role}</p>
+                      <span className="text-[11px] font-mono text-white/40 mb-4 block">{r.period}</span>
+                      <ul className="space-y-2.5 mt-auto">
+                        {r.points.map((p, pi) => (
+                          <li key={pi} className="flex gap-2.5 text-[13px] text-white/60 leading-relaxed">
+                            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r ${r.accentGrad} shrink-0`} />
+                            {p}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+
           {/* About / Bento Grid */}
-          <section id="about" aria-label="About Ajinkya Dhumal" className="relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
+          <section id="about" aria-label="About Ajinkya Dhumal" className="theme-section relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -265,11 +518,11 @@ export default function App() {
                   
                   <div className="relative z-10 flex flex-col h-full justify-between">
                     <div>
-                      <h4 className="text-2xl font-bold text-white mb-4">Crafting code with purpose.</h4>
+                      <h4 className="text-2xl font-bold text-white mb-4">I engineer products, not just pages.</h4>
                       <p className="text-white/70 leading-relaxed text-base max-w-xl">
-                        I'm a final-year CS (AI/ML) student at Presidency University. I specialize in the modern web stack, specifically React ecosystems, delivering responsive and extremely robust interfaces. 
+                        I'm <strong className="text-white/90">Ajinkya Dhumal</strong> — a Full Stack Engineer who builds AI-powered, data-driven products end to end. Today I'm an <strong className="text-white/90">Elite Project Analyst at Hudl</strong>, turning professional ice-hockey footage into precise performance data, and a <strong className="text-white/90">Full Stack Developer at Insight Fusion Analytics</strong>, shipping React/Next.js platforms and PostgreSQL data pipelines.
                         <br/><br/>
-                        Beyond aesthetics, my true passion lies in Product Management—defining roadmaps, structuring features, and delivering solutions that solve real-world problems.
+                        A final-year CS (AI/ML) student and a <strong className="text-white/90">product-focused engineer</strong> at heart, I care about the <em>why</em> behind every feature — not just the <em>how</em>. From AI mock-interview tools to live football analytics, I build things people actually use.
                       </p>
                     </div>
                     
@@ -277,6 +530,7 @@ export default function App() {
                        <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full text-blue-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div> {'<React.js />'}</span>
                        <span className="px-4 py-2 bg-indigo-500/10 border border-indigo-500/30 rounded-full text-indigo-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse delay-75"></div> {'<Next.js />'}</span>
                        <span className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse delay-150"></div> {'<Node.js />'}</span>
+                       <span className="px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-full text-purple-400 text-sm font-mono flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse delay-200"></div> {'<AI />'}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -382,7 +636,7 @@ export default function App() {
           </section>
 
           {/* Education Timeline */}
-          <section id="education" aria-label="Experience and Education Timeline" className="relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1200px" }}>
+          <section id="education" aria-label="Experience and Education Timeline" className="theme-section relative py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto">
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -left-32 w-72 h-72 bg-amber-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -413,8 +667,11 @@ export default function App() {
                     className="absolute left-5 md:left-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full bg-gradient-to-br from-amber-300 via-orange-400 to-yellow-400 shadow-[0_0_18px_rgba(251,146,60,0.9),0_0_40px_rgba(251,146,60,0.45)]"
                     style={{ top: timelineGlowY }}
                   />
-                  {[ 
-                    { isWork: true, year: "Nov 2025 – Present", title: "Full Stack Developer Intern", place: "Insight Fusion Analytics · Remote", desc: "Built scalable web apps with React.js, Next.js, Node.js. Designed PostgreSQL incremental ETL pipelines for a football platform. Contributed to AI-driven hiring evaluation systems. Collaborated in Agile workflows." },
+                  {[
+                    { isWork: true, year: "May 2026 – Present", title: "Elite Project Analyst — Instat Ice Hockey", place: "Hudl · Sports Analytics", desc: "Analyze and tag professional ice hockey matches using Hudl Instat methodologies, delivering accurate event and performance data for teams, coaches, and analysts. Maintain strict quality, consistency, and data accuracy that feed performance analysis and decision-making." },
+                    { isWork: true, year: "Jun 2026 – Present", title: "Full Stack Developer (Part-Time)", place: "Insight Fusion Analytics · Remote", desc: "Promoted to a part-time Full Stack Developer role. Build scalable apps with React.js, Next.js, and Node.js; design PostgreSQL incremental ETL pipelines for a football platform; and contribute to AI-driven hiring evaluation systems within Agile workflows." },
+                    { isWork: true, year: "Oct 2025 – Jun 2026", title: "Full Stack Developer Intern", place: "Insight Fusion Analytics · Remote", desc: "Earned the internship by winning the in-house IFA hackathon, then shipped features across the product with React.js, Next.js, and Node.js before progressing to a part-time role." },
+                    { isWork: true, year: "Ongoing", title: "Product-Focused Full Stack Developer", place: "Freelance · Client Work", desc: "Design and ship web products end to end for businesses and startups — from product thinking and UI to deployment — translating real business goals into clean, conversion-focused interfaces." },
                     { isWork: false, year: "2021 – 2026", title: "B.Tech in CSE (AI & ML)", place: "Presidency University, Bangalore", desc: "Pursuing Engineering with specialization in AI and Machine Learning." },
                     { isWork: false, year: "2019 – 2021", title: "Junior College (Science)", place: "Shri T.P Bhatia College of Science", desc: "Focused on core science subjects laying foundation for engineering." },
                     { isWork: false, year: "2008 – 2019", title: "Schooling", place: "St. Lawrence High School, Mumbai", desc: "Active in academics and various regional extracurricular activities." },
@@ -448,7 +705,7 @@ export default function App() {
           </section>
 
           {/* Projects Gallery */}
-          <section id="projects" aria-label="Featured Projects Portfolio" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
+          <section id="projects" aria-label="Featured Projects Portfolio" className="theme-section relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -471,90 +728,55 @@ export default function App() {
                 </div>
                 <a href="https://github.com/Ajinkyaa2004" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 text-white/60 hover:text-white transition-colors bg-white/5 px-6 py-2.5 rounded-full border border-white/10 hover:bg-white/10 relative group text-sm font-medium">
                   <div className="absolute inset-0 bg-blue-500/10 rounded-full scale-0 group-hover:scale-100 transition-transform origin-center"></div>
-                  <span className="relative z-10 flex items-center gap-2">View all 30+ repos on GitHub <MdArrowOutward /></span>
+                  <span className="relative z-10 flex items-center gap-2">View all 20+ repos on GitHub <MdArrowOutward /></span>
                 </a>
               </div>
 
+              {/* Featured Projects */}
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {[ 
-                  { title: "NexPrep AI", tag: "AI Platform", desc: "Mock interview platform simulating human voices with real-time feedback & ATS checker.", 
-                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiFirebase, color: "text-[#FFCA28]"}, {Icon: SiMongodb, color: "text-[#47A248]"}], 
+                {[
+                  { title: "NexPrep AI", tag: "AI Platform", desc: "AI mock-interview platform that simulates human voices with real-time feedback and an ATS resume checker.",
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiFirebase, color: "text-[#FFCA28]"}, {Icon: SiMongodb, color: "text-[#47A248]"}],
                     bgIcon: FaRobot,
-                    gh: "https://nexprep-ai.vercel.app/", demo: "https://nexprep-ai.vercel.app/", theme: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] glow-blue", textGlow: "group-hover:text-blue-400" },
-                  { title: "Smart Algo Trade", tag: "FinTech", desc: "Production algorithmic trading platform for Indian Stock Market via Kite Connect API.", 
-                    tech: [{Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}, {Icon: SiMongodb, color: "text-[#47A248]"}], 
-                    bgIcon: FaChartLine,
-                    gh: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", demo: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", theme: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] glow-emerald", textGlow: "group-hover:text-emerald-400" },
-                  { title: "CopaScore AI", tag: "Analytics", desc: "Advanced football analytics using SportsMonk API & GROQ LLM for live predictions.", 
-                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}], 
+                    demo: "https://nexprep-ai.vercel.app/", theme: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] glow-blue", textGlow: "group-hover:text-blue-400" },
+                  { title: "CopaScore AI", tag: "Sports Analytics", desc: "Live football analytics platform combining the SportsMonk API with a GROQ LLM for real-time match predictions.",
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                     bgIcon: FaFutbol,
-                    gh: "https://copascore-with-llm.onrender.com/", demo: "https://copascore-with-llm.onrender.com/", theme: "hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] glow-orange", textGlow: "group-hover:text-orange-400" },
-                  { title: "Godrej Properties", tag: "Enterprise", desc: "High-performance real estate landing platform for lead generation & robust scheduling APIs.", 
-                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}], 
-                    bgIcon: FaBuilding,
-                    gh: "https://www.godrejreserve.org.in/", demo: "https://www.godrejreserve.org.in/", theme: "hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] glow-purple", textGlow: "group-hover:text-purple-400" },
-                  { title: "Skillquest IFA", tag: "Enterprise", desc: "Gamified hiring platform evaluating real cognitive and problem-solving skills.", 
-                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}], 
+                    demo: "https://copascore-with-llm.onrender.com/", theme: "hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] glow-orange", textGlow: "group-hover:text-orange-400" },
+                  { title: "Skillquest IFA", tag: "Hiring Platform", desc: "Gamified hiring-evaluation platform measuring real cognitive and problem-solving skills. Built at Insight Fusion Analytics.",
+                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                     bgIcon: FaUserTie,
-                    gh: "https://ifa-hiring-platform.vercel.app", demo: "https://ifa-hiring-platform.vercel.app", theme: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] glow-cyan", textGlow: "group-hover:text-cyan-400" },
-                  { title: "Max Extrusions", tag: "B2B Website", desc: "Production-ready B2B corporate website with optimized product catalog & infrastructure.", 
-                    tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}], 
-                    bgIcon: FaIndustry,
-                    gh: "https://www.maxextrusions.com/", demo: "https://www.maxextrusions.com/", theme: "hover:border-slate-400/50 hover:shadow-[0_0_30px_rgba(148,163,184,0.15)] glow-slate", textGlow: "group-hover:text-slate-300" },
+                    demo: "https://ifa-hiring-platform.vercel.app", theme: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] glow-cyan", textGlow: "group-hover:text-cyan-400" },
+                  { title: "Smart Algo Trade", tag: "FinTech", desc: "Production algorithmic-trading platform for the Indian stock market via the Kite Connect API.",
+                    tech: [{Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}, {Icon: SiMongodb, color: "text-[#47A248]"}],
+                    bgIcon: FaChartLine,
+                    demo: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", theme: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] glow-emerald", textGlow: "group-hover:text-emerald-400" },
                 ].map((item, idx) => (
-                  <motion.div 
-                    key={idx} 
-                    initial={{ opacity: 0, y: 30, scale: 0.97 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.5, delay: idx * 0.08 }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -6, scale: 1.015 }}
-                    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-500 ${item.theme}`}
-                  >
-                    {/* Shimmer overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-3xl z-[1]"></div>
-
-                    {/* Background Icon Watermark */}
-                    <div className="absolute -bottom-6 -right-6 text-[12rem] text-white opacity-[0.02] group-hover:opacity-[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none z-0">
-                      <item.bgIcon />
-                    </div>
-
-                    {/* Minimalist Tech Background Pattern */}
-                    <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay"></div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
-
-                    <div className="flex justify-between items-start mb-6 relative z-10">
-                      <div className="flex gap-2">
-                        {item.tech.map((techItem, i) => (
-                           <div key={i} className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 transition-colors shadow-sm">
-                             <techItem.Icon className={`${techItem.color} opacity-70 group-hover:opacity-100 transition-opacity text-sm drop-shadow-md`} />
-                           </div>
-                        ))}
-                      </div>
-                      <span className="text-[10px] font-mono tracking-widest uppercase text-white/40 border border-white/10 px-2.5 py-1 rounded-full">{item.tag}</span>
-                    </div>
-                    
-                    <div className="relative z-10 flex-grow">
-                      <h4 className={`text-xl font-bold text-white mb-3 transition-colors duration-300 ${item.textGlow}`}>
-                        {item.title}
-                      </h4>
-                      <p className="text-white/50 text-sm leading-relaxed mb-6 font-medium">
-                        {item.desc}
-                      </p>
-                    </div>
-                    
-                    <div className="relative z-10 mt-auto pt-4 border-t border-white/5 group-hover:border-white/10 transition-colors">
-                      <a href={item.demo} target="_blank" rel="noreferrer" className="flex items-center justify-between w-full text-white/70 group-hover:text-white transition-colors text-sm font-semibold">
-                        <span>Live Project</span>
-                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white text-white group-hover:text-black transition-all duration-300 group-hover:-translate-y-1">
-                          <MdArrowOutward />
-                        </div>
-                      </a>
-                    </div>
-                  </motion.div>
+                  <ProjectCard key={idx} item={item} idx={idx} />
                 ))}
               </div>
-              
+
+              {/* Client & Commercial Projects */}
+              <div className="mt-16">
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="text-[10px] md:text-xs font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-slate-500 uppercase whitespace-nowrap">Client &amp; Commercial</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-white/15 to-transparent"></div>
+                </div>
+                <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+                  {[
+                    { title: "Max Extrusions Pvt Ltd", tag: "B2B Website", desc: "Production-ready B2B corporate website with an optimized product catalog and solid performance foundations.",
+                      tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}],
+                      bgIcon: FaIndustry,
+                      demo: "https://www.maxextrusions.com/", theme: "hover:border-slate-400/50 hover:shadow-[0_0_30px_rgba(148,163,184,0.15)] glow-slate", textGlow: "group-hover:text-slate-300" },
+                    { title: "Godrej Properties", tag: "Lead Generation", desc: "High-performance real-estate landing platform for lead generation, backed by robust scheduling APIs.",
+                      tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
+                      bgIcon: FaBuilding,
+                      demo: "https://www.godrejreserve.org.in/", theme: "hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] glow-purple", textGlow: "group-hover:text-purple-400" },
+                  ].map((item, idx) => (
+                    <ProjectCard key={idx} item={item} idx={idx} />
+                  ))}
+                </div>
+              </div>
               <div className="mt-8 flex justify-center md:hidden">
                 <a href="https://github.com/Ajinkyaa2004" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors bg-white/5 px-6 py-3 rounded-full border border-white/10">
                    GitHub <MdArrowOutward />
@@ -564,7 +786,7 @@ export default function App() {
           </section>
 
           {/* Skills Grid */}
-          <section id="skills" aria-label="Technical Skills and Capabilities" className="relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+          <section id="skills" aria-label="Technical Skills and Capabilities" className="theme-section relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-rose-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -675,7 +897,7 @@ export default function App() {
                   </div>
                   
                   <div className="relative z-10 w-full md:w-1/2 flex justify-center mt-6 md:mt-0 opacity-90 group-hover:opacity-100 group-hover:scale-[1.15] drop-shadow-[0_0_25px_rgba(6,182,212,0.3)] transition-all duration-700">
-                     <Suspense fallback={<div className="w-full max-w-[420px] h-[280px] sm:h-[340px] md:h-[420px] rounded-full bg-white/5 border border-white/10" />}>
+                     <Suspense fallback={<div className="w-full max-w-[420px] h-[280px] sm:h-[340px] md:h-[420px] rounded-full theme-soft-panel" />}>
                        <DotLottieReact src="/lottie/Assistant-Bot.lottie" loop autoplay className="w-full max-w-[420px] h-[280px] sm:h-[340px] md:h-[420px] scale-110" />
                      </Suspense>
                   </div>
@@ -685,7 +907,7 @@ export default function App() {
           </section>
 
           {/* Achievements & Certifications — Premium Redesign */}
-           <section id="achievements" aria-label="Achievements and Certifications" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
+           <section id="achievements" aria-label="Achievements and Certifications" className="theme-section relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -864,8 +1086,40 @@ export default function App() {
              </motion.div>
            </section>
 
+          {/* Interested In / Open To */}
+          <section id="interested" aria-label="Interested In" className="theme-section relative py-16 md:py-24 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-600/12 rounded-full blur-[70px] pointer-events-none animate-blob"></div>
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
+              className="glass-panel rounded-[2rem] p-8 md:p-12 border border-white/10 relative overflow-hidden">
+              <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay"></div>
+              <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-600/12 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+                <div className="md:w-1/3">
+                  <motion.div initial={{ width: 0 }} whileInView={{ width: "60px" }} transition={{ duration: 0.8, delay: 0.3 }} viewport={{ once: true }}
+                    className="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 rounded-full mb-4" />
+                  <h2 className="text-xs md:text-sm font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 uppercase mb-3">Open To</h2>
+                  <h3 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                    Interested <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 text-transparent bg-clip-text">In</span>.
+                  </h3>
+                  <p className="text-white/50 text-sm mt-3">Roles and collaborations where I do my best work.</p>
+                </div>
+                <div className="md:w-2/3 flex flex-wrap gap-3">
+                  {interests.map((it, i) => (
+                    <motion.span key={i}
+                      initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, delay: i * 0.08 }} viewport={{ once: true }}
+                      whileHover={{ y: -3 }}
+                      className="inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/10 text-white/90 text-sm font-semibold hover:border-blue-500/40 hover:bg-white/[0.06] transition-all duration-300">
+                      <span className="text-blue-400 text-base">{it.icon}</span>
+                      {it.label}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </section>
+
           {/* Contact Section */}
-          <section id="contact" aria-label="Contact Information" className="relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
+          <section id="contact" aria-label="Contact Information" className="theme-section relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -936,13 +1190,13 @@ export default function App() {
                 </div>
 
                 <div className="md:w-1/2 w-full relative z-10">
-                  <form action="https://formspree.io/f/xgvlgavv" method="POST" aria-label="Contact form" className="space-y-4 sm:space-y-5 bg-black/40 backdrop-blur-xl p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/[0.06] hover:border-white/10 transition-all duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                  <form action="https://formspree.io/f/xgvlgavv" method="POST" aria-label="Contact form" className="space-y-4 sm:space-y-5 backdrop-blur-xl p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border transition-all duration-500 bg-black/40 border-white/[0.06] hover:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                       <input type="text" name="first_name" required placeholder="First Name" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
-                       <input type="text" name="last_name" required placeholder="Last Name" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
+                        <input type="text" name="first_name" required placeholder="First Name" className={contactFieldClass} />
+                        <input type="text" name="last_name" required placeholder="Last Name" className={contactFieldClass} />
                     </div>
-                    <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 text-[13px] sm:text-sm" />
-                    <textarea name="message" rows="4" required placeholder="Your Message" className="w-full bg-white/[0.04] text-white placeholder:text-white/30 rounded-xl px-4 py-3.5 sm:py-4 border border-white/[0.08] focus:border-sky-500/60 focus:shadow-[0_0_15px_rgba(14,165,233,0.15)] focus:outline-none transition-all duration-300 resize-none text-[13px] sm:text-sm"></textarea>
+                      <input type="email" name="email" required placeholder="Email Address" className={contactFieldClass} />
+                      <textarea name="message" rows="4" required placeholder="Your Message" className={`${contactFieldClass} resize-none`}></textarea>
                     
                     <button className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-sky-500 via-blue-500 to-violet-500 text-white text-sm sm:text-base font-bold rounded-xl hover:shadow-[0_0_30px_rgba(14,165,233,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-2 group relative overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none"></div>
@@ -957,7 +1211,7 @@ export default function App() {
           </main>
 
           {/* Premium Footer */}
-          <footer role="contentinfo" className="relative py-14 px-6 mt-10 overflow-hidden">
+          <footer role="contentinfo" className="theme-section relative py-14 px-6 mt-10 overflow-hidden">
             {/* Top gradient border line */}
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
             {/* Subtle glow */}

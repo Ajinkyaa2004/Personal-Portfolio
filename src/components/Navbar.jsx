@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { FolderOpen, Trophy, Code2, GraduationCap, Mail, Menu, X, Download, Sparkles } from "lucide-react";
+import { FolderOpen, Trophy, Code2, GraduationCap, Mail, Menu, X, Briefcase, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
-  { id: "education", label: "Education", icon: GraduationCap, color: "from-amber-400 to-orange-400" },
+  { id: "roles", label: "Roles", icon: Briefcase, color: "from-cyan-400 to-blue-400" },
+  { id: "education", label: "Experience", icon: GraduationCap, color: "from-amber-400 to-orange-400" },
   { id: "projects", label: "Projects", icon: FolderOpen, color: "from-blue-400 to-cyan-400" },
-  { id: "achievements", label: "Achievements", icon: Trophy, color: "from-purple-400 to-indigo-400" },
   { id: "skills", label: "Skills", icon: Code2, color: "from-rose-400 to-pink-400" },
-  { id: "contact", label: "Contact", icon: Mail, color: "from-sky-400 to-violet-400" },
+  { id: "achievements", label: "Achievements", icon: Trophy, color: "from-purple-400 to-indigo-400" },
 ];
 
 const Navbar = () => {
@@ -96,8 +96,8 @@ const Navbar = () => {
         >
           <a href="#hero" className="flex items-center gap-1.5 group">
             <div className="relative">
-              <Sparkles className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 absolute -top-1 -right-1 transition-opacity duration-300" />
-              <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-white cursor-pointer">
+              <Sparkles className="w-4 h-4 opacity-0 group-hover:opacity-100 absolute -top-1 -right-1 transition-opacity duration-300 text-blue-400" />
+              <h1 className="text-lg sm:text-xl font-extrabold tracking-tight cursor-pointer text-white">
                 Ajinkya<span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">.</span>
               </h1>
             </div>
@@ -105,49 +105,45 @@ const Navbar = () => {
         </motion.div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-0.5 bg-white/[0.04] rounded-full px-1.5 py-1 border border-white/[0.06] relative z-10">
+        <div className="hidden md:flex items-center gap-0.5 rounded-full px-1.5 py-1 border relative z-10 bg-white/[0.04] border-white/[0.06]">
           {links.map((link) => (
             <a
               key={link.id}
               href={`#${link.id}`}
-              className="group relative flex items-center text-[13px] font-medium px-3.5 py-2 text-white/60 hover:text-white transition-all duration-300 rounded-full"
+              className="group relative flex items-center text-[13px] font-medium px-3.5 py-2 transition-all duration-300 rounded-full text-white/60 hover:text-white"
             >
               {activeLink === link.id && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute inset-0 bg-white/[0.08] rounded-full border border-white/10"
+                  className="absolute inset-0 rounded-full border bg-white/[0.08] border-white/10"
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 />
               )}
               <span className="relative z-10 flex items-center gap-1.5">
                 <link.icon className={`w-3.5 h-3.5 transition-all duration-300 ${
-                  activeLink === link.id
-                    ? "text-blue-400"
-                    : "text-white/40 group-hover:text-blue-400"
+                  activeLink === link.id ? "text-blue-400" : "text-white/40 group-hover:text-blue-400"
                 }`} />
                 <span className={activeLink === link.id ? "text-white" : ""}>{link.label}</span>
               </span>
               {activeLink !== link.id && (
-                <div className="absolute inset-0 bg-white/[0.06] rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 ease-out origin-center" />
+                <div className="absolute inset-0 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 ease-out origin-center bg-white/[0.06]" />
               )}
             </a>
           ))}
         </div>
 
-        {/* Desktop Resume Button */}
+        {/* Desktop Contact Button */}
         <div className="hidden md:flex relative z-10">
           <motion.a
-            href="https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Download Resume (opens in new tab)"
+            href="#contact"
+            aria-label="Go to contact section"
             whileHover={{ scale: 1.04, y: -1 }}
             whileTap={{ scale: 0.97 }}
             className="flex items-center space-x-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-semibold text-sm transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] relative overflow-hidden group"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-            <Download size={14} strokeWidth={2.5} className="relative z-10" />
-            <span className="relative z-10">Resume</span>
+            <Mail size={14} strokeWidth={2.5} className="relative z-10" />
+            <span className="relative z-10">Contact Me</span>
           </motion.a>
         </div>
 
@@ -156,7 +152,7 @@ const Navbar = () => {
           <motion.button
             onClick={() => setIsOpen(!isOpen)}
             whileTap={{ scale: 0.9 }}
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.06] border border-white/10 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300"
+            className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 bg-white/[0.06] border border-white/10 text-white/80 hover:text-white hover:bg-white/10"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait">
@@ -182,7 +178,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-[70px] left-3 right-3 bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-4 shadow-[0_16px_48px_rgba(0,0,0,0.6)] md:hidden overflow-hidden"
+            className="absolute top-[70px] left-3 right-3 backdrop-blur-xl rounded-2xl p-4 md:hidden overflow-hidden bg-[#0a0a0a]/95 border border-white/[0.08] shadow-[0_16px_48px_rgba(0,0,0,0.6)]"
           >
             {/* Decorative gradient blob */}
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" />
@@ -222,11 +218,9 @@ const Navbar = () => {
               {/* Divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-1" />
 
-              {/* Mobile Resume Button */}
+              {/* Mobile Contact Button */}
               <motion.a
-                href="https://drive.google.com/file/d/1U78P3fxtrH02S1PxM8HPSEYcpXzDNk2j/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contact"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35, duration: 0.3 }}
@@ -234,8 +228,8 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
-                <Download size={16} strokeWidth={2.5} className="relative z-10" />
-                <span className="relative z-10">Download Resume</span>
+                <Mail size={16} strokeWidth={2.5} className="relative z-10" />
+                <span className="relative z-10">Contact Me</span>
               </motion.a>
             </div>
           </motion.div>
