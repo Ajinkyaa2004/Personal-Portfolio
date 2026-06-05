@@ -44,12 +44,12 @@
   <text x="115" y="131" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white" fill-opacity="0.6" letter-spacing="2">OPEN TO OPPORTUNITIES</text>
 
   <!-- Main heading -->
-  <text x="80" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="white" letter-spacing="-1">Hi! I'm</text>
-  <text x="80" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="78" font-weight="800" fill="url(#nameGrad)" letter-spacing="-1">Ajinkya.</text>
+  <text x="80" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="800" fill="white" letter-spacing="-1">Ajinkya Dhumal</text>
+  <text x="80" y="278" font-family="system-ui, -apple-system, sans-serif" font-size="60" font-weight="800" fill="url(#nameGrad)" letter-spacing="-1">Full Stack Engineer</text>
 
   <!-- Description -->
-  <text x="80" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="white" fill-opacity="0.55" font-weight="300">Fullstack Web Developer &amp; Aspiring Product Manager</text>
-  <text x="80" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="white" fill-opacity="0.55" font-weight="300">bridging engineering and product strategy.</text>
+  <text x="80" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="white" fill-opacity="0.6" font-weight="300">Building AI &amp; Data-Driven Products</text>
+  <text x="80" y="372" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="white" fill-opacity="0.45" font-weight="300">Elite Project Analyst @ Hudl  ·  Full Stack Developer @ IFA</text>
 
   <!-- Tech stack pills -->
   <rect x="80" y="420" width="120" height="36" rx="18" fill="#3b82f6" fill-opacity="0.12" stroke="#3b82f6" stroke-opacity="0.3" stroke-width="1"/>

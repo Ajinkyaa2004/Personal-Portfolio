@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useReducedMotion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import SplashScreen from "./components/SplashScreen";
 import { FaGithub, FaLinkedin, FaCertificate, FaTrophy, FaJava, FaEnvelope, FaCode, FaServer, FaProjectDiagram, FaRobot, FaChartLine, FaFutbol, FaBuilding, FaUserTie, FaIndustry, FaHockeyPuck, FaLaptopCode, FaDatabase, FaBrain, FaRocket, FaHandshake } from "react-icons/fa";
@@ -182,47 +182,99 @@ const AnimatedProgress = ({ level, colorClass = "from-cyan-400 to-blue-500" }) =
   );
 };
 
-// Animated number that counts up once it scrolls into view
-const CountUp = ({ end, suffix = "", duration = 1400 }) => {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
-  const [n, setN] = useState(0);
+// 3D tilt that follows the cursor — spring-smoothed, disabled for reduced motion
+const useTilt = (maxDeg = 7) => {
+  const reduce = useReducedMotion();
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const sx = useSpring(rx, { stiffness: 150, damping: 15, mass: 0.4 });
+  const sy = useSpring(ry, { stiffness: 150, damping: 15, mass: 0.4 });
+  const onMouseMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    rx.set(((e.clientY - r.top) / r.height - 0.5) * -2 * maxDeg);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 2 * maxDeg);
+  };
+  const onMouseLeave = () => { rx.set(0); ry.set(0); };
+  if (reduce) return {};
+  return { onMouseMove, onMouseLeave, style: { rotateX: sx, rotateY: sy, transformPerspective: 1000 } };
+};
 
-  useEffect(() => {
-    if (!inView) return;
-    let rafId;
-    let startTime;
-    const step = (now) => {
-      if (startTime === undefined) startTime = now;
-      const progress = Math.min((now - startTime) / duration, 1);
-      setN(Math.floor(progress * end));
-      if (progress < 1) {
-        rafId = requestAnimationFrame(step);
-      } else {
-        setN(end);
-      }
-    };
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, [inView, end, duration]);
-
+// motion.div that tilts toward the cursor (forwards all motion props)
+const TiltCard = ({ children, className, ...props }) => {
+  const tilt = useTilt();
   return (
-    <span ref={ref}>
-      {n}
-      {suffix}
-    </span>
+    <motion.div className={className} {...tilt} {...props}>
+      {children}
+    </motion.div>
   );
 };
 
+// Link that gently pulls toward the cursor (magnetic effect)
+const MagneticLink = ({ children, strength = 0.4, className, ...props }) => {
+  const reduce = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 200, damping: 15, mass: 0.3 });
+  const sy = useSpring(y, { stiffness: 200, damping: 15, mass: 0.3 });
+  const onMouseMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - (r.left + r.width / 2)) * strength);
+    y.set((e.clientY - (r.top + r.height / 2)) * strength);
+  };
+  const onMouseLeave = () => { x.set(0); y.set(0); };
+  return (
+    <motion.a
+      className={className}
+      style={reduce ? undefined : { x: sx, y: sy }}
+      onMouseMove={reduce ? undefined : onMouseMove}
+      onMouseLeave={reduce ? undefined : onMouseLeave}
+      {...props}
+    >
+      {children}
+    </motion.a>
+  );
+};
+
+// 3D scroll-reveal — content rotates up into place as it enters the viewport
+const Reveal = ({ children, idx = 0, className = "" }) => {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 50, rotateX: 16 }}
+      whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0, rotateX: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      style={reduce ? undefined : { transformPerspective: 1000 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Single stat card used in the Professional Snapshot marquee
+const StatCard = ({ s, extra = "", ariaHidden = false }) => (
+  <div aria-hidden={ariaHidden || undefined} className={`w-52 sm:w-56 shrink-0 mr-4 md:mr-5 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-5 flex flex-col items-start gap-3 hover:border-white/20 transition-colors duration-300 ${extra}`}>
+    <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm bg-gradient-to-br ${s.accent} shadow-lg`}>
+      {s.icon}
+    </div>
+    <div className={`text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r ${s.accent} text-transparent bg-clip-text leading-none`}>
+      {typeof s.value === "number" ? `${s.value}${s.suffix || ""}` : s.value}
+    </div>
+    <div className="leading-tight">
+      <p className="text-[12px] md:text-sm font-semibold text-white/90">{s.label}</p>
+      {s.sub && <p className="text-[10px] md:text-[11px] text-white/40 mt-0.5">{s.sub}</p>}
+    </div>
+  </div>
+);
+
 // Reusable project card — shared by Featured and Client & Commercial grids
 const ProjectCard = ({ item, idx }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30, scale: 0.97 }}
-    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-    transition={{ duration: 0.5, delay: idx * 0.08 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -6, scale: 1.015 }}
-    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-all duration-500 ${item.theme}`}
-  >
+  <Reveal idx={idx}>
+    <TiltCard
+      whileHover={{ y: -6 }}
+      className={`h-full glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/5 transition-[border-color,box-shadow,background-color] duration-500 ${item.theme}`}
+    >
     {/* Shimmer overlay on hover */}
     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none rounded-3xl z-[1]"></div>
 
@@ -255,15 +307,21 @@ const ProjectCard = ({ item, idx }) => (
       </p>
     </div>
 
-    <div className="relative z-10 mt-auto pt-4 border-t border-white/5 group-hover:border-white/10 transition-colors">
-      <a href={item.demo} target="_blank" rel="noreferrer" className="flex items-center justify-between w-full text-white/70 group-hover:text-white transition-colors text-sm font-semibold">
-        <span>Live Project</span>
+    <div className="relative z-10 mt-auto pt-4 border-t border-white/5 group-hover:border-white/10 transition-colors flex items-center justify-between gap-3">
+      {item.caseStudy && (
+        <a href={item.caseStudy} className="inline-flex items-center gap-1.5 text-white/55 hover:text-white transition-colors text-sm font-semibold" aria-label={`${item.title} case study`}>
+          Case study <MdArrowOutward className="text-xs" />
+        </a>
+      )}
+      <a href={item.demo} target="_blank" rel="noreferrer" className="ml-auto inline-flex items-center gap-2 text-white/70 group-hover:text-white transition-colors text-sm font-semibold" aria-label={`${item.title} live demo`}>
+        <span>Live</span>
         <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white text-white group-hover:text-black transition-all duration-300 group-hover:-translate-y-1">
           <MdArrowOutward />
         </div>
       </a>
     </div>
-  </motion.div>
+    </TiltCard>
+  </Reveal>
 );
 
 export default function App() {
@@ -323,7 +381,8 @@ export default function App() {
           )}
 
           {/* Hero Section */}
-          <section id="hero" aria-label="Introduction" className="theme-section relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
+          <section id="hero" aria-label="Introduction" onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); }} className="theme-section relative min-h-[100dvh] flex flex-col md:flex-row items-center justify-center px-6 md:px-20 z-10 pt-28 pb-12 md:py-0">
+            <div className="hero-spotlight pointer-events-none absolute inset-0 z-0" aria-hidden="true"></div>
             <div className="flex-1 flex flex-col items-start px-4 md:px-10 justify-center space-y-6 z-20 w-full max-w-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -370,13 +429,13 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }}
                 className="flex flex-wrap items-center gap-4 pt-2"
               >
-                <a href="#projects" aria-label="View featured projects" className="group relative px-6 py-3 bg-white text-black font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95">
+                <MagneticLink href="#projects" aria-label="View featured projects" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="group relative px-6 py-3 bg-white text-black font-semibold rounded-full overflow-hidden inline-flex">
                   <span className="relative z-10 flex items-center gap-2">Explore Work <MdArrowOutward /></span>
-                </a>
+                </MagneticLink>
 
-                <a href="#contact" aria-label="Go to contact section" className="group px-6 py-3 rounded-full font-semibold border border-white/20 text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                <MagneticLink href="#contact" aria-label="Go to contact section" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="group px-6 py-3 rounded-full font-semibold border border-white/20 text-white hover:bg-white/10 transition-colors inline-flex items-center gap-2">
                   Contact Me <FaEnvelope className="text-sm" />
-                </a>
+                </MagneticLink>
 
                 <div className="flex items-center gap-4 ml-2" role="list" aria-label="Social links">
                   {[
@@ -417,23 +476,15 @@ export default function App() {
                   </span>
                   <h2 className="text-[11px] md:text-xs font-bold tracking-[0.3em] uppercase text-white/50">Professional Snapshot</h2>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
-                  {stats.map((s, i) => (
-                    <motion.div key={i}
-                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.07 }} viewport={{ once: true }}
-                      className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.03] p-4 flex flex-col items-start gap-3 hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm bg-gradient-to-br ${s.accent} shadow-lg`}>
-                        {s.icon}
-                      </div>
-                      <div className={`text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r ${s.accent} text-transparent bg-clip-text leading-none`}>
-                        {typeof s.value === "number" ? <CountUp end={s.value} suffix={s.suffix || ""} /> : s.value}
-                      </div>
-                      <div className="leading-tight">
-                        <p className="text-[12px] md:text-sm font-semibold text-white/90">{s.label}</p>
-                        {s.sub && <p className="text-[10px] md:text-[11px] text-white/40 mt-0.5">{s.sub}</p>}
-                      </div>
-                    </motion.div>
-                  ))}
+                <div className="snapshot-marquee relative overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)" }}>
+                  <div className="snapshot-marquee-track flex w-max py-1">
+                    {stats.map((s, i) => (
+                      <StatCard key={`s-${i}`} s={s} />
+                    ))}
+                    {stats.map((s, i) => (
+                      <StatCard key={`d-${i}`} s={s} extra="snapshot-marquee-dup" ariaHidden />
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -456,10 +507,10 @@ export default function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {currentRoles.map((r, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, y: 30, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, delay: i * 0.12 }} viewport={{ once: true }}
+                  <Reveal key={i} idx={i}>
+                    <TiltCard
                     whileHover={{ y: -6 }}
-                    className={`glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/10 ${r.accentBorder} transition-all duration-500 shadow-lg`}>
+                    className={`h-full glass-panel rounded-3xl p-6 flex flex-col group relative overflow-hidden border border-white/10 ${r.accentBorder} transition-[border-color,box-shadow,background-color] duration-500 shadow-lg`}>
                     <div className={`absolute -top-16 -right-16 w-40 h-40 ${r.accentGlow} rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
                     <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none mix-blend-overlay" />
                     <div className="relative z-10 flex flex-col h-full">
@@ -481,14 +532,30 @@ export default function App() {
                         ))}
                       </ul>
                     </div>
-                  </motion.div>
+                    </TiltCard>
+                  </Reveal>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+
+          {/* Worked With — credibility strip */}
+          <section aria-label="Worked with" className="theme-section relative px-6 md:px-20 z-10 max-w-6xl mx-auto pb-10 md:pb-16">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}
+              className="border-t border-b border-white/[0.06] py-8">
+              <p className="text-center text-[11px] font-bold tracking-[0.3em] uppercase text-white/30 mb-7">Worked with</p>
+              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 md:gap-x-16">
+                {["Hudl", "Insight Fusion Analytics", "Godrej Properties", "Max Extrusions", "Wasro"].map((name) => (
+                  <span key={name} className="text-lg md:text-2xl font-extrabold tracking-tight text-white/35 hover:text-white/80 transition-colors duration-300 cursor-default whitespace-nowrap">
+                    {name}
+                  </span>
                 ))}
               </div>
             </motion.div>
           </section>
 
           {/* About / Bento Grid */}
-          <section id="about" aria-label="About Ajinkya Dhumal" className="theme-section relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
+          <section id="about" aria-label="About Ajinkya Dhumal" className="theme-section relative min-h-screen py-20 md:py-28 px-6 md:px-20 z-10 max-w-6xl mx-auto">
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-teal-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -705,7 +772,7 @@ export default function App() {
           </section>
 
           {/* Projects Gallery */}
-          <section id="projects" aria-label="Featured Projects Portfolio" className="theme-section relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1100px" }}>
+          <section id="projects" aria-label="Featured Projects Portfolio" className="theme-section relative py-20 md:py-28 px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -738,19 +805,19 @@ export default function App() {
                   { title: "NexPrep AI", tag: "AI Platform", desc: "AI mock-interview platform that simulates human voices with real-time feedback and an ATS resume checker.",
                     tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiFirebase, color: "text-[#FFCA28]"}, {Icon: SiMongodb, color: "text-[#47A248]"}],
                     bgIcon: FaRobot,
-                    demo: "https://nexprep-ai.vercel.app/", theme: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] glow-blue", textGlow: "group-hover:text-blue-400" },
+                    caseStudy: "/projects/nexprep", demo: "https://nexprep-ai.vercel.app/", theme: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] glow-blue", textGlow: "group-hover:text-blue-400" },
                   { title: "CopaScore AI", tag: "Sports Analytics", desc: "Live football analytics platform combining the SportsMonk API with a GROQ LLM for real-time match predictions.",
                     tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                     bgIcon: FaFutbol,
-                    demo: "https://copascore-with-llm.onrender.com/", theme: "hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] glow-orange", textGlow: "group-hover:text-orange-400" },
+                    caseStudy: "/projects/copascore", demo: "https://copascore-with-llm.onrender.com/", theme: "hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] glow-orange", textGlow: "group-hover:text-orange-400" },
                   { title: "Skillquest IFA", tag: "Hiring Platform", desc: "Gamified hiring-evaluation platform measuring real cognitive and problem-solving skills. Built at Insight Fusion Analytics.",
                     tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                     bgIcon: FaUserTie,
-                    demo: "https://ifa-hiring-platform.vercel.app", theme: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] glow-cyan", textGlow: "group-hover:text-cyan-400" },
+                    caseStudy: "/projects/skillquest-ifa", demo: "https://ifa-hiring-platform.vercel.app", theme: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] glow-cyan", textGlow: "group-hover:text-cyan-400" },
                   { title: "Smart Algo Trade", tag: "FinTech", desc: "Production algorithmic-trading platform for the Indian stock market via the Kite Connect API.",
                     tech: [{Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}, {Icon: SiMongodb, color: "text-[#47A248]"}],
                     bgIcon: FaChartLine,
-                    demo: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", theme: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] glow-emerald", textGlow: "group-hover:text-emerald-400" },
+                    caseStudy: "/projects/smart-algo-trade", demo: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", theme: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] glow-emerald", textGlow: "group-hover:text-emerald-400" },
                 ].map((item, idx) => (
                   <ProjectCard key={idx} item={item} idx={idx} />
                 ))}
@@ -767,11 +834,11 @@ export default function App() {
                     { title: "Max Extrusions Pvt Ltd", tag: "B2B Website", desc: "Production-ready B2B corporate website with an optimized product catalog and solid performance foundations.",
                       tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}],
                       bgIcon: FaIndustry,
-                      demo: "https://www.maxextrusions.com/", theme: "hover:border-slate-400/50 hover:shadow-[0_0_30px_rgba(148,163,184,0.15)] glow-slate", textGlow: "group-hover:text-slate-300" },
+                      caseStudy: "/projects/max-extrusions", demo: "https://www.maxextrusions.com/", theme: "hover:border-slate-400/50 hover:shadow-[0_0_30px_rgba(148,163,184,0.15)] glow-slate", textGlow: "group-hover:text-slate-300" },
                     { title: "Godrej Properties", tag: "Lead Generation", desc: "High-performance real-estate landing platform for lead generation, backed by robust scheduling APIs.",
                       tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                       bgIcon: FaBuilding,
-                      demo: "https://www.godrejreserve.org.in/", theme: "hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] glow-purple", textGlow: "group-hover:text-purple-400" },
+                      caseStudy: "/projects/godrej-properties", demo: "https://www.godrejreserve.org.in/", theme: "hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] glow-purple", textGlow: "group-hover:text-purple-400" },
                   ].map((item, idx) => (
                     <ProjectCard key={idx} item={item} idx={idx} />
                   ))}
@@ -907,7 +974,7 @@ export default function App() {
           </section>
 
           {/* Achievements & Certifications — Premium Redesign */}
-           <section id="achievements" aria-label="Achievements and Certifications" className="theme-section relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1300px" }}>
+           <section id="achievements" aria-label="Achievements and Certifications" className="theme-section relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto">
              {/* Section-level floating decorative orbs */}
              <div className="absolute -top-32 -left-32 w-72 h-72 bg-purple-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
              <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>
@@ -1119,7 +1186,7 @@ export default function App() {
           </section>
 
           {/* Contact Section */}
-          <section id="contact" aria-label="Contact Information" className="theme-section relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10" style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1000px" }}>
+          <section id="contact" aria-label="Contact Information" className="theme-section relative py-16 sm:py-20 md:py-28 px-4 sm:px-6 md:px-20 z-10 w-full max-w-6xl mx-auto mb-10">
             {/* Section-level floating decorative orbs */}
             <div className="absolute -top-32 -right-32 w-72 h-72 bg-sky-600/15 rounded-full blur-[60px] pointer-events-none animate-blob"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-violet-600/10 rounded-full blur-[70px] pointer-events-none animate-pulse-slow"></div>

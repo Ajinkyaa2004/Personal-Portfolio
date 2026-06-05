@@ -222,3 +222,39 @@
 .glow-purple:hover { box-shadow: 0 0 40px -10px rgba(168, 85, 247, 0.4), inset 0 0 20px -5px rgba(168, 85, 247, 0.2); }
 .glow-cyan:hover { box-shadow: 0 0 40px -10px rgba(6, 182, 212, 0.4), inset 0 0 20px -5px rgba(6, 182, 212, 0.2); }
 .glow-slate:hover { box-shadow: 0 0 40px -10px rgba(148, 163, 184, 0.4), inset 0 0 20px -5px rgba(148, 163, 184, 0.2); }
+
+
+/* === Professional Snapshot marquee (slow, premium drift) === */
+@keyframes snapshot-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.snapshot-marquee-track {
+  animation: snapshot-marquee 50s linear infinite;
+  will-change: transform;
+}
+.snapshot-marquee:hover .snapshot-marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .snapshot-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    row-gap: 1rem;
+  }
+  .snapshot-marquee-dup { display: none; }
+}
+
+
+/* === Hero cursor spotlight (follows the pointer) === */
+.hero-spotlight {
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 30%), rgba(99, 102, 241, 0.14), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#hero:hover .hero-spotlight { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-spotlight { display: none; }
+}

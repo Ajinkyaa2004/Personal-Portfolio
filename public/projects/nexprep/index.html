@@ -111,8 +111,26 @@
     <h2>Tech Stack</h2>
     <p>Built with Next.js App Router for server-side rendering and optimal performance. Firebase handles authentication and real-time data synchronization across sessions. MongoDB stores interview sessions, question banks, and user analytics with efficient query patterns. The AI layer uses Google's Gemini API for generating contextual follow-up questions and evaluating answer completeness. Web Speech API enables voice input and output directly in the browser without additional plugins.</p>
 
-    <h2>Outcome</h2>
-    <p>NexPrep AI demonstrates the practical integration of LLM APIs with real-time web technologies to solve a genuine pain point in the job market. The platform showcases end-to-end product thinking — from identifying a user problem, designing the solution architecture, building the technical implementation, and iterating based on real user feedback. The project highlights skills in AI integration, real-time systems design, and user-centered product development.</p>
+    <h2>Architecture</h2>
+    <p>NexPrep is built in clear layers so each concern can scale independently:</p>
+    <ul>
+      <li><strong>Client (browser):</strong> a React UI on the Next.js App Router; the Web Speech API captures the candidate's spoken answers and voices the interviewer's questions.</li>
+      <li><strong>Auth &amp; sync:</strong> Firebase Authentication gates sessions and keeps interview state in sync in real time.</li>
+      <li><strong>AI layer:</strong> Google's Gemini generates role-specific questions and adaptive follow-ups, then scores each answer on relevance, structure, and keyword coverage.</li>
+      <li><strong>Data:</strong> MongoDB persists question banks, session transcripts, and the analytics behind the progress dashboard.</li>
+      <li><strong>ATS module:</strong> parses a résumé against a target job description and returns a match score with gap highlights.</li>
+    </ul>
+
+    <h2>My Role &amp; Engineering Highlights</h2>
+    <ul>
+      <li>Scoped the product and built it end to end — frontend, data layer, AI prompts, and the in-browser voice pipeline.</li>
+      <li>Engineered Gemini prompts to return <strong>structured, rubric-based feedback</strong> instead of free-form text, so scoring stays consistent and explainable.</li>
+      <li>Designed the real-time loop — question → speech → answer → evaluation — to keep perceived latency low.</li>
+      <li>Built the ATS scorer to align résumé keywords with a job description and surface missing skills.</li>
+    </ul>
+
+    <h2>Impact</h2>
+    <p>NexPrep turns passive interview prep into active, pressure-tested practice — candidates build technical confidence and communication fluency at the same time. The project demonstrates end-to-end product thinking: identifying a real user pain point, designing the architecture, shipping the implementation, and iterating from feedback — with depth in LLM integration, real-time systems, and user-centered design.</p>
 
     <h2>Explore Related Projects</h2>
     <ul>
@@ -124,7 +142,7 @@
   </div>
 
   <footer>
-    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Full Stack Engineer &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
   </footer>
 </body>
 </html>

@@ -111,8 +111,24 @@
     <h2>Tech Stack</h2>
     <p>The frontend uses Next.js App Router for server-side rendering of match data, ensuring fast initial load times even for data-heavy analytics pages. SportsMonk API provides comprehensive football data including live scores, player statistics, and historical records across major European leagues. GROQ's LLM API generates accurate, contextual narrative analysis from structured data inputs with minimal latency. A Node.js caching layer reduces API calls and maintains responsiveness during high-traffic match periods.</p>
 
-    <h2>Outcome</h2>
-    <p>CopaScore AI showcases the power of combining structured sports data APIs with LLM reasoning for real-world applications. Key engineering challenges included designing prompt strategies to generate accurate sports analysis without hallucination, building an efficient caching layer to handle API rate limits, and optimizing Next.js data fetching patterns for near-real-time sports data updates.</p>
+    <h2>Architecture</h2>
+    <p>CopaScore is structured as a fast pipeline from live data to natural-language insight:</p>
+    <ul>
+      <li><strong>Data ingestion:</strong> the SportsMonk API supplies live scores, fixtures, lineups, and historical records across major leagues.</li>
+      <li><strong>Caching layer:</strong> a Node.js cache absorbs API rate limits and keeps the interface responsive during high-traffic match windows.</li>
+      <li><strong>Reasoning:</strong> a GROQ-hosted LLM turns structured stats into natural-language previews, predictions, and post-match analysis.</li>
+      <li><strong>Client:</strong> the Next.js App Router renders data-heavy analytics pages server-side for fast first paint, with React handling live updates.</li>
+    </ul>
+
+    <h2>My Role &amp; Engineering Highlights</h2>
+    <ul>
+      <li>Designed prompt strategies that ground the LLM in the fetched statistics to <strong>minimize hallucination</strong> in match analysis.</li>
+      <li>Built the caching layer to stay within SportsMonk rate limits without sacrificing data freshness.</li>
+      <li>Tuned Next.js data-fetching patterns for near-real-time updates on in-play matches.</li>
+    </ul>
+
+    <h2>Impact</h2>
+    <p>CopaScore makes professional-grade football intelligence accessible through a clean, fast interface — translating raw stats into the context, narrative, and predictions fans and analysts actually want. It demonstrates practical LLM-plus-API system design, from prompt engineering and caching to real-time data delivery.</p>
 
     <h2>Explore Related Projects</h2>
     <ul>
@@ -124,7 +140,7 @@
   </div>
 
   <footer>
-    <p>Built by <a href="/">Ajinkya Dhumal</a> — Fullstack Developer &amp; Product Manager &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
+    <p>Built by <a href="/">Ajinkya Dhumal</a> — Full Stack Engineer &nbsp;|&nbsp; <a href="/">View Full Portfolio</a></p>
   </footer>
 </body>
 </html>
