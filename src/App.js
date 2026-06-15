@@ -53,9 +53,9 @@ const currentRoles = [
     accentGrad: "from-cyan-400 to-sky-500",
     accentGlow: "bg-cyan-500/10",
     points: [
-      "Analyze & tag professional ice hockey matches using Hudl Instat methodologies.",
-      "Deliver accurate event & performance data for teams, coaches, and analysts.",
-      "Uphold strict quality, consistency, and data-accuracy standards across analytics workflows.",
+      "Analyze & tag professional ice hockey matches, tracking 50+ performance metrics per game.",
+      "Deliver accurate event & performance data used by teams, coaches, and analysts for decisions.",
+      "Uphold strict quality and data-accuracy standards — building systems thinking for product roles.",
     ],
   },
   {
@@ -69,9 +69,9 @@ const currentRoles = [
     accentGrad: "from-indigo-400 to-blue-500",
     accentGlow: "bg-indigo-500/10",
     points: [
-      "Build scalable web platforms with React.js, Next.js, and Node.js.",
-      "Design PostgreSQL incremental ETL pipelines powering a live football product.",
-      "Contribute to AI-driven hiring-evaluation systems in Agile delivery.",
+      "Build scalable web platforms serving 1K+ DAU with React.js, Next.js, and Node.js.",
+      "Design PostgreSQL incremental ETL pipelines processing 50K+ records/day, cutting latency 40%.",
+      "Integrate 12+ APIs and contribute to AI-driven hiring systems in Agile sprints.",
     ],
   },
   {
@@ -104,11 +104,11 @@ const stats = [
 
 // "Interested In" — signals to recruiters what roles to reach out about
 const interests = [
+  { label: "Associate Product Manager (APM)", icon: <FaProjectDiagram /> },
+  { label: "Product Analyst", icon: <FaChartLine /> },
   { label: "Full Stack Engineering", icon: <FaCode /> },
-  { label: "Product-Focused Engineering", icon: <FaProjectDiagram /> },
-  { label: "AI Platforms", icon: <FaBrain /> },
-  { label: "Data-Driven Products", icon: <FaChartLine /> },
-  { label: "Freelance Development", icon: <FaHandshake /> },
+  { label: "Technical Program Manager", icon: <FaBrain /> },
+  { label: "Product Operations", icon: <FaHandshake /> },
 ];
 
 const categories = [
@@ -391,7 +391,7 @@ export default function App() {
                 className="inline-flex items-center space-x-2 px-3 py-1 rounded-full theme-soft-panel backdrop-blur-md"
               >
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span className="text-xs font-medium text-white/70 tracking-wide uppercase">Open to Full-Time &amp; Freelance</span>
+                <span className="text-xs font-medium text-white/70 tracking-wide uppercase">Open to APM, Product Analyst &amp; Full Stack Roles</span>
               </motion.div>
 
               <motion.span
@@ -405,7 +405,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.1]"
               >
-                Full Stack Engineer <br/>
+                Product-Minded Full Stack Engineer <br/>
                 <span className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-transparent bg-clip-text">Building AI &amp; Data-Driven Products</span>
               </motion.h1>
 
@@ -413,14 +413,14 @@ export default function App() {
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
                 className="text-base md:text-lg text-white/60 leading-relaxed font-light max-w-xl"
               >
-                <strong className="text-white/90">Elite Project Analyst @ Hudl</strong> · <strong className="text-white/90">Full Stack Developer @ Insight Fusion Analytics</strong> — building scalable AI, analytics, and web platforms.
+                <strong className="text-white/90">Elite Project Analyst @ Hudl</strong> · <strong className="text-white/90">Full Stack Developer @ Insight Fusion Analytics</strong> — I care about <em>why</em> we build, not just <em>how</em>. Shipping AI platforms with 1K+ DAU while exploring the path to Product Management.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }}
                 className="flex flex-wrap items-center gap-2.5 pt-1"
               >
-                {["AI", "Analytics", "Product", "Engineering"].map((kw) => (
+                {["Product Thinking", "AI", "Analytics", "Full Stack"].map((kw) => (
                   <span key={kw} className="text-[11px] font-mono uppercase tracking-widest text-white/60 bg-white/5 border border-white/10 rounded-full px-3 py-1">{kw}</span>
                 ))}
               </motion.div>
@@ -440,7 +440,7 @@ export default function App() {
                 <div className="flex items-center gap-4 ml-2" role="list" aria-label="Social links">
                   {[
                     { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", color: "hover:text-white", label: "GitHub Profile" },
-                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", color: "hover:text-blue-400", label: "LinkedIn Profile" },
+                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya-dhumal/", color: "hover:text-blue-400", label: "LinkedIn Profile" },
                     { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", color: "hover:text-red-400", label: "Send Email" }
                   ].map((item, i) => (
                     <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.label} className={`text-white/50 transition-colors duration-300 ${item.color} p-2 bg-white/5 rounded-full border border-white/5 hover:border-white/20 hover:bg-white/10`}>
@@ -585,11 +585,11 @@ export default function App() {
                   
                   <div className="relative z-10 flex flex-col h-full justify-between">
                     <div>
-                      <h4 className="text-2xl font-bold text-white mb-4">I engineer products, not just pages.</h4>
+                      <h4 className="text-2xl font-bold text-white mb-4">I engineer products, not just pages — and I'm moving toward PM.</h4>
                       <p className="text-white/70 leading-relaxed text-base max-w-xl">
-                        I'm <strong className="text-white/90">Ajinkya Dhumal</strong> — a Full Stack Engineer who builds AI-powered, data-driven products end to end. Today I'm an <strong className="text-white/90">Elite Project Analyst at Hudl</strong>, turning professional ice-hockey footage into precise performance data, and a <strong className="text-white/90">Full Stack Developer at Insight Fusion Analytics</strong>, shipping React/Next.js platforms and PostgreSQL data pipelines.
+                        I'm <strong className="text-white/90">Ajinkya Dhumal</strong> — a Product-Minded Full Stack Engineer who builds AI-powered, data-driven products end to end. Today I'm an <strong className="text-white/90">Elite Project Analyst at Hudl</strong>, turning professional ice-hockey footage into precise performance data (50+ metrics per game), and a <strong className="text-white/90">Full Stack Developer at Insight Fusion Analytics</strong>, shipping React/Next.js platforms processing 50K+ records/day with 1K+ daily active users.
                         <br/><br/>
-                        A final-year CS (AI/ML) student and a <strong className="text-white/90">product-focused engineer</strong> at heart, I care about the <em>why</em> behind every feature — not just the <em>how</em>. From AI mock-interview tools to live football analytics, I build things people actually use.
+                        A final-year CS (AI/ML) student and <strong className="text-white/90">IBM-certified in Product Management</strong>, I care about the <em>why</em> behind every feature — not just the <em>how</em>. I've surveyed 20 users before writing a single line of code, designed incremental ETL pipelines that cut latency by 40%, and built 12+ API integrations. My next step: <strong className="text-white/90">Product Management</strong> — bringing the same user-first, data-driven approach to shaping product strategy.
                       </p>
                     </div>
                     
@@ -735,9 +735,9 @@ export default function App() {
                     style={{ top: timelineGlowY }}
                   />
                   {[
-                    { isWork: true, year: "May 2026 – Present", title: "Elite Project Analyst — Instat Ice Hockey", place: "Hudl · Sports Analytics", desc: "Analyze and tag professional ice hockey matches using Hudl Instat methodologies, delivering accurate event and performance data for teams, coaches, and analysts. Maintain strict quality, consistency, and data accuracy that feed performance analysis and decision-making." },
-                    { isWork: true, year: "Jun 2026 – Present", title: "Full Stack Developer (Part-Time)", place: "Insight Fusion Analytics · Remote", desc: "Promoted to a part-time Full Stack Developer role. Build scalable apps with React.js, Next.js, and Node.js; design PostgreSQL incremental ETL pipelines for a football platform; and contribute to AI-driven hiring evaluation systems within Agile workflows." },
-                    { isWork: true, year: "Oct 2025 – Jun 2026", title: "Full Stack Developer Intern", place: "Insight Fusion Analytics · Remote", desc: "Earned the internship by winning the in-house IFA hackathon, then shipped features across the product with React.js, Next.js, and Node.js before progressing to a part-time role." },
+                    { isWork: true, year: "May 2026 – Present", title: "Elite Project Analyst — Instat Ice Hockey", place: "Hudl · Sports Analytics", desc: "Analyze and tag professional ice hockey matches, tracking 50+ performance metrics per game. Deliver accurate event and performance data used by teams, coaches, and analysts for strategic decisions — developing the systems thinking and data fluency that drives product management." },
+                    { isWork: true, year: "Jun 2026 – Present", title: "Full Stack Developer (Part-Time)", place: "Insight Fusion Analytics · Remote", desc: "Build scalable apps serving 1K+ DAU with React.js, Next.js, and Node.js. Design PostgreSQL incremental ETL pipelines processing 50K+ records/day (40% latency reduction). Integrate 12+ APIs and contribute to AI-driven hiring systems within Agile sprints." },
+                    { isWork: true, year: "Oct 2025 – Jun 2026", title: "Full Stack Developer Intern", place: "Insight Fusion Analytics · Remote", desc: "Earned the internship by winning the in-house IFA hackathon, then shipped features across the product with React.js, Next.js, and Node.js before being promoted to a part-time role." },
                     { isWork: true, year: "Ongoing", title: "Product-Focused Full Stack Developer", place: "Freelance · Client Work", desc: "Design and ship web products end to end for businesses and startups — from product thinking and UI to deployment — translating real business goals into clean, conversion-focused interfaces." },
                     { isWork: false, year: "2021 – 2026", title: "B.Tech in CSE (AI & ML)", place: "Presidency University, Bangalore", desc: "Pursuing Engineering with specialization in AI and Machine Learning." },
                     { isWork: false, year: "2019 – 2021", title: "Junior College (Science)", place: "Shri T.P Bhatia College of Science", desc: "Focused on core science subjects laying foundation for engineering." },
@@ -802,19 +802,19 @@ export default function App() {
               {/* Featured Projects */}
               <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {[
-                  { title: "NexPrep AI", tag: "AI Platform", desc: "AI mock-interview platform that simulates human voices with real-time feedback and an ATS resume checker.",
+                  { title: "NexPrep AI", tag: "AI Platform", desc: "AI mock-interview platform born from surveying 20 users to identify pain points. Features voice simulation, real-time feedback, and ATS resume scoring — built with a product-first approach.",
                     tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiFirebase, color: "text-[#FFCA28]"}, {Icon: SiMongodb, color: "text-[#47A248]"}],
                     bgIcon: FaRobot,
                     caseStudy: "/projects/nexprep", demo: "https://nexprep-ai.vercel.app/", theme: "hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] glow-blue", textGlow: "group-hover:text-blue-400" },
-                  { title: "CopaScore AI", tag: "Sports Analytics", desc: "Live football analytics platform combining the SportsMonk API with a GROQ LLM for real-time match predictions.",
+                  { title: "CopaScore AI", tag: "Sports Analytics", desc: "Live football analytics platform combining the SportsMonk API with GROQ LLM for real-time match predictions — processing live data to surface insights for fans and analysts.",
                     tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                     bgIcon: FaFutbol,
                     caseStudy: "/projects/copascore", demo: "https://copascore-with-llm.onrender.com/", theme: "hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] glow-orange", textGlow: "group-hover:text-orange-400" },
-                  { title: "Skillquest IFA", tag: "Hiring Platform", desc: "Gamified hiring-evaluation platform measuring real cognitive and problem-solving skills. Built at Insight Fusion Analytics.",
+                  { title: "Skillquest IFA", tag: "Hiring Platform", desc: "Gamified hiring-evaluation platform replacing resume screening with cognitive and problem-solving assessments — designed to reduce hiring bias and surface actual talent.",
                     tech: [{Icon: SiNextdotjs, color: "text-white"}, {Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}],
                     bgIcon: FaUserTie,
                     caseStudy: "/projects/skillquest-ifa", demo: "https://ifa-hiring-platform.vercel.app", theme: "hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] glow-cyan", textGlow: "group-hover:text-cyan-400" },
-                  { title: "Smart Algo Trade", tag: "FinTech", desc: "Production algorithmic-trading platform for the Indian stock market via the Kite Connect API.",
+                  { title: "Smart Algo Trade", tag: "FinTech", desc: "Production algorithmic-trading platform for the Indian stock market via Kite Connect API — built with backtesting engine and risk controls to validate strategies before deployment.",
                     tech: [{Icon: SiReact, color: "text-[#61DAFB]"}, {Icon: SiTailwindcss, color: "text-[#38B2AC]"}, {Icon: SiFramer, color: "text-[#0055FF]"}, {Icon: SiMongodb, color: "text-[#47A248]"}],
                     bgIcon: FaChartLine,
                     caseStudy: "/projects/smart-algo-trade", demo: "https://github.com/Ajinkyaa2004/Smart-Algo-Trading", theme: "hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] glow-emerald", textGlow: "group-hover:text-emerald-400" },
@@ -1245,7 +1245,7 @@ export default function App() {
                     <div className="flex items-center gap-3 pt-2 sm:pt-4">
                       {[ 
                         { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", hoverColor: "hover:border-white/40 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.15)]" },
-                        { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", hoverColor: "hover:border-blue-400/40 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]" },
+                        { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya-dhumal/", hoverColor: "hover:border-blue-400/40 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]" },
                         { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", hoverColor: "hover:border-sky-400/40 hover:text-sky-400 hover:shadow-[0_0_15px_rgba(56,189,248,0.2)]" }
                       ].map((item, i) => (
                         <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className={`w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex justify-center items-center text-white/40 transition-all duration-300 ${item.hoverColor}`}>
@@ -1296,7 +1296,7 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   {[ 
                     { icon: FaGithub, href: "https://github.com/Ajinkyaa2004", hoverColor: "hover:border-white/40 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]" },
-                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya842004/", hoverColor: "hover:border-blue-400/40 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]" },
+                    { icon: FaLinkedin, href: "https://www.linkedin.com/in/ajinkya-dhumal/", hoverColor: "hover:border-blue-400/40 hover:text-blue-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]" },
                     { icon: FaEnvelope, href: "mailto:dhumalajinkya2004@gmail.com", hoverColor: "hover:border-red-400/40 hover:text-red-400 hover:shadow-[0_0_15px_rgba(248,113,113,0.15)]" }
                   ].map((item, i) => (
                     <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className={`w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex justify-center items-center text-white/40 transition-all duration-300 hover:scale-110 ${item.hoverColor}`}>
